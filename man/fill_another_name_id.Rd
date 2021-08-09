@@ -18,4 +18,5 @@ jn_masterのanother_name_IDが空欄の場合，common_nameごとで五十音順
 }
 \examples{
 jn_master \%>\% fill_another_name_id()
+
 }

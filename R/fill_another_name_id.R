@@ -9,7 +9,8 @@
   #' 
   #' @examples
   #' jn_master %>% fill_another_name_id()
-
+  #' 
+  #' @export
 fill_another_name_id <- function(jn_master){
   # fill_another_name_id がOKのもの
   an_id_ok <- 
