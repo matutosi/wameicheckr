@@ -1,0 +1,16 @@
+Package: wameicheckr
+Type: Package
+Title: Check Japanese name (wamei) of plant species
+Version: 0.1.0
+Authors@R: person("Toshikazu", "Matsumura", role = c("aut", "cre"), email = "matutosi@gmail.com")
+Description: Check wamei of plant species by wamei chekc list. 
+    Download wamei chek list form https://www.gbif.jp/v2/activities/wamei_checklist.html
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    purrr,
+    stringr,
+    tibble,
+    tidyr
