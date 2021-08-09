@@ -3,21 +3,21 @@
 \docType{data}
 \name{jn_master}
 \alias{jn_master}
-\title{jn_name data from wamei check list}
+\title{jn_name data from wamei checklist}
 \format{
 A data frame with 53222 rows and 11 variables:
 \describe{
-\item{ID}{ID of each data source}
-\item{Family ID}{family ID}
-\item{Family name}{family name}
-\item{Family name(JP)}{family name in Japanese}
-\item{common name}{common Japanese name}
-\item{another name}{another Japanese name}
-\item{another name ID}{another name ID}
-\item{note 1}{note 1}
-\item{note 2}{note 1}
-\item{scientific name with author}{scientific name with author}
-\item{scientific name without author}{scientific name without author}
+\item{ID}                            {各分類群に与えられた種ID。}
+\item{Family ID}                     {科名のID。}
+\item{Family name}                   {科の学名。}
+\item{Family name(JP)}               {科の和名。}
+\item{common name}                   {各データソースでの標準的な和名。}
+\item{another name}                  {各データソースに掲載された異名を含むすべての和名。}
+\item{another name ID}               {各分類群内の異名に与えられたID。}
+\item{note 1}                        {和名の示す範囲に関する備考。}
+\item{note 2}                        {データソースから学名を採録するにあたっての修正等。}
+\item{scientific name with author}   {author nameを含む学名。}
+\item{scientific name without author}{author nameを除く学名。}
 }
 }
 \usage{

@@ -449,8 +449,8 @@ wamei_check2 <- function(x, hub_master, jn_master){
 ## エクセルの機能置き換え(ちょっと古い)
 wamei_check_excel <- function(
     x,                                         # string or vector     チェックする和名
-    cl_file = "wamei_checklist_ver.1.10.xlsx", # check list file      和名チェックリストのファイル
-    cl_dir  = NULL,                            # check list directory 上記ファイルのディレクトリ
+    cl_file = "wamei_checklist_ver.1.10.xlsx", # checklist file      和名チェックリストのファイル
+    cl_dir  = NULL,                            # checklist directory 上記ファイルのディレクトリ
     wamei_list  = "all",                       # out put list         出力する和名のリスト  c("all", "GL", "SF", "WF", "YL")
     sname       = FALSE,                       # scientific name     学名出力の有無，c(FALSE, "with_author", "without_author"),
     family_jp   = TRUE,

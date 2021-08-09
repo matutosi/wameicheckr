@@ -3,22 +3,23 @@
 \docType{data}
 \name{hub_master}
 \alias{hub_master}
-\title{Hub_name data from wamei check list}
+\title{Hub_name data from wamei checklist}
 \format{
 A data frame with 30430 rows and 12 variables:
+各項目の説明は，https://www.gbif.jp/v2/activities/wamei_checklist.html から．
 \describe{
-\item{all_name}{all wamei form data source including synonym}
-\item{Hub name}{hub name}
-\item{lato/stricto}{}
-\item{Family ID}{family ID}
-\item{Family name}{family name}
-\item{Family name(JP)}{family name in Japanese}
-\item{GL}{ID in GL}
-\item{SF}{ID in SF}
-\item{WF}{ID in WF}
-\item{YL}{ID in YL}
-\item{status}{status}
-\item{message}{message}
+\item{all_name}            {引用元に掲載された、異名を含むすべての和名。}
+\item{Hub name}            {データベース上での標準的な和名を示す。原則として各データソースでの標準的な和名を採用したが、データソース間で標準的な和名が一致していない場合、それらをスラッシュで区切って併記した。}
+\item{lato/stricto}        {Hub nameに広義と狭義がある場合、その区分を記した。}
+\item{Family ID}           {科名のID。}
+\item{Family name}         {科の学名。}
+\item{Family name(JP)}     {科の和名。}
+\item{GL}                  {「JN_dataset」に採録されたGreen List掲載種の種ID。}
+\item{SF}                  {「JN_dataset」に採録されたシダ標準図鑑I～II掲載種の種ID。}
+\item{WF}                  {「JN_dataset」に採録された野生植物1～5掲載種の種ID。}
+\item{YL}                  {「JN_dataset」に採録されたYlist更新データ掲載種の種ID。}
+\item{status}              {各データソース間で、和名の指す分類群の同一性が確認できたものは"確定"とし、和名の指す範囲が異なるなど分類学的な検討を要するものは"！未統合"とした。}
+\item{message}             {一つのall nameに対し複数のHub nameが相当する、すなわち異物同名が存在する場合に、その候補となるすべてのHub nameをスラッシュで区切って併記した。例えば、all name「エゾヒカゲノカズラ」はHub name「エゾヒカゲノカズラ」とHub name「ヒカゲノカズラ広義」に該当する。}
 }
 }
 \usage{

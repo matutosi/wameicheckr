@@ -88,17 +88,16 @@ jn_master$Family_name_JP[
   "ワスレグサ"
 ```
 
-x1は，和名チェックリストにある和名をすべて抽出したもの．
+x1は，和名チェックリストにある和名をすべて抽出．
+多いので，下記では最初の50だけ．
 x2は，色々なパターンを含む和名．
-
 ```{r chekc wamei}
   # hubやjnの種名を抽出(全種)
 x1 <- 
   c(hub_master$all_name, hub_master$Hub_name, jn_master$common_name, jn_master$another_name) %>%
   purrr::map(str_split, "/") %>%
   unlist() %>% unique() %>% sort() %>%
-  c("だみーの和名", .) %>%
-  tibble(name=.)
+  c("だみーの和名", .)
 
   # 和名の例
 x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "コナスビ", "カナビキソウ", 
@@ -106,12 +105,13 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
 
   # 入力和名に対する和名・学名の候補を出力
-wamei_check(x1$name, hub_master, jn_master)
-wamei_check(x1$name, hub_master, jn_master, wide=FALSE)
-wamei_check(x2,      hub_master, jn_master,             ds=c(GL, SF, WF))
-wamei_check(x2,      hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
+  # x1は多いので，最初の50だけ
+wamei_check(x1[1:50], hub_master, jn_master)
+wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
+wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
+wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 
   # エクセル形式と同等の出力
-wamei_check_ex(x1$name, hub_master, jn_master, wide=FALSE)
-wamei_check_ex(x2,      hub_master, jn_master)
+wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
+wamei_check_ex(x2,       hub_master, jn_master)
 ```

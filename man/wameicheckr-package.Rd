@@ -6,8 +6,12 @@
 \alias{wameicheckr-package}
 \title{wameicheckr: Check Japanese name (wamei) of plant species}
 \description{
-Check wamei of plant species by wamei chekc list. 
-    Download wamei chek list form https://www.gbif.jp/v2/activities/wamei_checklist.html
+Check wamei of vascular plant species by wamei checklist. 
+    You can dowonload wamei checklist from https://www.gbif.jp/v2/activities/wamei_checklist.html
+    Reference
+    Yamanouchi, T., Shutoh, K., Osawa, T., Yonekura, K., Kato, S., Shiga, T. 2019. 
+        A checklist of Japanese plant names
+        (https://www.gbif.jp/v2/activities/wamei_checklist.html)
 }
 \author{
 \strong{Maintainer}: Toshikazu Matsumura \email{matutosi@gmail.com}
