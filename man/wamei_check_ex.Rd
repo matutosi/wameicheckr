@@ -18,16 +18,18 @@ wamei_check_ex(x, hub_master, jn_master, wide = TRUE)
 \value{
 tibble形式．検索した和名をキーとして，和名・学名など．
 維管束植物和名変換シート(excel版)と同等．
-    https://wetlands.info/tools/plantsdb/nameconv/
+https://wetlands.info/tools/plantsdb/nameconv/
 }
 \description{
-和名チェックリストを使用して，和名・学名の候補を出力します．
+和名チェックリストを使用して，和名・学名の候補を出力．
 和名チェックリスト
-    https://www.gbif.jp/v2/activities/wamei_checklist.html
+https://www.gbif.jp/v2/activities/wamei_checklist.html
+https://wetlands.info/tools/plantsdb/nameconv/
 }
 \examples{
 wamei_check(x, hub_master, jn_master)
 wamei_check(x, hub_master, jn_master, wide = FALSE)
+
 }
 \seealso{
 wamei_check()

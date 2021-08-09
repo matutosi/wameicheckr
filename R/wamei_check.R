@@ -19,7 +19,8 @@
   #' @examples
   #' wamei_check(x, hub_master, jn_master, ds = c(GL, SF, WF, YL))
   #' wamei_check(x, hub_master, jn_master, wide = FALSE, ds = WF)
-
+  #' 
+  #' @export
 wamei_check <- function(  # 和名チェク(エクセルを改変)
     x,                         # チェックする和名(string or vector)
     hub_master,                # hubシート

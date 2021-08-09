@@ -1,8 +1,10 @@
   #' 和名チェックリストから和名・学名の候補を出力
   #' 
-  #' 和名チェックリストを使用して，和名・学名の候補を出力します．
+  #' 和名チェックリストを使用して，和名・学名の候補を出力．
   #' 和名チェックリスト
   #'     https://www.gbif.jp/v2/activities/wamei_checklist.html
+  ## エクセル版「維管束植物和名変換シート」の機能を再現
+  #'     https://wetlands.info/tools/plantsdb/nameconv/
   #' 
   #' @param x 検索する和名の文字列のベクトル．
   #' @param hub_master 和名チェックリストの「Hub_data」シートのデータ
@@ -18,8 +20,8 @@
   #' @examples
   #' wamei_check(x, hub_master, jn_master)
   #' wamei_check(x, hub_master, jn_master, wide = FALSE)
-
-  ## 和名チェックリストのエクセル版の機能を再現
+  #' 
+  #' @export
 wamei_check_ex <- function(
     x,              # チェックする和名(string or vector)
     hub_master,     # hubシート
