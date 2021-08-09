@@ -18,15 +18,38 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(tidyverse)
 library(readxl)
-library(wameichekr)
+library(wameicheckr)
 options(encoding="UTF-8")
 ```
 
-ファイルは，ダウンロードしておき，適当なフォルダに保存しておく．
-```{r input file}
+維管束植物和名チェックリストはパッケージ内にある．
+読み込んだあとで，使いやすくするために，若干の整理を実行
+```{r read data}
+data(hub_master)
+data(jn_master)
+hub_master <- 
+  hub_master %>%
+  tibble::as_tibble() %>%
+  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  print()
+
+jn_master <- 
+  jn_master %>%
+  tibble::as_tibble() %>%
+  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  fill_another_name_id() %>% # another_name_id の空欄を埋める
+  print()
+```
+
+
+最新版が異なる場合は，ウェブページからダウンロードして使用することも可能．
+```{r input file, eval = FALSE}
   # Download wamei chek list form https://www.gbif.jp/v2/activities/wamei_checklist.html
   # Change file name (version)
   # Set your directory by setwd()
+
 path <- "wamei_checklist_ver.1.10.xlsx"
 
 hub_master <-
