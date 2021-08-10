@@ -1,12 +1,11 @@
 ---
 title: "wameichekr"
-output: rmarkdown::pdf_vignette
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{wameichekr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-output: rmarkdown::html_vignette
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
