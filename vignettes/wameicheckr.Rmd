@@ -1,6 +1,8 @@
 ---
 title: "wameichekr"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    keep_md: true
 vignette: >
   %\VignetteIndexEntry{wameichekr}
   %\VignetteEngine{knitr::rmarkdown}
