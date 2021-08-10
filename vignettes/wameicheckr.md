@@ -1,4 +1,3 @@
-<<<<<<< HEAD
     library(tidyverse)
     #> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
     #> v ggplot2 3.3.5     v purrr   0.3.4
@@ -516,4 +515,3 @@ x1は，和名チェックリストにある和名をすべて抽出．
     #> #   WF_scientific_name_without_author <chr>,
     #> #   YL_scientific_name_without_author <chr>,
     #> #   SF_scientific_name_without_author <chr>
->>>>>>> c9706248a1f557a3a38e616dd8f772a12160dc62
