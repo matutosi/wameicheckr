@@ -51,3 +51,5 @@ devtools::install_github("matutosi/wameicheckr")
 You can see examples from vignette. 
 
 使用方法は，vignetteをご覧ください．
+
+https://github.com/matutosi/wameicheckr/blob/main/vignettes/wameicheckr.md
