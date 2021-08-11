@@ -20,6 +20,7 @@ make_message <- function(df){
   #     magrittr::set_colnames(cnames) %>%
     distinct()
 }
+
 ## df(all_name, hub_plus)からmessageを生成(入力の列名が上とは異なる)
 make_message <- function(df){
   df %>%
@@ -59,14 +60,14 @@ make_message2 <- function(df){
 ## hub_nameが同じだが，idの組み合わせが異なるものに，識別用の記号をつける(下の関数の古いバージョン)
   # add_diff_letter_old <- function(hub, hub_master){
   #   # masterからidの組み合わせを作成
-  #   hub_ids <- 
+  #   hub_ids <-
   #     hub_master %>%
   #     dplyr::filter(status=="！未統合") %>%
   #     dplyr::transmute(hub_plus=paste(Hub_name, lato_stricto, sep="-"), ids=paste(GL, SF, WF, YL, sep="-"), message)
   #   # 最後の結合用にidsを追加
   #   hub_res <- left_join(hub, hub_ids)
   #   # 識別記号
-  #   diff <- 
+  #   diff <-
   #     hub_res %>%
   #     dplyr::filter(status=="！未統合") %>%
   #     dplyr::distinct(hub_plus, ids) %>%
@@ -87,7 +88,7 @@ add_diff_letter <- function(hub){
   # masterからidの組み合わせを作成
   hub_ids <- dplyr::mutate(hub,ids=paste(GL, SF, WF, YL, sep="_"))
   # 識別記号
-  diff <- 
+  diff <-
     hub_ids %>%
     dplyr::filter(status=="！未統合") %>%
     dplyr::select(hub_plus, ids) %>%
@@ -106,10 +107,10 @@ add_diff_letter <- function(hub){
 ## compose版 ちょっと遅くなるので，ボツ
   # arrange_message2 <- function(x){
   #   fncs <- compose(
-  #     ~tibble::tibble(hub_plus=.x), 
-  #     ~tidyr::separate(.x, hub_plus, into=c("hub", "plus"), sep="-", fill="right"), 
-  #     ~dplyr::transmute(.x, 
-  #         hub_plus = case_when( hub == lag(hub) ~ hub, TRUE ~ paste(hub, plus, sep="")), 
+  #     ~tibble::tibble(hub_plus=.x),
+  #     ~tidyr::separate(.x, hub_plus, into=c("hub", "plus"), sep="-", fill="right"),
+  #     ~dplyr::transmute(.x,
+  #         hub_plus = case_when( hub == lag(hub) ~ hub, TRUE ~ paste(hub, plus, sep="")),
   #         hub_plus = reduce(hub_plus, ~str_c(.x, "/", .y))),
   #     ~dplyr::distinct(.x),
   #     .dir=c("forward")
@@ -122,7 +123,7 @@ add_diff_letter <- function(hub){
   #     purrr::map(unique)
   #   # tibbleにしてから，case_whenやreduceなどの処理
   #   x <-
-  #     x %>% 
+  #     x %>%
   #       purrr::map(fncs) %>%
   #       unlist()
   #   # 細かな修正
@@ -132,7 +133,7 @@ add_diff_letter <- function(hub){
   # }
 ## オリジナルのhubとjnからfull形式を作成
 wamei_master2full <- function(hub_master, jn_master){
-  full <- 
+  full <-
     hub_master %>%
     dplyr::mutate(Hub_name=stringr::str_replace_all(Hub_name, " ", "_")) %>%
     dplyr::mutate(all_name=stringr::str_replace_all(all_name, " ", "_")) %>%
@@ -142,21 +143,21 @@ wamei_master2full <- function(hub_master, jn_master){
     tidyr::pivot_longer(cols=GL:YL, names_to="source", values_to="ID", values_drop_na=TRUE) %>% # ID(CAPITAL)はjnとjoinするため，大文字のまま
     dplyr::right_join(jn_master) %>%
     dplyr::distinct()
-  full <- 
+  full <-
     full %>%
     dplyr::rename_with(tolower) %>%
     dplyr::rename(sname_wo_author=scientific_name_without_author, sname_w_author=scientific_name_with_author) %>%
     dplyr::relocate(all_name, hub_plus)
   # 複数科に合致のall_name対応
   fml <- full2fml(full)
-  full <- 
+  full <-
     full %>%
     dplyr::select(! starts_with("family")) %>%
     dplyr::left_join(fml)
 }
 ## hub, jn, id, fmlからfull形式を作成
 wamei_full <- function(hub, id, jn, fml=NULL){
-  full <- 
+  full <-
     hub %>%
     dplyr::left_join(id) %>%
     dplyr::left_join(jn)
@@ -167,29 +168,29 @@ wamei_full <- function(hub, id, jn, fml=NULL){
 ## fullからhubを抽出
 wamei_hub <- function(full){
   cols <- c("hub_plus", "all_name", "status", "message")
-  full %>% 
-    dplyr::select(starts_with(cols)) %>% 
+  full %>%
+    dplyr::select(starts_with(cols)) %>%
     dplyr::distinct()
 }
 ## fullからjnを抽出
 wamei_jn <- function(full){
   cols  <- c("id", "source", "common", "another", "sname", "note")
-  full %>% 
-    dplyr::select(starts_with(cols)) %>% 
+  full %>%
+    dplyr::select(starts_with(cols)) %>%
     dplyr::distinct()
 }
 ## fullからidを抽出
 wamei_id <- function(full){
   cols  <- c("id", "source", "hub_plus")
-  full %>% 
-    dplyr::select(starts_with(cols)) %>% 
+  full %>%
+    dplyr::select(starts_with(cols)) %>%
     dplyr::distinct()
 }
 ## fullからfamilyを抽出
 wamei_fml <- function(full){
   cols <- c("all_name", "hub_plus", "family")
-  full %>% 
-    dplyr::select(starts_with(cols)) %>% 
+  full %>%
+    dplyr::select(starts_with(cols)) %>%
     dplyr::distinct()
 }
 ## fullからfamilyを作成(複数科に合致のall_nameにも対応済)
@@ -199,7 +200,7 @@ full2fml <- function(full){
     dplyr::select(all_name, family_id, family_name, family_name_jp) %>%
     dplyr::distinct() %>%
     dplyr::group_by(all_name)
-  fml <- 
+  fml <-
     fml %>%
     dplyr::filter(n()>1) %>%
     dplyr::arrange(all_name) %>%
@@ -222,14 +223,14 @@ longer <- function(x, ...) tidyr::pivot_longer(x, names_to="source", values_to="
 check_dup_id <- function(x){
   wide_x <- tidyr::pivot_wider(x, names_from=source, values_from=id)
   wide_x_n <- tidyr::pivot_wider(x, names_from=source, values_from=id, values_fn=length)
-  wide_x <- 
+  wide_x <-
     tibble::as_tibble(wide_x_n>1) %>%
     dplyr::rowwise() %>%
     dplyr::transmute(tmp = sum(c_across(GL:WF), na.rm=TRUE)) %>%
     dplyr::bind_cols(wide_x) %>%
     dplyr::filter(tmp>0) %>%
     dplyr::select(-`NA`)
-  wide_x <- 
+  wide_x <-
     wide_x %>%
     dplyr::mutate(GL=GL %>% unlist() %>% stringr::str_c(collapse="；")) %>%
     dplyr::mutate(SF=SF %>% unlist() %>% stringr::str_c(collapse="；")) %>%
@@ -251,7 +252,7 @@ check_one2one <- function(df, col_1=NULL, col_2=NULL, keep_all=FALSE){
   if(is.null(col_1)) col_1 <- c_names[1]
   if(is.null(col_2)) col_2 <- c_names[2]
   # グループ化して，回数を計算
-  df <- 
+  df <-
     df %>%
     dplyr::distinct() %>%
     dplyr::group_by(.data[[col_1]]) %>%
@@ -262,7 +263,7 @@ check_one2one <- function(df, col_1=NULL, col_2=NULL, keep_all=FALSE){
     dplyr::ungroup()
   # 重複の抽出・並べ替え
   if( ! keep_all ){
-    df <- 
+    df <-
       df %>%
       dplyr::filter( n_1 > 1  |  n_2 > 1 ) %>%
       dplyr::arrange(.data[[col_1]], .data[[col_2]])
@@ -275,7 +276,7 @@ check_one2one <- function(df, col_1=NULL, col_2=NULL, keep_all=FALSE){
 check_one2one <- function(df){
   c_names <- colnames(df)
   colnames(df) <- c("col_1", "col_2")
-  df <- 
+  df <-
     df %>%
     dplyr::distinct() %>%
     dplyr::left_join(df, by=c("col_1"="col_1")) %>%
@@ -290,13 +291,13 @@ check_one2one <- function(df){
 ## 和名チェク(新版だが，ちょっと古い)
 wamei_check0 <- function(x, full){
   # 該当データ
-  res <- 
+  res <-
     tibble::tibble(input=x) %>%
     dplyr::left_join(dplyr::filter(full, another_name_id==0), by=c("input"="all_name")) %>%
     dplyr::select(-another_name_id)
 
   # 結果の区分用(n=1：OK or 該当なし，n>1：複数が一致)
-  len <- 
+  len <-
     res %>%
     dplyr::distinct(input, hub_plus, source, id) %>%
     dplyr::group_by(input, source) %>%
@@ -306,7 +307,7 @@ wamei_check0 <- function(x, full){
     distinct(input, hub_plus, n_matches)
 
   # OK or 該当なし
-  res_ok <- 
+  res_ok <-
     len %>%
     dplyr::filter(n_matches==1) %>%
     dplyr::left_join(res) %>%
@@ -324,7 +325,7 @@ wamei_check0 <- function(x, full){
     dplyr::mutate(n_matches = case_when( is.na(hub_plus) ~ 0, TRUE ~ 1))
 
   # 複数一致のinput：hub_plusの統合
-  res_ng <- 
+  res_ng <-
     len %>%
     dplyr::filter(n_matches>1) %>%
     make_message() %>%
@@ -335,7 +336,7 @@ wamei_check0 <- function(x, full){
 
   # 複数一致のinput(続き)：common_name, id, 和名, 学名等の処理
   # pivot_widerのvalues_fnを使って一気には解決出来なかったので，先に結合
-  res_ng <- 
+  res_ng <-
     res_ng %>%
     dplyr::group_by(input, source) %>%
     dplyr::arrange(input, source) %>%
@@ -351,7 +352,7 @@ wamei_check0 <- function(x, full){
     tidyr::pivot_wider(input:status, names_from=source, values_from=c(id, common_name, starts_with("sname")), names_glue="{.value}_{source}") %>%
     dplyr::mutate(hub_plus=arrange_hub_name(hub_plus))
   # 全体を統合
-  res <- 
+  res <-
     dplyr::bind_rows(res_ok, res_ng) %>%
     dplyr::mutate(status=stringr::str_replace(status, "！未統合", "分類未統合")) %>%
     dplyr::mutate(status=stringr::str_replace(status, "確定", "")) %>%
@@ -363,13 +364,13 @@ wamei_check0 <- function(x, full){
 ## 和名チェク(新版だが，ちょっと古い)
 wamei_check2 <- function(x, hub_master, jn_master){
   # 該当した数
-  matches <- 
+  matches <-
     tibble(input=x) %>%
     left_join(hub_master, by=c("input"="all_name")) %>%
     group_by(input) %>%
     tally(name="n_matches")
   # 全体のデータ
-  res <- 
+  res <-
     wamei_master2full(hub_master, jn_master) %>%
     dplyr::filter(another_name_id==0) %>%
     dplyr::right_join(tibble(input=x), by=c("all_name"="input")) %>%
@@ -378,7 +379,7 @@ wamei_check2 <- function(x, hub_master, jn_master){
   # OK or 該当なし
   res_ok <- dplyr::filter(matches, n_matches==1)
   if(nrow(res_ok) > 0){
-    res_ok <- 
+    res_ok <-
       res_ok %>%
       dplyr::left_join(res, by=c("input")) %>%
       dplyr::group_by(input, source) %>%
@@ -397,7 +398,7 @@ wamei_check2 <- function(x, hub_master, jn_master){
   # 複数一致：hub_plusの統合
   res_ng <- dplyr::filter(matches, n_matches>1)
   if(nrow(res_ng) > 0){
-    res_ng <- 
+    res_ng <-
       res_ng %>%
       dplyr::left_join(dplyr::distinct(res, input, hub_plus), by=c("input")) %>%
       make_message() %>%
@@ -408,7 +409,7 @@ wamei_check2 <- function(x, hub_master, jn_master){
       dplyr::left_join(matches)
   # 複数一致のinput(続き)：common_name, id, 和名, 学名等の処理
   # pivot_widerのvalues_fnを使って一気には解決出来なかったので，先に結合
-  res_ng <- 
+  res_ng <-
     res_ng %>%
     dplyr::group_by(input, source) %>%
     dplyr::arrange(input, source) %>%
@@ -435,7 +436,7 @@ wamei_check2 <- function(x, hub_master, jn_master){
   # res_ng %>% select(1:10) %>% arrange(input) %>%print(n=100)
 
   # 全体を統合
-  res <- 
+  res <-
     dplyr::bind_rows(res_ok, res_ng) %>%
     dplyr::mutate(status=stringr::str_replace_all(status, "確定", "")) %>%
     dplyr::mutate(status=stringr::str_replace_all(status, "(！未統合)+", "分類未統合")) %>%
@@ -460,7 +461,7 @@ wamei_check_excel <- function(
   ){
   # Downlowd from https://www.gbif.jp/v2/activities/wamei_checklist.html
   # wamei_list: c("GL", "SF", "WF", "YL")
-  # 
+  #
   # read data from excel file
 
 
@@ -470,12 +471,12 @@ wamei_check_excel <- function(
   # ファイルの読み込み
   path <- stringr::str_c(cl_dir, cl_file)
   hub <-
-    readxl::read_xlsx(path, sheet="Hub_data",   col_types="text") %>% 
+    readxl::read_xlsx(path, sheet="Hub_data",   col_types="text") %>%
     colnames_replace_all("[ /]", "_") %>%
     colnames_replace_all("[()]", "")
-  jn <- 
-    readxl::read_xlsx(path, sheet="JN_dataset", col_types="text") %>% 
-    colnames_replace_all("[ /]", "_") %>% 
+  jn <-
+    readxl::read_xlsx(path, sheet="JN_dataset", col_types="text") %>%
+    colnames_replace_all("[ /]", "_") %>%
     colnames_replace_all("[()]", "") %>%
     fill_another_name_id()  # another_name_id が 空欄のものを自動で入れる
 
@@ -493,7 +494,7 @@ wamei_check_excel <- function(
   family_id   <- if(family_id)         "Family_ID"               else NULL
   family_sci  <- if(family_sci)        "Family_name"             else NULL
   wamei_list  <- if(wamei_list=="all") c("GL", "SF", "WF", "YL") else wamei_list
-  sname <- 
+  sname <-
     if(sname==FALSE){ NULL } else {
       switch(sname,
         "with_author"      = "with_author",
@@ -507,18 +508,18 @@ wamei_check_excel <- function(
 
 
   # 合致するか
-  res <- 
+  res <-
     tibble(input=x) %>%
     dplyr::left_join(hub, by=c("input"="all_name"))
 
   # 該当なし：messageを表示
-  no_match <- 
+  no_match <-
     res %>%
     dplyr::filter(is.na(Hub_name)) %>%
     dplyr::transmute(input, n_match=0, Hub_name, status, message="該当なし")
 
   # 合致した数
-  res <- 
+  res <-
     res %>%
     dplyr::filter( !is.na(Hub_name) ) %>%
       # 以下の2行：1入力に2出力(エゾイチゴ問題)の問題対応(解決したら，group_by(input)でなく，group_by(input, message)を使う)
@@ -527,7 +528,7 @@ wamei_check_excel <- function(
     dplyr::summarise(n_match=n(), .groups="drop")
 
   # 2つ以上が合致：messageを表示
-  need_check <- 
+  need_check <-
     res %>%
     dplyr::filter(n_match>1)  %>%
       # 以下の2行：エゾイチゴ問題対応(解決したら削除する)
@@ -536,13 +537,13 @@ wamei_check_excel <- function(
     dplyr::transmute(input, n_match=0, Hub_name, status, message=stringr::str_c("要確認，該当数：", n_match, "，", message))
 
   # 1つだけ合致
-  res <- 
+  res <-
     res %>%
     dplyr::filter(n_match==1) %>%
     dplyr::transmute(input, n_match, all_name=input)
 
   # 各IDの統合 + 縦長へ
-  res <- 
+  res <-
     res %>%
     dplyr::left_join(dplyr::select(hub, all_name, Hub_name, status, all_of(wamei_list))) %>%
     tidyr::pivot_longer(cols=all_of(wamei_list), names_to="source", values_to="ID", values_drop_na=TRUE) %>%
@@ -552,7 +553,7 @@ wamei_check_excel <- function(
     dplyr::select(-another_name_ID) %>%
     dplyr::distinct(input, ID, .keep_all=TRUE) %>%
     tidyr::pivot_wider(
-      names_from=source, 
+      names_from=source,
       values_from=c(ID, common_name:scientific_name_without_author),
       names_glue = "{source}_{.value}",
       values_fill="-"
@@ -560,7 +561,7 @@ wamei_check_excel <- function(
     dplyr::mutate(message="ok")
 
   # 和名修正
-  # replace_name <- 
+  # replace_name <-
   #   dplyr::filter(., input != common_name) %>%
   #   dplyr::mutate(message=stringr::str_c(input, "  ->  ", common_name))
 
@@ -590,13 +591,13 @@ check_dup_famly <- function(df, name_col, fml_col){
   # ## 新たな関数(初期バージョン)
   # wamei_check_old <- function(x, full){
   #   # 該当データ
-  #   res <- 
+  #   res <-
   #     tibble::tibble(input=x) %>%
   #     dplyr::left_join(dplyr::filter(full, another_name_id==0), by=c("input"="all_name")) %>%
   #     dplyr::select(-another_name_id)
-  # 
+  #
   #   # 結果の区分用(n=1：OK or 該当なし，n>1：複数が一致)
-  #   len <- 
+  #   len <-
   #     res %>%
   #     dplyr::distinct(input, hub_plus, source, id) %>%
   #     dplyr::group_by(input, source) %>%
@@ -604,9 +605,9 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::group_by(input) %>%
   #     dplyr::mutate(n_matches=max(n_matches)) %>%
   #     distinct(input, hub_plus, n_matches)
-  # 
+  #
   #   # OK or 該当なし
-  #   res_ok <- 
+  #   res_ok <-
   #     len %>%
   #     dplyr::filter(n_matches==1) %>%
   #     dplyr::left_join(res) %>%
@@ -622,9 +623,9 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     tidyr::pivot_wider(names_from=source, values_from=c(id, common_name, starts_with("sname")), names_glue="{.value}_{source}") %>%
   #     dplyr::select(! ends_with("_NA")) %>%
   #     dplyr::mutate(n_matches = case_when( is.na(hub_plus) ~ 0, TRUE ~ 1))
-  # 
+  #
   #   # 複数一致のinput：hub_plusの統合
-  #   res_ng <- 
+  #   res_ng <-
   #     len %>%
   #     dplyr::filter(n_matches>1) %>%
   #     make_message() %>%
@@ -632,10 +633,10 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::left_join(dplyr::select(res, -message, -hub_plus), by="input") %>% # もとのmessageとhubは不要，make_message2で作ったものに置き換える
   #     dplyr::distinct() %>%
   #     dplyr::rename(hub_plus=message)
-  # 
+  #
   #   # 複数一致のinput(続き)：common_name, id, 和名, 学名等の処理
   #   # pivot_widerのvalues_fnを使って一気には解決出来なかったので，先に結合
-  #   res_ng <- 
+  #   res_ng <-
   #     res_ng %>%
   #     dplyr::group_by(input, source) %>%
   #     dplyr::arrange(input, source) %>%
@@ -651,7 +652,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     tidyr::pivot_wider(input:status, names_from=source, values_from=c(id, common_name, starts_with("sname")), names_glue="{.value}_{source}") %>%
   #     dplyr::mutate(hub_plus=arrange_hub_name(hub_plus))
   #   # 全体を統合
-  #   res <- 
+  #   res <-
   #     dplyr::bind_rows(res_ok, res_ng) %>%
   #     dplyr::mutate(status=stringr::str_replace(status, "！未統合", "分類未統合")) %>%
   #     dplyr::mutate(status=stringr::str_replace(status, "確定", "")) %>%
@@ -672,13 +673,13 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::select(-another_name_ID) %>%
   #     dplyr::distinct(input, ID, .keep_all=TRUE) %>%
   #     tidyr::pivot_wider(
-  #       id_cols=c(input, Family_ID: Family_name_JP), 
-  #       names_from=source, 
+  #       id_cols=c(input, Family_ID: Family_name_JP),
+  #       names_from=source,
   #       values_from=c(ID, common_name:scientific_name_without_author),
   #       names_glue = "{source}_{.value}",
   #       values_fill="-"
   #     )
-  # 
+  #
   #   # 以下の2種が落ちるが，原因不明
   #   # c("オオセンボンヤリ", "ガーベラ")
   #   # another_name_IDの0が無い
@@ -687,9 +688,9 @@ check_dup_famly <- function(df, name_col, fml_col){
   # dplyr::filter(hub, all_name %in% tmp)
   # dplyr::filter(hub, Hub_name %in% tmp)
   # dplyr::filter(jn, ID=="YL_17759")
-  # 
-  # 
-  # tmp3 <- 
+  #
+  #
+  # tmp3 <-
   #   dplyr::select(jn, ID, another_name_ID) %>%
   #   dplyr::mutate(n=1) %>%
   #   tidyr::pivot_wider(
@@ -699,7 +700,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #   ) %>%
   #   dplyr::filter(is.na(`0`)) %>%
   #   .$ID
-  # 
+  #
   # dplyr::filter(jn, ID %in% tmp3)
   #   # A tibble: 12 x 11
   #   #    ID       common_name            another_name         another_name_ID
@@ -722,7 +723,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   # res %>%
   #   dplyr::left_join(dplyr::select(jn, 1:5), by=c("input"="common_name")) %>%
   #   dplyr::filter(is.na(Family_ID))
-  # 
+  #
   # system.time(
   # tmp %>%
   #   dplyr::group_by(common_name, source) %>%
@@ -733,27 +734,27 @@ check_dup_famly <- function(df, name_col, fml_col){
   #   dplyr::group_by(common_name, source) %>%
   #   dplyr::filter(n()==1) %>%
   #   tidyr::pivot_wider(
-  #      id_cols=common_name , 
-  #      names_from=source, 
+  #      id_cols=common_name ,
+  #      names_from=source,
   #      values_from=c(ID, scientific_name_with_author),
   #      names_glue = "{source}_{.value}"
   #    )
   # )
   # tmp %>%
   #   tidyr::pivot_wider(
-  #      id_cols=ID, 
+  #      id_cols=ID,
   #      names_from=c(source),
   #      values_from=c(common_name, scientific_name_with_author),
   #      names_glue = "{source}_{.value}"
   #    )
-  # 
+  #
   # jn %>%
   #   dplyr::filter(another_name_ID==0) %>%
   #   dplyr::select(-another_name, -another_name_ID, -note_1, -note_2, -starts_with("Family"), -scientific_name_without_author) %>%
   #   dplyr::mutate(ID2=ID) %>%
   #   tidyr::separate(ID2, into=c("source", NA))   %>%
   #   tidyr::pivot_wider(
-  #      id_cols=ID , 
+  #      id_cols=ID ,
   #      names_from=source,
   #      values_from=c(common_name, scientific_name_with_author),
   #      names_glue = "{source}_{.value}"
@@ -763,7 +764,7 @@ check_dup_famly <- function(df, name_col, fml_col){
 
 
   # 1つだけ合致
-  #   res <- 
+  #   res <-
   #     res %>%
   #     dplyr::filter(n_match==1) %>%
   #     dplyr::select(input) %>%
@@ -775,7 +776,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::select(input, Hub_name, all_of(wamei_list), common_name, starts_with(sci_name)) %>%
   #     dplyr::distinct() %T>%
   #     # 和名修正
-  #       { replace_name <<- 
+  #       { replace_name <<-
   #           dplyr::filter(., input != common_name) %>%
   #           dplyr::mutate(message=stringr::str_c(input, "  ->  ", common_name))
   #       } %>%
@@ -783,10 +784,10 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::mutate(message="ok") %>%
   #   # 全部合わせて出力
   #   dplyr::bind_rows(replace_name, need_check, no_match)
-  # 
-  # 
-  # 
-  #   res <- 
+  #
+  #
+  #
+  #   res <-
   #     tibble(input=x) %>%
   #     dplyr::left_join(hub, by=c("input"="all_name")) %>%
   #  # 以下の2行：1入力に2出力の問題対応(解決したら，group_by(input)でなく，group_by(input, message)を使う)
@@ -794,7 +795,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::group_by(input) %>%
   #     dplyr::summarise(n_match=n(), .groups="drop") %T>%
   #     # 要確認
-  #       { need_check <<- 
+  #       { need_check <<-
   #           dplyr::filter(., n_match>1)  %>%
   #  # 以下の2行：エゾイチゴ問題対応，解決したら削除する
   #           dplyr::left_join(dplyr::select(hub, all_name, message), by=c("input"="all_name")) %>%
@@ -805,7 +806,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::select(input) %>%
   #     dplyr::left_join(dplyr::select(hub, all_name, Hub_name, GL:YL), by=c("input"="all_name")) %T>%
   #     # 該当なし
-  #       { no_match <<- 
+  #       { no_match <<-
   #           dplyr::filter(., is.na(Hub_name)) %>%
   #           dplyr::transmute(input, message="該当なし")
   #       } %>%
@@ -816,7 +817,7 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     dplyr::select(input, Hub_name, all_of(wamei_list), common_name, starts_with(sci_name)) %>%
   #     dplyr::distinct() %T>%
   #     # 和名修正
-  #       { replace_name <<- 
+  #       { replace_name <<-
   #           dplyr::filter(., input != common_name) %>%
   #           dplyr::mutate(message=stringr::str_c(input, "  ->  ", common_name))
   #       } %>%
@@ -833,8 +834,8 @@ check_dup_famly <- function(df, name_col, fml_col){
   #     tidyr::separate(ID2, into=c("source", NA))   %>%
   #     dplyr::distinct(common_name, source, .keep_all=TRUE) %>%
   #     tidyr::pivot_wider(
-  #        id_cols=Family_ID:common_name, 
-  #        names_from=source, 
+  #        id_cols=Family_ID:common_name,
+  #        names_from=source,
   #        values_from=c(ID, scientific_name_with_author, scientific_name_without_author),
   #        names_glue = "{source}_{.value}"
   #      )

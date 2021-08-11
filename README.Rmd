@@ -43,7 +43,7 @@ wameicheckrは，[GitHub](https://github.com/)からインストールできま�
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("matutosi/wameicheckr")
+devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
 ```
 
 ## Example
@@ -53,3 +53,7 @@ You can see examples from vignette.
 使用方法は，vignetteをご覧ください．
 
 https://github.com/matutosi/wameicheckr/blob/main/vignettes/wameicheckr.md
+
+``` r
+vignette("wameicheckr")
+```
