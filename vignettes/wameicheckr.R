@@ -65,7 +65,7 @@ jn_master$Family_name_JP[
   jn_master$Family_name_JP=="ツルボラン"] <- 
   "ワスレグサ"
 
-## ----chekc wamei--------------------------------------------------------------
+## ----prep wamei---------------------------------------------------------------
   # hubやjnの種名を抽出(全種)
 x1 <- 
   c(hub_master$all_name, hub_master$Hub_name, jn_master$common_name, jn_master$another_name) %>%
@@ -78,6 +78,7 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
   "ヤイトバナ", "チガヤ", "キジムシロ", "ハエドクソウ", "キツネノマゴ", "シロヨメナ", 
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
 
+## ----check wamei--------------------------------------------------------------
   # 入力和名に対する和名・学名の候補を出力
   # x1は多いので，最初の50だけ
 wamei_check(x1[1:50], hub_master, jn_master)
@@ -85,7 +86,16 @@ wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
 wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
 wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 
+## ----check wamei_ex-----------------------------------------------------------
   # エクセル形式と同等の出力
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 wamei_check_ex(x2,       hub_master, jn_master)
+
+## ----get all info-------------------------------------------------------------
+hub_long <- 
+  hub_master %>%
+  tidyr::pivot_longer(cols= GL:YL, names_to = "source", values_to = "ID", values_drop_na = TRUE)
+tibble::tibble(input = x2) %>%
+  left_join(hub_long, by=c("input"="all_name")) %>%
+  left_join(jn_master)
 

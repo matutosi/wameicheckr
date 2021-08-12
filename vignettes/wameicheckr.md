@@ -143,7 +143,10 @@ x1 <-
 x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "コナスビ", "カナビキソウ", 
   "ヤイトバナ", "チガヤ", "キジムシロ", "ハエドクソウ", "キツネノマゴ", "シロヨメナ", 
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
+```
 
+
+```r
   # 入力和名に対する和名・学名の候補を出力
   # x1は多いので，最初の50だけ
 wamei_check(x1[1:50], hub_master, jn_master)
@@ -233,7 +236,10 @@ wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 #> # ... with 22 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
+```
 
+
+```r
   # エクセル形式と同等の出力
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 #> # A tibble: 109 x 12
@@ -282,4 +288,32 @@ wamei_check_ex(x2,       hub_master, jn_master)
 #> #   WF_scientific_name_without_author <chr>,
 #> #   YL_scientific_name_without_author <chr>,
 #> #   SF_scientific_name_without_author <chr>
+```
+
+
+```r
+hub_long <- 
+  hub_master %>%
+  tidyr::pivot_longer(cols= GL:YL, names_to = "source", values_to = "ID", values_drop_na = TRUE)
+tibble::tibble(input = x2) %>%
+  left_join(hub_long, by=c("input"="all_name")) %>%
+  left_join(jn_master)
+#> Joining, by = c("Family_ID", "Family_name", "Family_name_JP", "ID")
+#> # A tibble: 98 x 17
+#>    input    Hub_name   lato_stricto Family_ID Family_name  Family_name_JP status
+#>    <chr>    <chr>      <chr>        <chr>     <chr>        <chr>          <chr> 
+#>  1 だみー   <NA>       <NA>         <NA>      <NA>         <NA>           <NA>  
+#>  2 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  3 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  4 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  5 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  6 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  7 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  8 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#>  9 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#> 10 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#> # ... with 88 more rows, and 10 more variables: message <chr>, source <chr>,
+#> #   ID <chr>, common_name <chr>, another_name <chr>, another_name_ID <dbl>,
+#> #   note_1 <chr>, note_2 <chr>, scientific_name_with_author <chr>,
+#> #   scientific_name_without_author <chr>
 ```
