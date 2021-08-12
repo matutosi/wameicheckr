@@ -7,16 +7,16 @@
 \format{
 A data frame with 53222 rows and 11 variables:
 \describe{
-\item{ID}                            {各分類群に与えられた種ID。}
-\item{Family ID}                     {科名のID。}
-\item{Family name}                   {科の学名。}
-\item{Family name(JP)}               {科の和名。}
-\item{common name}                   {各データソースでの標準的な和名。}
-\item{another name}                  {各データソースに掲載された異名を含むすべての和名。}
-\item{another name ID}               {各分類群内の異名に与えられたID。}
-\item{note 1}                        {和名の示す範囲に関する備考。}
-\item{note 2}                        {データソースから学名を採録するにあたっての修正等。}
-\item{scientific name with author}   {author nameを含む学名。}
+\item{ID}{各分類群に与えられた種ID。}
+\item{Family ID}{科名のID。}
+\item{Family name}{科の学名。}
+\item{Family name(JP)}{科の和名。}
+\item{common name}{各データソースでの標準的な和名。}
+\item{another name}{各データソースに掲載された異名を含むすべての和名。}
+\item{another name ID}{各分類群内の異名に与えられたID。}
+\item{note 1}{和名の示す範囲に関する備考。}
+\item{note 2}{データソースから学名を採録するにあたっての修正等。}
+\item{scientific name with author}{author nameを含む学名。}
 \item{scientific name without author}{author nameを除く学名。}
 }
 }
@@ -27,11 +27,10 @@ jn_master
 A dataset containing wamei (Japanese name) of vascular plant species,
 data source ID, family name, common name, scientific name, and
 other attributes.
-Check the detail in data by folloing URL.
-Wamei checklist (ver. 1.10) is form:
+Check the detail by Wamei checklist (ver. 1.10).
 Yamanouchi, T., Shutoh, K., Osawa, T., Yonekura, K., Kato, S., Shiga, T.
 2019. A checklist of Japanese plant names
-(https://www.gbif.jp/v2/activities/wamei_checklist.html)
+(\url{https://www.gbif.jp/v2/activities/wamei_checklist.html})
 The variables are as follows:
 }
 \keyword{datasets}
