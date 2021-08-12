@@ -12,7 +12,6 @@
   #' @examples
   #' hub_master %>%
   #'  dplyr::mutate(hub_plus = arrange_hub_name(hub_plus))
-  #' @export
 arrange_hub_name <- function(x){
   # 入力が空の場合
   if(! is.character(x)) return("")
