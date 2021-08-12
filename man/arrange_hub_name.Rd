@@ -2,7 +2,7 @@
 % Please edit documentation in R/arrange_hub_name.R
 \name{arrange_hub_name}
 \alias{arrange_hub_name}
-\title{和名の整理}
+\title{/を含むmessage・和名の整理}
 \usage{
 arrange_hub_name(x)
 }

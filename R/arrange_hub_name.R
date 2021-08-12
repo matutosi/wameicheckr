@@ -1,4 +1,4 @@
-  #' 和名の整理
+  #' /を含むmessage・和名の整理
   #' 
   #' 複数の和名(hub_plus)がある場合，重複のないように整理．
   #' 広義と狭義の両方があるときは，「/」区切りで出力．
@@ -12,8 +12,7 @@
   #' @examples
   #' hub_master %>%
   #'  dplyr::mutate(hub_plus = arrange_hub_name(hub_plus))
-
-  ## /を含むmessageの整理
+  #' @export
 arrange_hub_name <- function(x){
   # 入力が空の場合
   if(! is.character(x)) return("")

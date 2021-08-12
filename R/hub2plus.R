@@ -11,7 +11,7 @@
   #' @examples
   #' Hub_master %>%
   #'  dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
-
+  #' @export
 hub2plus <- function(Hub_name, lato_stricto){
   hub_name <- 
     Hub_name %>% 

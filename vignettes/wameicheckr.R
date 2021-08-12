@@ -8,7 +8,6 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(readxl)
 library(wameicheckr)
-options(encoding="UTF-8")
 
 ## ----read data----------------------------------------------------------------
 data(hub_master)
