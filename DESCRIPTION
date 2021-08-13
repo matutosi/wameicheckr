@@ -12,15 +12,14 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    knitr,
     dplyr,
     purrr,
+    rmarkdown,
     stringr,
     tibble,
     tidyr,
     magrittr
-Suggests: 
-    rmarkdown,
-    knitr
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)

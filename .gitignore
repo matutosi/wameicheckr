@@ -2,5 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+.travis.yml
 inst/doc
-
+howtouse.Rmd
+README.Rmd
+READMEjp.Rmd
+wameicheckr.Rproj
+2110veg/
