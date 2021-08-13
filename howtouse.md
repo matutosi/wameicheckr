@@ -137,9 +137,10 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
 ```
 
+入力和名に対する和名・学名の候補を出力する．
+なお，x1は多いので，最初の50だけを使用．
+
 ``` r
-  # 入力和名に対する和名・学名の候補を出力
-  # x1は多いので，最初の50だけ
 wamei_check(x1[1:50], hub_master, jn_master)
 #> # A tibble: 50 x 28
 #>    input    n_match hub_plus         status  source ID    Family_ID Family_name 
@@ -229,8 +230,9 @@ wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 #> #   scientific_name_without_author <chr>
 ```
 
+エクセルと同等の出力の場合．
+
 ``` r
-  # エクセル形式と同等の出力
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 #> # A tibble: 111 x 12
 #>    input    n_match Hub_name        status   source ID    Family_ID Family_name 
@@ -279,6 +281,8 @@ wamei_check_ex(x2,       hub_master, jn_master)
 #> #   YL_scientific_name_without_author <chr>,
 #> #   SF_scientific_name_without_author <chr>
 ```
+
+合致する全ての和名・学名等を出力する場合は，wameicheckrの関数を使わなくても可能．
 
 ``` r
 hub_long <- 

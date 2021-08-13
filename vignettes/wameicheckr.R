@@ -80,15 +80,12 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
 
 ## ----check wamei--------------------------------------------------------------
-  # 入力和名に対する和名・学名の候補を出力
-  # x1は多いので，最初の50だけ
 wamei_check(x1[1:50], hub_master, jn_master)
 wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
 wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
 wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 
 ## ----check wamei_ex-----------------------------------------------------------
-  # エクセル形式と同等の出力
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 wamei_check_ex(x2,       hub_master, jn_master)
 
