@@ -1,16 +1,5 @@
----
-title: "wameichekr"
-output: 
-  rmarkdown::html_vignette:
-    keep_md: true
-vignette: >
-  %\VignetteIndexEntry{wameichekr}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
 
-
-```r
+``` r
 library(tidyverse)
 #> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 #> v ggplot2 3.3.5     v purrr   0.3.4
@@ -20,14 +9,22 @@ library(tidyverse)
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
-library(readxl)
 library(wameicheckr)
+library(magrittr)
+#> 
+#> Attaching package: 'magrittr'
+#> The following object is masked from 'package:purrr':
+#> 
+#>     set_names
+#> The following object is masked from 'package:tidyr':
+#> 
+#>     extract
 ```
 
 維管束植物和名チェックリストはパッケージ内にある．
 読み込んだあとで，使いやすくするために，若干の整理を実行
 
-```r
+``` r
 data(hub_master)
 data(jn_master)
 hub_master <- 
@@ -77,13 +74,13 @@ jn_master <-
 #> #   scientific_name_without_author <chr>
 ```
 
-
 最新版が異なる場合は，ウェブページからダウンロードして使用することも可能．
 
-```r
+``` r
   # Download wamei chek list form https://www.gbif.jp/v2/activities/wamei_checklist.html
   # Change file name (version)
   # Set your directory by setwd()
+library(readxl)
 
 path <- "wamei_checklist_ver.1.10.xlsx"
 
@@ -99,11 +96,10 @@ jn_master <-
   fill_another_name_id()  # another_name_id の空欄を埋める
 ```
 
-
 和名チェックリスト ver.1.10のエラーの修正．
 バージョンアップで，修正される予定．
 
-```r
+``` r
   # (和名チェックリスト ver.1.10への対応) another_name_IDに0がないもの
 no_id_0 <- 
   c("SF_00131", "SF_00323", "WF_01542", "WF_02219", "WF_04287", 
@@ -125,10 +121,9 @@ jn_master$Family_name_JP[
 ```
 
 x1は，和名チェックリストにある和名をすべて抽出．
-多いので，下記では最初の50だけ．
-x2は，色々なパターンを含む和名．
+多いので，下記では最初の50だけ． x2は，色々なパターンを含む和名．
 
-```r
+``` r
   # hubやjnの種名を抽出(全種)
 x1 <- 
   c(hub_master$all_name, hub_master$Hub_name, jn_master$common_name, jn_master$another_name) %>%
@@ -142,8 +137,7 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
   "オオフジシダ", "コマツナギ", "アイヌタチツボスミレ", "シベリアカラマツ", "アオイモドキ")
 ```
 
-
-```r
+``` r
   # 入力和名に対する和名・学名の候補を出力
   # x1は多いので，最初の50だけ
 wamei_check(x1[1:50], hub_master, jn_master)
@@ -172,7 +166,7 @@ wamei_check(x1[1:50], hub_master, jn_master)
 #> #   GL_scientific_name_without_author <chr>,
 #> #   SF_scientific_name_without_author <chr>
 wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
-#> # A tibble: 109 x 12
+#> # A tibble: 111 x 12
 #>    input    n_match hub_plus        status  source ID     Family_ID Family_name 
 #>    <chr>    <chr>   <chr>           <chr>   <chr>  <chr>  <chr>     <chr>       
 #>  1 だみー~  0       該当なし        該当な~ -      -      -         -           
@@ -185,7 +179,7 @@ wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
 #>  8 no_name~ 1       ムカゴサイシン~ 確定    YL     YL_03~ 124       Orchidaceae 
 #>  9 no_name~ 1       ミチノクサナギ~ 確定    GL     GL_04~ 206       Rosaceae    
 #> 10 no_name~ 1       ミチノクサナギ~ 確定    WF     WF_03~ 206       Rosaceae    
-#> # ... with 99 more rows, and 4 more variables: Family_name_JP <chr>,
+#> # ... with 101 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
 wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
@@ -235,11 +229,10 @@ wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 #> #   scientific_name_without_author <chr>
 ```
 
-
-```r
+``` r
   # エクセル形式と同等の出力
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
-#> # A tibble: 109 x 12
+#> # A tibble: 111 x 12
 #>    input    n_match Hub_name        status   source ID    Family_ID Family_name 
 #>    <chr>      <dbl> <chr>           <chr>    <chr>  <chr> <chr>     <chr>       
 #>  1 だみー~        0 ！候補なし      ！個別~  <NA>   <NA>  <NA>      <NA>        
@@ -252,7 +245,7 @@ wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 #>  8 no_name~       1 ムカゴサイシン~ 確定     YL     YL_0~ 124       Orchidaceae 
 #>  9 no_name~       1 ミチノクサナギ~ 確定     GL     GL_0~ 206       Rosaceae    
 #> 10 no_name~       1 ミチノクサナギ~ 確定     WF     WF_0~ 206       Rosaceae    
-#> # ... with 99 more rows, and 4 more variables: Family_name_JP <chr>,
+#> # ... with 101 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
 wamei_check_ex(x2,       hub_master, jn_master)
@@ -287,8 +280,7 @@ wamei_check_ex(x2,       hub_master, jn_master)
 #> #   SF_scientific_name_without_author <chr>
 ```
 
-
-```r
+``` r
 hub_long <- 
   hub_master %>%
   tidyr::pivot_longer(cols= GL:YL, names_to = "source", values_to = "ID", values_drop_na = TRUE)

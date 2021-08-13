@@ -40,11 +40,13 @@ devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
 You can see examples from vignette. 
 Sorry Japanese only. 
 
-https://github.com/matutosi/wameicheckr/blob/main/vignettes/wameicheckr.md
-
 ``` r
 vignette("wameicheckr")
 ```
+
+The page below is the same to vignette. 
+
+https://github.com/matutosi/wameicheckr/blob/main/howtouse.md
 
 ## Citation
 
