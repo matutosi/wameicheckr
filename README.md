@@ -1,6 +1,6 @@
 
-Japanese README is below.
-<https://github.com/matutosi/wameicheckr/READMEjp.md>
+Japanese README is
+<https://github.com/matutosi/wameicheckr/blob/main/READMEjp.md> .
 
 # wameicheckr
 
