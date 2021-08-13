@@ -18,8 +18,8 @@
   #' @seealso wamei_check()
   #' 
   #' @examples
-  #' wamei_check(x, hub_master, jn_master)
-  #' wamei_check(x, hub_master, jn_master, wide = FALSE)
+  #' # see vignette
+  #' # vignette("wamei_checkr")
   #' 
   #' @export
 wamei_check_ex <- function(
@@ -57,13 +57,13 @@ wamei_check_ex <- function(
   jn_master <-             # another_name_IDが0とか一番上のものだけ残す
     jn_master %>%
     dplyr::distinct(ID, .keep_all = TRUE) %>%
-    dplyr::select(! starts_with(c("another", "note")))
+    dplyr::select(! dplyr::starts_with(c("another", "note")))
   # # # # # # # # # # # メイン # # # # # # # # # # # 
   len <-            # 合致した数
-    tibble(input = x) %>%
+    tibble::tibble(input = x) %>%
     dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
     dplyr::group_by(input) %>%
-    dplyr::mutate(n_match = n()) %>%
+    dplyr::mutate(n_match = dplyr::n()) %>%
     dplyr::select(input, n_match, Hub_name) %>%
     dplyr::distinct()
   no_match <-        # 該当なし：messageを表示
@@ -94,15 +94,15 @@ wamei_check_ex <- function(
     single_match <-   
       single_match %>%
       tidyr::pivot_wider(
-        id_cols = c(input, n_match, Hub_name, status, starts_with("Family")), 
+        id_cols = c(input, n_match, Hub_name, status, dplyr::starts_with("Family")), 
         names_from = source, 
-        values_from = c(ID, common_name, starts_with("scientific")),
+        values_from = c(ID, common_name, dplyr::starts_with("scientific")),
         names_glue = "{source}_{.value}"
       )
   }
   # # # # # # # # # # # 結果の統合・並べ替え・出力 # # # # # # # # # # # 
   res <- 
-    tibble(input = x) %>%
+    tibble::tibble(input = x) %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input")
   res
 }

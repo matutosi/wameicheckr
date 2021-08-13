@@ -10,7 +10,7 @@ A data frame with 53222 rows and 11 variables:
 \item{ID}{各分類群に与えられた種ID。}
 \item{Family ID}{科名のID。}
 \item{Family name}{科の学名。}
-\item{Family name(JP)}{科の和名。}
+\item{Family name (JP)}{科の和名。}
 \item{common name}{各データソースでの標準的な和名。}
 \item{another name}{各データソースに掲載された異名を含むすべての和名。}
 \item{another name ID}{各分類群内の異名に与えられたID。}

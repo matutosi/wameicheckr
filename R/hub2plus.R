@@ -3,14 +3,19 @@
   #' hub_masterのhub_nameとlato_strictoから，hub_plusを生成．
   #' 「/」での区切りがある場合は，前後両方に「lato_stricto」を追加
   #' 
-  #' @param hub_name hub_name in hub_master
+  #' @param Hub_name hub_name in hub_master
   #' @param lato_stricto lato_stricto in hub_master
   #' 
   #' @return string
   #' 
   #' @examples
-  #' Hub_master %>%
-  #'  dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
+  #' hub_master %>%
+  #'   tibble::as_tibble() %>%
+  #'   dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  #'   dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+  #'   dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
+  #' 
+  #' @export
 hub2plus <- function(Hub_name, lato_stricto){
   hub_name <- 
     Hub_name %>% 

@@ -27,8 +27,8 @@ https://www.gbif.jp/v2/activities/wamei_checklist.html
 https://wetlands.info/tools/plantsdb/nameconv/
 }
 \examples{
-wamei_check(x, hub_master, jn_master)
-wamei_check(x, hub_master, jn_master, wide = FALSE)
+# see vignette
+# vignette("wamei_checkr")
 
 }
 \seealso{
