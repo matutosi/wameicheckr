@@ -17,7 +17,7 @@ A data frame with 30430 rows and 12 variables:
 \item{lato/stricto}{Hub nameに広義と狭義がある場合、その区分を記した。}
 \item{Family ID}{科名のID。}
 \item{Family name}{科の学名。}
-\item{Family name(JP)}{科の和名。}
+\item{Family name (JP)}{科の和名。}
 \item{GL}{「JN_dataset」に採録されたGreen List掲載種の種ID。}
 \item{SF}{「JN_dataset」に採録されたシダ標準図鑑I～II掲載種の種ID。}
 \item{WF}{「JN_dataset」に採録された野生植物1～5掲載種の種ID。}

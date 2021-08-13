@@ -1,0 +1,9 @@
+citHeader("To cite wameicheckr in publications use:")
+
+citEntry(
+  textVersion = stringr::str_c(
+    "Toshikazu Matsumura (2021) ", 
+    "Check Japanese name (wamei) of vascular plant species with R. ",
+    "URL https://github.com/matutosi/wameicheckr/."
+  )
+)

@@ -14,11 +14,12 @@
   #' 維管束植物和名変換シート(excel版)に加えて，全ての和名・学名の
   #' 候補を出力．
   #'     https://wetlands.info/tools/plantsdb/nameconv/
+  #' 
   #' @seealso wamei_check_ex()
   #' 
   #' @examples
-  #' wamei_check(x, hub_master, jn_master, ds = c(GL, SF, WF, YL))
-  #' wamei_check(x, hub_master, jn_master, wide = FALSE, ds = WF)
+  #' # see vignette
+  #' # vignette("wamei_checkr")
   #' 
   #' @export
 wamei_check <- function(  # 和名チェク(エクセルを改変)
@@ -26,11 +27,10 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     hub_master,                # hubシート
     jn_master,                 # jnシート
     wide = TRUE,               # 出力形式
-    ds   = c(GL, SF, WF, YL),  # 使用するデータソース
-    ...
+    ds   = c(GL, SF, WF, YL)   # 使用するデータソース
   ){
    # # # # # # # # # # # 準備 # # # # # # # # # # # 
-  x <- tibble(input = x)
+  x <- tibble::tibble(input = x)
   jn_master <-      # 列名の修正
     jn_master %>% 
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
@@ -38,14 +38,14 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   jn <-             # another_name_ID == 0
     jn_master %>%
     dplyr::filter(another_name_ID == 0) %>%
-    dplyr::select(! starts_with(c("another", "note", "Family"))) %>%
+    dplyr::select(! dplyr::starts_with(c("another", "note", "Family"))) %>%
     dplyr::distinct() # 本来は不要?
   hub_master <-      # 列名の修正
     hub_master %>% 
     dplyr::filter(all_name %in% x$input) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
-    dplyr::filter(if_any({{ds}}, ~!is.na(.x))) %>%
+    dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
   #     select_ds(hub_master = ., ds = {{ds}}) %>%
     dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
     dplyr::distinct() # 本来は不要?
@@ -53,7 +53,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
     dplyr::group_by(all_name) %>%
-    dplyr::filter(n() > 1) %>%
+    dplyr::filter(dplyr::n() > 1) %>%
     dplyr::mutate(msg = "message") %>%
     tidyr::pivot_wider(
       id_cols = all_name, names_from = msg, values_from = hub_plus, 
@@ -73,13 +73,13 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   hub <-     # hubを分離
     hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
-    distinct()
+    dplyr::distinct()
   fml <-     # familyを分離
     hub_master %>%
-    dplyr::select(all_name, starts_with("Family")) %>%
+    dplyr::select(all_name, dplyr::starts_with("Family")) %>%
     dplyr::distinct() %>%
     tidyr::pivot_wider(
-      id_cols = all_name, values_from = starts_with("Family"), 
+      id_cols = all_name, values_from = dplyr::starts_with("Family"), 
        values_fn = function(x) {paste(x, collapse = "；")},  names_glue = "{.value}" 
      )
   # # # # # # # # # # # メイン # # # # # # # # # # # 
@@ -87,7 +87,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     x %>%
     dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
     dplyr::group_by(input) %>%
-    dplyr::mutate(n_match = n()) %>%
+    dplyr::mutate(n_match = dplyr::n()) %>%
     dplyr::select(input, n_match, hub_plus) %>%
     dplyr::distinct()
   no_match <-        # 該当なし：messageを表示
@@ -121,9 +121,9 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     single_match <-   
       single_match %>%
       tidyr::pivot_wider(
-        id_cols = c(input, n_match, hub_plus, status, starts_with("Family")), 
+        id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
         names_from = source, 
-        values_from = c(ID, common_name, starts_with("scientific")),
+        values_from = c(ID, common_name, dplyr::starts_with("scientific")),
         names_glue = "{source}_{.value}"
       )
   }
@@ -131,7 +131,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     multi_match <-   
       multi_match %>%
       tidyr::pivot_wider(
-        id_cols = c(input, n_match, hub_plus, status, starts_with("Family")), 
+        id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
         names_from = source, 
         values_from = c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
         names_glue = "{source}_{.value}", 
@@ -142,7 +142,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
           scientific_name_without_author = ~paste(., collapse = "；")
         )
       )  %>%
-      dplyr::mutate_at(vars(contains("common_name")), arrange_hub_name) %>%  # vars() は必須
+      dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
       dplyr::mutate(st = "status") %>%
       tidyr::pivot_wider(
         names_from = st, 

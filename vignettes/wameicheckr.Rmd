@@ -19,8 +19,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(tidyverse)
-library(readxl)
 library(wameicheckr)
+library(magrittr)
 ```
 
 維管束植物和名チェックリストはパッケージ内にある．
@@ -50,6 +50,7 @@ jn_master <-
   # Download wamei chek list form https://www.gbif.jp/v2/activities/wamei_checklist.html
   # Change file name (version)
   # Set your directory by setwd()
+library(readxl)
 
 path <- "wamei_checklist_ver.1.10.xlsx"
 

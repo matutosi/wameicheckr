@@ -10,8 +10,10 @@
   #' カタカナ部分が共通で広義と狭義ともある場合は「ワメイ広義/狭義」．
   #' 
   #' @examples
-  #' hub_master %>%
-  #'  dplyr::mutate(hub_plus = arrange_hub_name(hub_plus))
+  #' x <- c("ワメイ/広義，ワメイ/狭義")
+  #' arrange_hub_name(x)
+  #' 
+  #' @export
 arrange_hub_name <- function(x){
   # 入力が空の場合
   if(! is.character(x)) return("")
@@ -29,7 +31,7 @@ arrange_hub_name <- function(x){
     purrr::map(~dplyr::transmute(., 
       hub_plus = dplyr::case_when( hub == dplyr::lag(hub) ~ plus, TRUE ~ paste(hub, plus, sep="")), 
       hub_plus = purrr::reduce(hub_plus, ~stringr::str_c(.x, "/", .y))    )) %>%
-    purrr::map(distinct) %>%
+    purrr::map(dplyr::distinct) %>%
     unlist()
   # 細かな修正
   x %>%

@@ -34,13 +34,13 @@ wamei_check_excel2 <- function(
   jn <-             # another_name_IDが0とか一番上のものだけ残す
     jn %>%
     dplyr::distinct(ID, .keep_all=TRUE) %>%
-    dplyr::select(! starts_with(c("another", "note")))
+    dplyr::select(! dplyr::starts_with(c("another", "note")))
   # # # # # # # # # # # メイン # # # # # # # # # # # 
   len <-            # 合致した数
-    tibble(input=x) %>%
+    tibble::tibble(input=x) %>%
     dplyr::left_join(hub, by=c("input"="all_name")) %>%
     dplyr::group_by(input) %>%
-    dplyr::mutate(n_match=n()) %>%
+    dplyr::mutate(n_match=dplyr::n()) %>%
     dplyr::select(input, n_match, Hub_name) %>%
     dplyr::distinct()
   no_match <-        # 該当なし：messageを表示
@@ -71,15 +71,15 @@ wamei_check_excel2 <- function(
     single_match <-   
       single_match %>%
       tidyr::pivot_wider(
-        id_cols=c(input, n_match, Hub_name, status, starts_with("Family")), 
+        id_cols=c(input, n_match, Hub_name, status, dplyr::starts_with("Family")), 
         names_from=source, 
-        values_from=c(ID, common_name, starts_with("scientific")),
+        values_from=c(ID, common_name, dplyr::starts_with("scientific")),
         names_glue="{source}_{.value}"
       )
   }
   # # # # # # # # # # # 結果の統合・並べ替え・出力 # # # # # # # # # # # 
   res <- 
-    tibble(input=x) %>%
+    tibble::tibble(input=x) %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by="input")
   res
 }
@@ -93,7 +93,7 @@ wamei_check <- function(
     ...
   ){
    # # # # # # # # # # # 準備 # # # # # # # # # # # 
-  x <- tibble(input=x)
+  x <- tibble::tibble(input=x)
   jn_master <-      # 列名の修正
     jn_master %>% 
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
@@ -101,14 +101,14 @@ wamei_check <- function(
   jn <-             # another_name_ID==0
     jn_master %>%
     dplyr::filter(another_name_ID==0) %>%
-    dplyr::select(! starts_with(c("another", "note", "Family"))) %>%
+    dplyr::select(! dplyr::starts_with(c("another", "note", "Family"))) %>%
     dplyr::distinct() # 本来は不要?
   hub_master <-      # 列名の修正
     hub_master %>% 
     dplyr::filter(all_name %in% x$input) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
-    dplyr::filter(if_any({{ds}}, ~!is.na(.x))) %>%
+    dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
   #     select_ds(hub_master=., ds={{ds}}) %>%
     dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
     dplyr::distinct() # 本来は不要?
@@ -116,7 +116,7 @@ wamei_check <- function(
     hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
     dplyr::group_by(all_name) %>%
-    dplyr::filter(n() > 1) %>%
+    dplyr::filter(dplyr::n() > 1) %>%
     dplyr::mutate(msg="message") %>%
     tidyr::pivot_wider(
       id_cols=all_name, names_from=msg, values_from=hub_plus, 
@@ -136,13 +136,13 @@ wamei_check <- function(
   hub <-     # hubを分離
     hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
-    distinct()
+    dplyr::distinct()
   fml <-     # familyを分離
     hub_master %>%
-    dplyr::select(all_name, starts_with("Family")) %>%
+    dplyr::select(all_name, dplyr::starts_with("Family")) %>%
     dplyr::distinct() %>%
     tidyr::pivot_wider(
-      id_cols=all_name, values_from=starts_with("Family"), 
+      id_cols=all_name, values_from=dplyr::starts_with("Family"), 
        values_fn = function(x) {paste(x, collapse = "；")},  names_glue="{.value}" 
      )
   # # # # # # # # # # # メイン # # # # # # # # # # # 
@@ -150,7 +150,7 @@ wamei_check <- function(
     x %>%
     dplyr::left_join(hub_master, by=c("input"="all_name")) %>%
     dplyr::group_by(input) %>%
-    dplyr::mutate(n_match=n()) %>%
+    dplyr::mutate(n_match=dplyr::n()) %>%
     dplyr::select(input, n_match, hub_plus) %>%
     dplyr::distinct()
   no_match <-        # 該当なし：messageを表示
@@ -184,9 +184,9 @@ wamei_check <- function(
     single_match <-   
       single_match %>%
       tidyr::pivot_wider(
-        id_cols=c(input, n_match, hub_plus, status, starts_with("Family")), 
+        id_cols=c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
         names_from=source, 
-        values_from=c(ID, common_name, starts_with("scientific")),
+        values_from=c(ID, common_name, dplyr::starts_with("scientific")),
         names_glue="{source}_{.value}"
       )
   }
@@ -194,7 +194,7 @@ wamei_check <- function(
     multi_match <-   
       multi_match %>%
       tidyr::pivot_wider(
-        id_cols=c(input, n_match, hub_plus, status, starts_with("Family")), 
+        id_cols=c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
         names_from=source, 
         values_from=c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
         names_glue="{source}_{.value}", 
@@ -205,7 +205,7 @@ wamei_check <- function(
           scientific_name_without_author = ~paste(., collapse = "；")
         )
       )  %>%
-      dplyr::mutate_at(vars(contains("common_name")), arrange_hub_name) %>%  # vars() は必須
+      dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
       dplyr::mutate(st="status") %>%
       tidyr::pivot_wider(
         names_from=st, 
@@ -246,7 +246,7 @@ arrange_hub_name <- function(x){
     purrr::map(~dplyr::transmute(., 
       hub_plus = dplyr::case_when( hub == dplyr::lag(hub) ~ plus, TRUE ~ paste(hub, plus, sep="")), 
       hub_plus = purrr::reduce(hub_plus, ~stringr::str_c(.x, "/", .y))    )) %>%
-    purrr::map(distinct) %>%
+    purrr::map(dplyr::distinct) %>%
     unlist()
   # 細かな修正
   x %>%
@@ -274,7 +274,7 @@ fill_another_name_id <- function(jn){
     jn %>%
     tibble::rownames_to_column("row_num") %>%
     dplyr::filter(is.na(another_name_ID)) %>%
-    dplyr::mutate(ID2=lag(ID, default="")) %>%
+    dplyr::mutate(ID2=dplyr::lag(ID, default="")) %>%
     dplyr::mutate(another_name_ID = dplyr::case_when(
       ID!=ID2 ~ 0,
       TRUE    ~ 1

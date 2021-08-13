@@ -8,7 +8,11 @@
   #' @return tibble．another_name_IDの空欄を埋めたjn_master
   #' 
   #' @examples
-  #' jn_master %>% fill_another_name_id()
+  #' jn_master %>%
+  #'   tibble::as_tibble() %>%
+  #'   dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  #'   dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+  #'   fill_another_name_id()
   #' 
   #' @export
 fill_another_name_id <- function(jn_master){
@@ -23,7 +27,7 @@ fill_another_name_id <- function(jn_master){
     jn_master %>%
     tibble::rownames_to_column("row_num") %>%
     dplyr::filter(is.na(another_name_ID)) %>%
-    dplyr::mutate(ID2=lag(ID, default="")) %>%
+    dplyr::mutate(ID2=dplyr::lag(ID, default="")) %>%
     dplyr::mutate(another_name_ID = dplyr::case_when(
       ID!=ID2 ~ 0,
       TRUE    ~ 1

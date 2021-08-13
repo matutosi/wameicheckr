@@ -7,9 +7,9 @@
 hub2plus(Hub_name, lato_stricto)
 }
 \arguments{
-\item{lato_stricto}{lato_stricto in hub_master}
+\item{Hub_name}{hub_name in hub_master}
 
-\item{hub_name}{hub_name in hub_master}
+\item{lato_stricto}{lato_stricto in hub_master}
 }
 \value{
 string
@@ -19,6 +19,10 @@ hub_masterのhub_nameとlato_strictoから，hub_plusを生成．
 「/」での区切りがある場合は，前後両方に「lato_stricto」を追加
 }
 \examples{
-Hub_master \%>\%
- dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
+hub_master \%>\%
+  tibble::as_tibble() \%>\%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) \%>\%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) \%>\%
+  dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
+
 }

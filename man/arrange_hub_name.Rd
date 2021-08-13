@@ -19,6 +19,7 @@ string 和名の候補一覧の「，」(全角)区切り．
 wamei_check.R ではmessageだが，実質は和名の一覧．
 }
 \examples{
-hub_master \%>\%
- dplyr::mutate(hub_plus = arrange_hub_name(hub_plus))
+x <- c("繝ｯ繝｡繧､/蠎<83>鄒ｩ<ef>ｼ後Ρ繝｡繧､/迢ｭ鄒ｩ")
+arrange_hub_name(x)
+
 }

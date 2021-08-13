@@ -4,7 +4,7 @@
 \alias{wamei_check}
 \title{和名チェックリストから和名・学名の候補を出力}
 \usage{
-wamei_check(x, hub_master, jn_master, wide = TRUE, ds = c(GL, SF, WF, YL), ...)
+wamei_check(x, hub_master, jn_master, wide = TRUE, ds = c(GL, SF, WF, YL))
 }
 \arguments{
 \item{x}{検索する和名の文字列のベクトル．}
@@ -29,8 +29,8 @@ https://wetlands.info/tools/plantsdb/nameconv/
 https://www.gbif.jp/v2/activities/wamei_checklist.html
 }
 \examples{
-wamei_check(x, hub_master, jn_master, ds = c(GL, SF, WF, YL))
-wamei_check(x, hub_master, jn_master, wide = FALSE, ds = WF)
+# see vignette
+# vignette("wamei_checkr")
 
 }
 \seealso{

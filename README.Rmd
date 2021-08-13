@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- memo -->
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -57,3 +55,9 @@ https://github.com/matutosi/wameicheckr/blob/main/vignettes/wameicheckr.md
 ``` r
 vignette("wameicheckr")
 ```
+
+## Citation
+
+Toshikazu Matsumura (2021) Check Japanese name (wamei) of vascular plant species with R. https://github.com/matutosi/wameicheckr/.
+
+松村 俊和 (2021) Rを使った維管束植物和名チェックリストによる和名の確認. https://github.com/matutosi/wameicheckr/.

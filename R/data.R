@@ -20,7 +20,7 @@
 #'   \item{lato/stricto}{Hub nameに広義と狭義がある場合、その区分を記した。}
 #'   \item{Family ID}{科名のID。}
 #'   \item{Family name}{科の学名。}
-#'   \item{Family name(JP)}{科の和名。}
+#'   \item{Family name (JP)}{科の和名。}
 #'   \item{GL}{「JN_dataset」に採録されたGreen List掲載種の種ID。}
 #'   \item{SF}{「JN_dataset」に採録されたシダ標準図鑑I～II掲載種の種ID。}
 #'   \item{WF}{「JN_dataset」に採録された野生植物1～5掲載種の種ID。}
@@ -54,7 +54,7 @@
 #'   \item{ID}{各分類群に与えられた種ID。}
 #'   \item{Family ID}{科名のID。}
 #'   \item{Family name}{科の学名。}
-#'   \item{Family name(JP)}{科の和名。}
+#'   \item{Family name (JP)}{科の和名。}
 #'   \item{common name}{各データソースでの標準的な和名。}
 #'   \item{another name}{各データソースに掲載された異名を含むすべての和名。}
 #'   \item{another name ID}{各分類群内の異名に与えられたID。}
