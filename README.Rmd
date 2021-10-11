@@ -27,6 +27,7 @@ Yamanouchi, T., Shutoh, K., Osawa, T., Yonekura, K., Kato, S., Shiga, T. 2019.
 
 ## Installation
 
+
 You can install the released version of wameicheckr from [GitHub](https://github.com/) with:
 wameicheckr will not be released in cran, because the main user is only Japanese speakers. 
 
@@ -35,6 +36,10 @@ wameicheckr will not be released in cran, because the main user is only Japanese
 # devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE) # needs pandoc
 devtools::install_github("matutosi/wameicheckr")
 ```
+
+You can install the binary package by downloading zip file.
+https://github.com/matutosi/wameicheckr/tree/main/zip
+
 
 ## Example
 

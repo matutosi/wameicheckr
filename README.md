@@ -26,6 +26,9 @@ cran, because the main user is only Japanese speakers.
 devtools::install_github("matutosi/wameicheckr")
 ```
 
+You can install the binary package by downloading zip file.
+<https://github.com/matutosi/wameicheckr/tree/main/zip>
+
 ## Example
 
 You can see examples from vignette. Sorry Japanese only.

@@ -13,14 +13,20 @@ wameicheckrは，維管束植物の和名について和名チェックリスト
 
 wameicheckrは，[GitHub](https://github.com/)からインストールできます．
 
-なお，主に対象とする使用者が日本語話者のみであるため，cranでの公開は
-予定していません．
-
 ``` r
 # install.packages("devtools")
 # devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE) # pandocが必要
 devtools::install_github("matutosi/wameicheckr")
 ```
+
+zipファイルからのインストールも可能です．以下からダウンロードして下さい．  
+<https://github.com/matutosi/wameicheckr/tree/main/zip>
+
+具体的なzipファイルからのインストール方法は，「r zip パッケージ
+インストール」などで調べて下さい．
+
+なお，主に対象とする使用者が日本語話者のみであるため，cranでの公開は
+予定していません．
 
 ## Example
 
