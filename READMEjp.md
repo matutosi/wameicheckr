@@ -25,10 +25,6 @@ Windowsは，zipファイルからのインストールも可能です．以下�
 zipファイルからのインストール方法は，「r zip パッケージ
 インストール」などで調べて下さい．
 
-Linux,
-Macは，ソースファイルからのインストールも可能です．以下からダウンロードして下さい．  
-<https://github.com/matutosi/wameicheckr/tree/main/archive>
-
 なお，主に対象とする使用者が日本語話者のみであるため，cranでの公開は
 予定していません．
 

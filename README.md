@@ -29,9 +29,6 @@ devtools::install_github("matutosi/wameicheckr")
 You can install the binary package by downloading zip file (MS Windows).
 <https://github.com/matutosi/wameicheckr/tree/main/zip>
 
-You can install the binary package by downloading zip file (Linux, Mac).
-<https://github.com/matutosi/wameicheckr/tree/main/archive>
-
 ## Example
 
 You can see examples from vignette. Sorry Japanese only.
