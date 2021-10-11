@@ -22,7 +22,8 @@ cran, because the main user is only Japanese speakers.
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
+# devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE) # needs pandoc
+devtools::install_github("matutosi/wameicheckr")
 ```
 
 ## Example
@@ -30,7 +31,7 @@ devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
 You can see examples from vignette. Sorry Japanese only.
 
 ``` r
-vignette("wameicheckr")
+# vignette("wameicheckr") # please build vignettes in the installation
 ```
 
 The page below is the same to vignette.

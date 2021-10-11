@@ -32,7 +32,8 @@ wameicheckr will not be released in cran, because the main user is only Japanese
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
+# devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE) # needs pandoc
+devtools::install_github("matutosi/wameicheckr")
 ```
 
 ## Example
@@ -41,7 +42,7 @@ You can see examples from vignette.
 Sorry Japanese only. 
 
 ``` r
-vignette("wameicheckr")
+# vignette("wameicheckr") # please build vignettes in the installation
 ```
 
 The page below is the same to vignette. 
