@@ -19,10 +19,10 @@ wameicheckrは，[GitHub](https://github.com/)からインストールできま�
 devtools::install_github("matutosi/wameicheckr")
 ```
 
-zipファイルからのインストールも可能です．以下からダウンロードして下さい．  
+Windows版は，zipファイルからのインストールも可能です．以下からダウンロードして下さい．  
 <https://github.com/matutosi/wameicheckr/tree/main/zip>
 
-具体的なzipファイルからのインストール方法は，「r zip パッケージ
+zipファイルからのインストール方法は，「r zip パッケージ
 インストール」などで調べて下さい．
 
 なお，主に対象とする使用者が日本語話者のみであるため，cranでの公開は
