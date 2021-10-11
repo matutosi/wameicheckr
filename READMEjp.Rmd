@@ -30,15 +30,17 @@ wameicheckrは，[GitHub](https://github.com/)からインストールできま�
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
+# devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE) # pandocが必要
+devtools::install_github("matutosi/wameicheckr")
+
 ```
 
 ## Example
 
-使用方法は，vignetteをご覧ください．
+使用方法は，vignetteか以下のULRをご覧ください．
 
 ``` r
-vignette("wameicheckr")
+# vignette("wameicheckr") # インストール時に build_vignettes = TRUE としたとき
 ```
 
 以下のページは，vignetteと同じです．
