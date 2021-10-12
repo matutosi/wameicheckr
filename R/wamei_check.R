@@ -157,5 +157,6 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     dplyr::mutate(hub_plus = stringr::str_replace_all(hub_plus, "-", "")) %>%
     dplyr::mutate_all(tidyr::replace_na, "") %>%
     dplyr::mutate_all(stringr::str_replace_all, "^$", "-")
+    dplyr::select(!any_of(c("source", "ID", "common_name", "scientific_name_with_author", "scientific_name_without_author")))
   res
 }
