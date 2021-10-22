@@ -28,7 +28,7 @@ Yamanouchi, T., Shutoh, K., Osawa, T., Yonekura, K., Kato, S., Shiga, T. 2019.
 ## Installation
 
 
-You can install the released version of wameicheckr from [GitHub](https://github.com/) with:
+You can install the released version of wameicheckr from [GitHub] (https://github.com/). 
 wameicheckr will not be released in cran, because the main user is only Japanese speakers. 
 
 ``` r
@@ -56,4 +56,4 @@ https://github.com/matutosi/wameicheckr/blob/main/howtouse.md
 
 ## Citation
 
-Toshikazu Matsumura (2021) Check Japanese name (wamei) of vascular plant species with R. https://github.com/matutosi/wameicheckr/.
+Toshikazu Matsumura (2021) wameicheckr: Checker for Japanese name (wamei) of vascular plant species with R. https://github.com/matutosi/wameicheckr/.
