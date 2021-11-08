@@ -15,10 +15,14 @@ Imports:
     knitr,
     dplyr,
     purrr,
+    readxl,
     rmarkdown,
+    stringi, 
     stringr,
     tibble,
     tidyr,
+    usethis,
+    tidyselect,
     magrittr,
     Rcpp
 VignetteBuilder: knitr

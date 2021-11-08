@@ -19,7 +19,8 @@ string 和名の候補一覧の「，」(全角)区切り．
 wamei_check.R ではmessageだが，実質は和名の一覧．
 }
 \examples{
-x <- c("繝ｯ繝｡繧､/蠎<83>鄒ｩ<ef>ｼ後Ρ繝｡繧､/迢ｭ鄒ｩ")
+library(stringi)
+x <- stringi::stri_unescape_unicode("\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u5e83\\\\u7fa9\\\\uff0c\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u72ed\\\\u7fa9")
 arrange_hub_name(x)
 
 }

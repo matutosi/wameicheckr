@@ -23,65 +23,65 @@
   #' 
   #' @export
 wamei_check_ex <- function(
-    x,              # チェックする和名(string or vector)
-    hub_master,     # hubシート
-    jn_master,      # jnシート
-    wide = TRUE     # 出力形式
+    x,              # String or Vector to be checked
+    hub_master,     # hub data
+    jn_master,      # jn data
+    wide = TRUE     # output style
   ){
-  # # # # # # # # # # # 準備 # # # # # # # # # # # 
-  hub_master <-          # 列名の修正
+  # # # # # # # # # # # preparations # # # # # # # # # # # 
+  hub_master <-          # modify column names
     hub_master %>% 
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
-  jn_master <-           # 列名の修正
+  jn_master <-           # modify column names
     jn_master %>% 
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
-  msg <-          # messageを分離
+  msg <-          # divide message alone
     hub_master %>%
     dplyr::select(all_name, message) %>%
     dplyr::distinct(all_name, .keep_all = TRUE)
-  hub_name <-     # hubを分離
+  hub_name <-     # divide hub
     hub_master %>%
     dplyr::select(all_name, Hub_name) %>%
     dplyr::distinct(all_name, .keep_all = TRUE)
-  id <-            # idの分離・縦長に
+  id <-            # divide id, longer style
     hub_master %>%
     dplyr::select(all_name, GL:YL) %>%
     dplyr::distinct(all_name, .keep_all = TRUE) %>%
     tidyr::pivot_longer(cols = GL:YL, names_to = "source", values_to = "ID", values_drop_na = TRUE)
-  stts <-           # statusを分離・縦長に
+  stts <-           # divide status
     hub_master %>%
     dplyr::select(all_name, status) %>%
     dplyr::distinct(all_name, .keep_all = TRUE)
-  jn_master <-             # another_name_IDが0とか一番上のものだけ残す
+  jn_master <-             # keep only upper one row & another_name_ID==0
     jn_master %>%
     dplyr::distinct(ID, .keep_all = TRUE) %>%
     dplyr::select(! dplyr::starts_with(c("another", "note")))
-  # # # # # # # # # # # メイン # # # # # # # # # # # 
-  len <-            # 合致した数
+  # # # # # # # # # # # main part # # # # # # # # # # # 
+  len <-            # number of matches
     tibble::tibble(input = x) %>%
     dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
     dplyr::group_by(input) %>%
     dplyr::mutate(n_match = dplyr::n()) %>%
     dplyr::select(input, n_match, Hub_name) %>%
     dplyr::distinct()
-  no_match <-        # 該当なし：messageを表示
+  no_match <-        # show message
     len %>%
     dplyr::filter(is.na(Hub_name)) %>%
     dplyr::transmute(input, n_match = 0, Hub_name = "！候補なし", status = "！個別に検討")
-  len <-             # 該当なしを除去
+  len <-             # remove no match
     len %>%
     dplyr::filter(!is.na(Hub_name) ) %>%
     dplyr::distinct(input, n_match)
-  multi_match <-     # 2つ以上が合致
+  multi_match <-     # match > 1
     len %>%
     dplyr::filter(n_match>1)  %>%
     dplyr::transmute(input, n_match, status = "！個別に検討") %>%
     dplyr::distinct() %>%
     dplyr::left_join(msg, by = c("input" = "all_name")) %>%
     dplyr::rename(Hub_name = message)
-  single_match <-    # 1つだけ合致
+  single_match <-    # match == 1
     len %>%
     dplyr::filter(n_match == 1) %>%
     dplyr::transmute(input, n_match) %>%
@@ -89,7 +89,7 @@ wamei_check_ex <- function(
     dplyr::left_join(stts,      by = c("input" = "all_name")) %>%
     dplyr::left_join(id,        by = c("input" = "all_name")) %>%
     dplyr::left_join(jn_master, by = "ID")
-  # 横長に
+  # longer style
   if(wide & nrow(single_match)>0){
     single_match <-   
       single_match %>%
@@ -100,7 +100,7 @@ wamei_check_ex <- function(
         names_glue = "{source}_{.value}"
       )
   }
-  # # # # # # # # # # # 結果の統合・並べ替え・出力 # # # # # # # # # # # 
+  # # # # # # # # # # # output # # # # # # # # # # # 
   res <- 
     tibble::tibble(input = x) %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input")

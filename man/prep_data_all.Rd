@@ -10,9 +10,9 @@ prep_data_all(path)
 dowonload excel sheet from https://www.gbif.jp/v2/activities/wamei_checklist.html
 }
 \examples{
-path <- "d:/wamei_checklist_ver.1.10.xlsx"
-prep_data_all(path)
-prep_hub_data(path)
-prep_jn_data(path)
-prep_ref_data()
+# path <- "d:/wamei_checklist_ver.1.10.xlsx"
+# prep_data_all(path)
+# prep_hub_data(path)
+# prep_jn_data(path)
+# prep_ref_data()
 }

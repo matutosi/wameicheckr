@@ -64,3 +64,21 @@
 #'   \item{scientific name without author}{author nameを除く学名。}
 #' }
 "jn_master"
+
+#' Reference data of wamei (Japanese name) to search similar name
+#'
+#' @format A data frame with 51,809 rows and 2 variables: 
+#' \describe{
+#'   \item{source}{data souce}
+#'   \item{name_jp}{wamei (Japanese name) escaped by stringi::stri_escape_unicode()}
+#' }
+"ref_jp"
+
+#' Reference data of scientific name to search similar name
+#'
+#' @format A data frame with 76,739 rows and 2 variables: 
+#' \describe{
+#'   \item{source}{data souce}
+#'   \item{name_jp}{scientific name}
+#' }
+'ref_sc'

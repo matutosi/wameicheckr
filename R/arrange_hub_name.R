@@ -10,7 +10,8 @@
   #' カタカナ部分が共通で広義と狭義ともある場合は「ワメイ広義/狭義」．
   #' 
   #' @examples
-  #' x <- c("ワメイ/広義，ワメイ/狭義")
+  #' library(stringi)
+  #' x <- stringi::stri_unescape_unicode("\\u30ef\\u30e1\\u30a4/\\u5e83\\u7fa9\\uff0c\\u30ef\\u30e1\\u30a4/\\u72ed\\u7fa9")
   #' arrange_hub_name(x)
   #' 
   #' @export

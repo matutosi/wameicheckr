@@ -2,11 +2,11 @@
   #' 
   #' dowonload excel sheet from https://www.gbif.jp/v2/activities/wamei_checklist.html
   #' @examples
-  #' path <- "d:/wamei_checklist_ver.1.10.xlsx"
-  #' prep_data_all(path)
-  #' prep_hub_data(path)
-  #' prep_jn_data(path)
-  #' prep_ref_data()
+  #' # path <- "d:/wamei_checklist_ver.1.10.xlsx"
+  #' # prep_data_all(path)
+  #' # prep_hub_data(path)
+  #' # prep_jn_data(path)
+  #' # prep_ref_data()
 
 prep_data_all <- function(path){
   prep_hub_data(path)
@@ -45,17 +45,16 @@ read_hub_jn <- function(){
   jn_master$another_name_ID[jn_master$ID %in% no_id_0 & jn_master$another_name_ID != 0] <- 0
 
   hub_master$Hub_name[
-    hub_master$Hub_name=="シベリアカラマツ" &
-    hub_master$Family_name_JP=="マツ"] <- 
-    "シベリアカラマツ(マツ科)"
+    hub_master$Hub_name==stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4") &
+    hub_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30de\\u30c4")] <- 
+    stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4(\\u30de\\u30c4\\u79d1)")
   hub_master$Hub_name[
-    hub_master$Hub_name=="シベリアカラマツ" &
-    hub_master$Family_name_JP=="キンポウゲ"] <- 
-    "シベリアカラマツ(キンポウゲ科)"
+    hub_master$Hub_name=="\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4" &
+    hub_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30ad\\u30f3\\u30dd\\u30a6\\u30b2")] <- 
+    stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4(\\u30ad\\u30f3\\u30dd\\u30a6\\u30b2\\u79d1)")
   jn_master$Family_name_JP[
-    jn_master$Family_name_JP=="ツルボラン"] <- 
-    "ワスレグサ"
-  
+    jn_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30c4\\u30eb\\u30dc\\u30e9\\u30f3")] <- 
+    stringi::stri_unescape_unicode("ワスレグサ") %>%
   list(hub_master=hub_master, jn_master=jn_master)
 }
 
@@ -81,14 +80,12 @@ prep_ref_data <- function(){
     dplyr::mutate(name_jp = stringi::stri_escape_unicode(name_jp))
 
   usethis::use_data(ref_jp, overwrite=TRUE)
-
   # tibble::tibble(ref_jp)
   # stringi::stri_unescape_unicode(ref_jp) %>% tibble::tibble()
   # setdiff(c(hub_master$all_name, hub_master$Hub_name), c(jn_master$common_name, jn_master$another_name))
   # setdiff(c(jn_master$common_name, jn_master$another_name), c(hub_master$all_name, hub_master$Hub_name))
 
   # # # # # ref_sc # # # # # 
-
   ref_sc <- 
     jn_master %>%
     dplyr::select(ID, scientific_name_with_author, scientific_name_without_author) %>%
