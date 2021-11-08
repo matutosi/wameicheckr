@@ -31,7 +31,7 @@ int editdist(std::string s1, std::string s2, int len=1){
   int m = str1.size();
   int n = str2.size();
 // // for debug
-Rcout << "m, n: " << m << ", " << n << "\n";
+// Rcout << "m, n: " << m << ", " << n << "\n";
   int d[m+1][n+1];
   d[0][0] = 0;
   for(int i=0; i < m+1; i++) d[i][0] = i;
@@ -44,12 +44,12 @@ Rcout << "m, n: " << m << ", " << n << "\n";
     }
   }
 //  // for debug
-Rcout << "d\n";
-for(int i=0; i<m+1; i++){
-  for(int j=0; j<n+1; j++){
-    Rcout << d[i][j] << " ";
-  }
-  Rcout << "\n";
-}
+// Rcout << "d\n";
+// for(int i=0; i<m+1; i++){
+//   for(int j=0; j<n+1; j++){
+//     Rcout << d[i][j] << " ";
+//   }
+//   Rcout << "\n";
+// }
   return d[m][n];
 }

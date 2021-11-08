@@ -166,45 +166,45 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>hub_master <span class="ot">&lt;-</span> </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  hub_master <span class="sc">%&gt;%</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 30,430 x 12</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    all_name   Hub_name   lato_stricto Family_ID Family_name Family_name_JP GL   </span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 アスヒカ~  アスヒカ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 イヌヤチ~  イヌヤチ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 イワヒモ   ヒモラン   &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ウチワマ~  マンネン~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 エゾコス~  エゾコス~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 エゾノコ~  コスギラン 広義         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 エゾヒカ~  ヒカゲノ~  広義         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 エゾヒカ~  エゾヒカ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 オオスギ~  オオスギ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 オニトウ~  オニトウ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    all_name    Hub_name   lato_stricto Family_ID Family_name Family_name_JP GL   </span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 アスヒカズ~ アスヒカ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 イヌヤチス~ イヌヤチ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 イワヒモ    ヒモラン   &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ウチワマン~ マンネン~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 エゾコスギ~ エゾコス~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 エゾノコス~ コスギラン 広義         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 エゾヒカゲ~ ヒカゲノ~  広義         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 エゾヒカゲ~ エゾヒカ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ GL_0~</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 オオスギカ~ オオスギ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 オニトウゲ~ オニトウ~  &lt;NA&gt;         1         Lycopodiac~ ヒカゲノカズラ &lt;NA&gt; </span></span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 30,420 more rows, and 5 more variables: SF &lt;chr&gt;, WF &lt;chr&gt;,</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   YL &lt;chr&gt;, status &lt;chr&gt;, message &lt;chr&gt;</span></span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>jn_master <span class="ot">&lt;-</span> </span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  jn_master <span class="sc">%&gt;%</span></span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fill_another_name_id</span>() <span class="sc">%&gt;%</span> <span class="co"># another_name_id の空欄を埋める</span></span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 53,222 x 11</span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    ID       Family_ID Family_name   Family_name_JP common_name    another_name  </span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;          &lt;chr&gt;         </span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 GL_00001 1         Lycopodiaceae ヒカゲノカズラ ヒメスギラン   ヒメスギラン  </span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     コスギラン    </span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     エゾノコスギ~ </span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     チシマスギラン</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     トウゲシバ    </span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     ホソバトウゲ~ </span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     ヒロハトウゲ~ </span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     オニトウゲシバ</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 GL_00004 1         Lycopodiaceae ヒカゲノカズラ コスギトウゲ~  コスギトウゲ~ </span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 GL_00005 1         Lycopodiaceae ヒカゲノカズラ イヌヤチスギ~  イヌヤチスギ~ </span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    ID       Family_ID Family_name   Family_name_JP common_name      another_name</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;            &lt;chr&gt;       </span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 GL_00001 1         Lycopodiaceae ヒカゲノカズラ ヒメスギラン     ヒメスギラン</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       コスギラン  </span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       エゾノコス~ </span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       チシマスギ~ </span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       トウゲシバ  </span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       ホソバトウ~ </span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       ヒロハトウ~ </span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       オニトウゲ~ </span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 GL_00004 1         Lycopodiaceae ヒカゲノカズラ コスギトウゲシバ コスギトウ~ </span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 GL_00005 1         Lycopodiaceae ヒカゲノカズラ イヌヤチスギラン イヌヤチス~ </span></span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 53,212 more rows, and 5 more variables: another_name_ID &lt;dbl&gt;,</span></span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   note_1 &lt;chr&gt;, note_2 &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span></code></pre></div>
@@ -218,13 +218,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>hub_master <span class="ot">&lt;-</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(path, <span class="at">sheet=</span><span class="st">&quot;Hub_data&quot;</span>,   <span class="at">col_types=</span><span class="st">&quot;text&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>))</span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>jn_master <span class="ot">&lt;-</span> </span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(path, <span class="at">sheet=</span><span class="st">&quot;JN_dataset&quot;</span>, <span class="at">col_types=</span><span class="st">&quot;text&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[ /]&quot;</span>, <span class="st">&quot;_&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">rename_with</span>(<span class="sc">~</span>stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(., <span class="st">&quot;[()]&quot;</span>, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fill_another_name_id</span>()  <span class="co"># another_name_id の空欄を埋める</span></span></code></pre></div>
 <p>和名チェックリスト ver.1.10のエラーの修正． バージョンアップで，修正される予定．</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># (和名チェックリスト ver.1.10への対応) another_name_IDに0がないもの</span></span>
@@ -259,107 +259,103 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;オオフジシダ&quot;</span>, <span class="st">&quot;コマツナギ&quot;</span>, <span class="st">&quot;アイヌタチツボスミレ&quot;</span>, <span class="st">&quot;シベリアカラマツ&quot;</span>, <span class="st">&quot;アオイモドキ&quot;</span>)</span></code></pre></div>
 <p>入力和名に対する和名・学名の候補を出力する． なお，x1は多いので，最初の50だけを使用．</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x1[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], hub_master, jn_master)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 50 x 28</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input    n_match hub_plus         status  source ID    Family_ID Family_name </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー~  0       該当なし         該当な~ -      -     -         -           </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulberry 1       マグワ           確定    -      -     213       Moraceae    </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 no named 0       該当なし         該当な~ -      -     -         -           </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no_name~ 1       no_named_GL01    確定    -      -     101       Potamogeton~</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_name~ 1       ムカゴサイシン~  確定    -      -     124       Orchidaceae </span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_name~ 1       ミチノクサナギ~  確定    -      -     206       Rosaceae    </span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_name~ 1       ヤエガワカンバ~  確定    -      -     221       Betulaceae  </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_name~ 1       no_named_GL05    確定    -      -     221       Betulaceae  </span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_name~ 1       no_named_GL06    確定    -      -     416       Gentianaceae</span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_name~ 1       no_named_GL07    確定    -      -     466       Asteraceae  </span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 40 more rows, and 20 more variables: Family_name_JP &lt;chr&gt;,</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;, WF_ID &lt;chr&gt;, YL_ID &lt;chr&gt;,</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_ID &lt;chr&gt;, SF_ID &lt;chr&gt;, WF_common_name &lt;chr&gt;, YL_common_name &lt;chr&gt;,</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_common_name &lt;chr&gt;, SF_common_name &lt;chr&gt;,</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_with_author &lt;chr&gt;, YL_scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_with_author &lt;chr&gt;, SF_scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   YL_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_without_author &lt;chr&gt;</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x1[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], hub_master, jn_master, <span class="at">wide=</span><span class="cn">FALSE</span>)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 109 x 12</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input    n_match hub_plus        status  source ID     Family_ID Family_name </span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;           &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;       </span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー~  0       該当なし        該当な~ -      -      -         -           </span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulberry 1       マグワ          確定    WF     WF_03~ 213       Moraceae    </span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 mulberry 1       マグワ          確定    YL     YL_09~ 213       Moraceae    </span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no named 0       該当なし        該当な~ -      -      -         -           </span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_name~ 1       no_named_GL01   確定    GL     GL_01~ 101       Potamogeton~</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_name~ 1       ムカゴサイシン~ 確定    GL     GL_02~ 124       Orchidaceae </span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_name~ 1       ムカゴサイシン~ 確定    WF     WF_00~ 124       Orchidaceae </span></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_name~ 1       ムカゴサイシン~ 確定    YL     YL_03~ 124       Orchidaceae </span></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_name~ 1       ミチノクサナギ~ 確定    GL     GL_04~ 206       Rosaceae    </span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_name~ 1       ミチノクサナギ~ 確定    WF     WF_03~ 206       Rosaceae    </span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 99 more rows, and 4 more variables: Family_name_JP &lt;chr&gt;,</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x2,       hub_master, jn_master,             <span class="at">ds=</span><span class="fu">c</span>(GL, SF, WF))</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 19</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input   n_match hub_plus    status Family_ID Family_name Family_name_JP WF_ID</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー  0       該当なし    該当~  -         -           -              -    </span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ  1       ススキ      確定   166       Poaceae     イネ           WF_0~</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ハリガ~ 1       ハリガネワ~ 確定   42        Thelypteri~ ヒメシダ       -    </span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 オミナ~ 1       オミナエシ  確定   472       Caprifolia~ スイカズラ     WF_0~</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 コナス~ 1       コナスビ狭~ 確定   398       Primulaceae サクラソウ     WF_0~</span></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 カナビ~ 1       カナビキソ~ 確定   339       Santalaceae ビャクダン     WF_0~</span></span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ヤイト~ 1       ヘクソカズ~ 確定   415       Rubiaceae   アカネ         WF_0~</span></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 チガヤ  1       チガヤ狭義  確定   166       Poaceae     イネ           WF_0~</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 キジム~ 2       キジムシロ~ 確定   206       Rosaceae    バラ           WF_0~</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ハエド~ 2       ハエドクソ~ ！未~  448       Phrymaceae  ハエドクソウ   WF_0~</span></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 キツネ~ 1       キツネノマ~ ！未~  440       Acanthaceae キツネノマゴ   WF_0~</span></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 シロヨ~ 2       シロヨメナ~ ！未~  466       Asteraceae  キク           WF_0~</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 オオフ~ 2       オオフジシ~ ！未~  31        Dennstaedt~ コバノイシカ~  -    </span></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 コマツ~ 2       コマツナギ~ ！未~  203       Fabaceae    マメ           WF_0~</span></span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 アイヌ~ 2       アイヌタチ~ 確定   263       Violaceae   スミレ         WF_0~</span></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 シベリ~ 1       シベリアカ~ 確定   174       Ranunculac~ キンポウゲ     WF_0~</span></span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 アオイ~ 1       エノキアオ~ 確定   310       Malvaceae   アオイ         WF_0~</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 11 more variables: GL_ID &lt;chr&gt;, SF_ID &lt;chr&gt;, WF_common_name &lt;chr&gt;,</span></span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_common_name &lt;chr&gt;, SF_common_name &lt;chr&gt;,</span></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_with_author &lt;chr&gt;, GL_scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_without_author &lt;chr&gt;</span></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x2,       hub_master, jn_master, <span class="at">wide=</span><span class="cn">FALSE</span>, <span class="at">ds=</span><span class="fu">c</span>(GL, SF, WF))</span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 32 x 12</span></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input      n_match hub_plus     status  source ID     Family_ID Family_name  </span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;        </span></span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー     0       該当なし     該当な~ -      -      -         -            </span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ     1       ススキ       確定    GL     GL_03~ 166       Poaceae      </span></span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ススキ     1       ススキ       確定    WF     WF_02~ 166       Poaceae      </span></span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ハリガネ~  1       ハリガネワ~  確定    GL     GL_00~ 42        Thelypterida~</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ハリガネ~  1       ハリガネワ~  確定    SF     SF_00~ 42        Thelypterida~</span></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 オミナエシ 1       オミナエシ   確定    GL     GL_09~ 472       Caprifoliace~</span></span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 オミナエシ 1       オミナエシ   確定    WF     WF_08~ 472       Caprifoliace~</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 コナスビ   1       コナスビ狭義 確定    GL     GL_06~ 398       Primulaceae  </span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 コナスビ   1       コナスビ狭義 確定    WF     WF_05~ 398       Primulaceae  </span></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 カナビキ~  1       カナビキソウ 確定    GL     GL_06~ 339       Santalaceae  </span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 22 more rows, and 4 more variables: Family_name_JP &lt;chr&gt;,</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 50 x 23</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input  n_match hub_plus    status  Family_ID Family_name Family_name_JP WF_ID</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみ~  0       該当なし    該当な~ -         -           -              -    </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulbe~ 1       マグワ      確定    213       Moraceae    クワ           WF_0~</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 no na~ 0       該当なし    該当な~ -         -           -              -    </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no_na~ 1       no_named_G~ 確定    101       Potamogeto~ ヒルムシロ     -    </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_na~ 1       ムカゴサイ~ 確定    124       Orchidaceae ラン           WF_0~</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_na~ 1       ミチノクサ~ 確定    206       Rosaceae    バラ           WF_0~</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_na~ 1       ヤエガワカ~ 確定    221       Betulaceae  カバノキ       -    </span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_na~ 1       no_named_G~ 確定    221       Betulaceae  カバノキ       -    </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_na~ 1       no_named_G~ 確定    416       Gentianace~ リンドウ       -    </span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_na~ 1       no_named_G~ 確定    466       Asteraceae  キク           -    </span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 40 more rows, and 15 more variables: YL_ID &lt;chr&gt;, GL_ID &lt;chr&gt;,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_ID &lt;chr&gt;, WF_common_name &lt;chr&gt;, YL_common_name &lt;chr&gt;,</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_common_name &lt;chr&gt;, SF_common_name &lt;chr&gt;,</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_with_author &lt;chr&gt;, YL_scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_with_author &lt;chr&gt;, SF_scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;,</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   YL_scientific_name_without_author &lt;chr&gt;, ...</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x1[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], hub_master, jn_master, <span class="at">wide=</span><span class="cn">FALSE</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 109 x 12</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input         n_match hub_plus     status  source ID    Family_ID Family_name</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;      </span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみーの和名  0       該当なし     該当な~ -      -     -         -          </span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulberry      1       マグワ       確定    WF     WF_0~ 213       Moraceae   </span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 mulberry      1       マグワ       確定    YL     YL_0~ 213       Moraceae   </span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no named      0       該当なし     該当な~ -      -     -         -          </span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_named_GL01 1       no_named_GL~ 確定    GL     GL_0~ 101       Potamogeto~</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_named_GL02 1       ムカゴサイ~  確定    GL     GL_0~ 124       Orchidaceae</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_named_GL02 1       ムカゴサイ~  確定    WF     WF_0~ 124       Orchidaceae</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_named_GL02 1       ムカゴサイ~  確定    YL     YL_0~ 124       Orchidaceae</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_named_GL03 1       ミチノクサ~  確定    GL     GL_0~ 206       Rosaceae   </span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_named_GL03 1       ミチノクサ~  確定    WF     WF_0~ 206       Rosaceae   </span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 99 more rows, and 4 more variables: Family_name_JP &lt;chr&gt;,</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x2,       hub_master, jn_master,             <span class="at">ds=</span><span class="fu">c</span>(GL, SF, WF))</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 17 x 19</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input   n_match hub_plus    status Family_ID Family_name Family_name_JP WF_ID</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;          &lt;chr&gt;</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー  0       該当なし    該当~  -         -           -              -    </span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ  1       ススキ      確定   166       Poaceae     イネ           WF_0~</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ハリガ~ 1       ハリガネワ~ 確定   42        Thelypteri~ ヒメシダ       -    </span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 オミナ~ 1       オミナエシ  確定   472       Caprifolia~ スイカズラ     WF_0~</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 コナス~ 1       コナスビ狭~ 確定   398       Primulaceae サクラソウ     WF_0~</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 カナビ~ 1       カナビキソ~ 確定   339       Santalaceae ビャクダン     WF_0~</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ヤイト~ 1       ヘクソカズ~ 確定   415       Rubiaceae   アカネ         WF_0~</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 チガヤ  1       チガヤ狭義  確定   166       Poaceae     イネ           WF_0~</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 キジム~ 2       キジムシロ~ 確定   206       Rosaceae    バラ           WF_0~</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 ハエド~ 2       ハエドクソ~ ！未~  448       Phrymaceae  ハエドクソウ   WF_0~</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11 キツネ~ 1       キツネノマ~ ！未~  440       Acanthaceae キツネノマゴ   WF_0~</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12 シロヨ~ 2       シロヨメナ~ ！未~  466       Asteraceae  キク           WF_0~</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13 オオフ~ 2       オオフジシ~ ！未~  31        Dennstaedt~ コバノイシカ~  -    </span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14 コマツ~ 2       コマツナギ~ ！未~  203       Fabaceae    マメ           WF_0~</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 15 アイヌ~ 2       アイヌタチ~ 確定   263       Violaceae   スミレ         WF_0~</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 16 シベリ~ 1       シベリアカ~ 確定   174       Ranunculac~ キンポウゲ     WF_0~</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 17 アオイ~ 1       エノキアオ~ 確定   310       Malvaceae   アオイ         WF_0~</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 11 more variables: GL_ID &lt;chr&gt;, SF_ID &lt;chr&gt;, WF_common_name &lt;chr&gt;,</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_common_name &lt;chr&gt;, SF_common_name &lt;chr&gt;,</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_with_author &lt;chr&gt;, GL_scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;,</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_without_author &lt;chr&gt;,</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_without_author &lt;chr&gt;</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check</span>(x2,       hub_master, jn_master, <span class="at">wide=</span><span class="cn">FALSE</span>, <span class="at">ds=</span><span class="fu">c</span>(GL, SF, WF))</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 32 x 12</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input          n_match hub_plus       status   source ID    Family_ID Family_name</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;   &lt;chr&gt;          &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;      </span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー         0       該当なし       該当なし -      -     -         -          </span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ         1       ススキ         確定     GL     GL_0~ 166       Poaceae    </span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ススキ         1       ススキ         確定     WF     WF_0~ 166       Poaceae    </span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ハリガネワラビ 1       ハリガネワラビ 確定     GL     GL_0~ 42        Thelypteri~</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ハリガネワラビ 1       ハリガネワラビ 確定     SF     SF_0~ 42        Thelypteri~</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 オミナエシ     1       オミナエシ     確定     GL     GL_0~ 472       Caprifolia~</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 オミナエシ     1       オミナエシ     確定     WF     WF_0~ 472       Caprifolia~</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 コナスビ       1       コナスビ狭義   確定     GL     GL_0~ 398       Primulaceae</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 コナスビ       1       コナスビ狭義   確定     WF     WF_0~ 398       Primulaceae</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 カナビキソウ   1       カナビキソウ   確定     GL     GL_0~ 339       Santalaceae</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 22 more rows, and 4 more variables: Family_name_JP &lt;chr&gt;,</span></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span></code></pre></div>
 <p>エクセルと同等の出力の場合．</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wamei_check_ex</span>(x1[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>], hub_master, jn_master, <span class="at">wide=</span><span class="cn">FALSE</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 109 x 12</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input    n_match Hub_name        status   source ID    Family_ID Family_name </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;           &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー~        0 ！候補なし      ！個別~  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;        </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulberry       1 マグワ          確定     WF     WF_0~ 213       Moraceae    </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 mulberry       1 マグワ          確定     YL     YL_0~ 213       Moraceae    </span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no named       0 ！候補なし      ！個別~  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;      &lt;NA&gt;        </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_name~       1 no_named_GL01   確定     GL     GL_0~ 101       Potamogeton~</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_name~       1 ムカゴサイシン~ 確定     GL     GL_0~ 124       Orchidaceae </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_name~       1 ムカゴサイシン~ 確定     WF     WF_0~ 124       Orchidaceae </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_name~       1 ムカゴサイシン~ 確定     YL     YL_0~ 124       Orchidaceae </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_name~       1 ミチノクサナギ~ 確定     GL     GL_0~ 206       Rosaceae    </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_name~       1 ミチノクサナギ~ 確定     WF     WF_0~ 206       Rosaceae    </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input         n_match Hub_name    status  source ID     Family_ID Family_name</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;      </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみーの和名        0 ！候補なし  ！個別~ &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;      &lt;NA&gt;       </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 mulberry            1 マグワ      確定    WF     WF_03~ 213       Moraceae   </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 mulberry            1 マグワ      確定    YL     YL_09~ 213       Moraceae   </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 no named            0 ！候補なし  ！個別~ &lt;NA&gt;   &lt;NA&gt;   &lt;NA&gt;      &lt;NA&gt;       </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 no_named_GL01       1 no_named_G~ 確定    GL     GL_01~ 101       Potamogeto~</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 no_named_GL02       1 ムカゴサイ~ 確定    GL     GL_02~ 124       Orchidaceae</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 no_named_GL02       1 ムカゴサイ~ 確定    WF     WF_00~ 124       Orchidaceae</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 no_named_GL02       1 ムカゴサイ~ 確定    YL     YL_03~ 124       Orchidaceae</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 no_named_GL03       1 ミチノクサ~ 確定    GL     GL_04~ 206       Rosaceae   </span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 no_named_GL03       1 ミチノクサ~ 確定    WF     WF_03~ 206       Rosaceae   </span></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 99 more rows, and 4 more variables: Family_name_JP &lt;chr&gt;,</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   common_name &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   scientific_name_without_author &lt;chr&gt;</span></span>
@@ -390,9 +386,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_with_author &lt;chr&gt;, YL_scientific_name_with_author &lt;chr&gt;,</span></span>
 <span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_with_author &lt;chr&gt;,</span></span>
 <span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   GL_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   YL_scientific_name_without_author &lt;chr&gt;,</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   SF_scientific_name_without_author &lt;chr&gt;</span></span></code></pre></div>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   WF_scientific_name_without_author &lt;chr&gt;, ...</span></span></code></pre></div>
 <p>合致する全ての和名・学名等を出力する場合は，wameicheckrの関数を使わなくても可能．</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>hub_long <span class="ot">&lt;-</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  hub_master <span class="sc">%&gt;%</span></span>
@@ -402,18 +396,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(jn_master)</span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Joining, by = c(&quot;Family_ID&quot;, &quot;Family_name&quot;, &quot;Family_name_JP&quot;, &quot;ID&quot;)</span></span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 98 x 17</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input    Hub_name   lato_stricto Family_ID Family_name  Family_name_JP status</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt; </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー   &lt;NA&gt;       &lt;NA&gt;         &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;  </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ   ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ススキ   ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ススキ   ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ハリガ~  ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ハリガ~  ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ハリガ~  ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 オミナ~  オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 オミナ~  オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 オミナ~  オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    input     Hub_name   lato_stricto Family_ID Family_name  Family_name_JP status</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;chr&gt;     &lt;chr&gt;        &lt;chr&gt;          &lt;chr&gt; </span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 だみー    &lt;NA&gt;       &lt;NA&gt;         &lt;NA&gt;      &lt;NA&gt;         &lt;NA&gt;           &lt;NA&gt;  </span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 ススキ    ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 ススキ    ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 ススキ    ススキ     &lt;NA&gt;         166       Poaceae      イネ           確定  </span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 ハリガネ~ ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 ハリガネ~ ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 ハリガネ~ ハリガネ~  &lt;NA&gt;         42        Thelypterid~ ヒメシダ       確定  </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 オミナエ~ オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 オミナエ~ オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 オミナエ~ オミナエシ &lt;NA&gt;         472       Caprifoliac~ スイカズラ     確定  </span></span>
 <span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 88 more rows, and 10 more variables: message &lt;chr&gt;, source &lt;chr&gt;,</span></span>
 <span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ID &lt;chr&gt;, common_name &lt;chr&gt;, another_name &lt;chr&gt;, another_name_ID &lt;dbl&gt;,</span></span>
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   note_1 &lt;chr&gt;, note_2 &lt;chr&gt;, scientific_name_with_author &lt;chr&gt;,</span></span>

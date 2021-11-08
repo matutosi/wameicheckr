@@ -44,45 +44,45 @@ data(jn_master)
 hub_master <- 
   hub_master %>%
   tibble::as_tibble() %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   print()
 #> # A tibble: 30,430 x 12
-#>    all_name   Hub_name   lato_stricto Family_ID Family_name Family_name_JP GL   
-#>    <chr>      <chr>      <chr>        <chr>     <chr>       <chr>          <chr>
-#>  1 アスヒカ~  アスヒカ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  2 イヌヤチ~  イヌヤチ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  3 イワヒモ   ヒモラン   <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  4 ウチワマ~  マンネン~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  5 エゾコス~  エゾコス~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
-#>  6 エゾノコ~  コスギラン 広義         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  7 エゾヒカ~  ヒカゲノ~  広義         1         Lycopodiac~ ヒカゲノカズラ <NA> 
-#>  8 エゾヒカ~  エゾヒカ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
-#>  9 オオスギ~  オオスギ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
-#> 10 オニトウ~  オニトウ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
+#>    all_name    Hub_name   lato_stricto Family_ID Family_name Family_name_JP GL   
+#>    <chr>       <chr>      <chr>        <chr>     <chr>       <chr>          <chr>
+#>  1 アスヒカズ~ アスヒカ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  2 イヌヤチス~ イヌヤチ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  3 イワヒモ    ヒモラン   <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  4 ウチワマン~ マンネン~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  5 エゾコスギ~ エゾコス~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
+#>  6 エゾノコス~ コスギラン 広義         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  7 エゾヒカゲ~ ヒカゲノ~  広義         1         Lycopodiac~ ヒカゲノカズラ <NA> 
+#>  8 エゾヒカゲ~ エゾヒカ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ GL_0~
+#>  9 オオスギカ~ オオスギ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
+#> 10 オニトウゲ~ オニトウ~  <NA>         1         Lycopodiac~ ヒカゲノカズラ <NA> 
 #> # ... with 30,420 more rows, and 5 more variables: SF <chr>, WF <chr>,
 #> #   YL <chr>, status <chr>, message <chr>
 
 jn_master <- 
   jn_master %>%
   tibble::as_tibble() %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   fill_another_name_id() %>% # another_name_id の空欄を埋める
   print()
 #> # A tibble: 53,222 x 11
-#>    ID       Family_ID Family_name   Family_name_JP common_name    another_name  
-#>    <chr>    <chr>     <chr>         <chr>          <chr>          <chr>         
-#>  1 GL_00001 1         Lycopodiaceae ヒカゲノカズラ ヒメスギラン   ヒメスギラン  
-#>  2 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     コスギラン    
-#>  3 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     エゾノコスギ~ 
-#>  4 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン     チシマスギラン
-#>  5 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     トウゲシバ    
-#>  6 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     ホソバトウゲ~ 
-#>  7 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     ヒロハトウゲ~ 
-#>  8 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ     オニトウゲシバ
-#>  9 GL_00004 1         Lycopodiaceae ヒカゲノカズラ コスギトウゲ~  コスギトウゲ~ 
-#> 10 GL_00005 1         Lycopodiaceae ヒカゲノカズラ イヌヤチスギ~  イヌヤチスギ~ 
+#>    ID       Family_ID Family_name   Family_name_JP common_name      another_name
+#>    <chr>    <chr>     <chr>         <chr>          <chr>            <chr>       
+#>  1 GL_00001 1         Lycopodiaceae ヒカゲノカズラ ヒメスギラン     ヒメスギラン
+#>  2 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       コスギラン  
+#>  3 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       エゾノコス~ 
+#>  4 GL_00002 1         Lycopodiaceae ヒカゲノカズラ コスギラン       チシマスギ~ 
+#>  5 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       トウゲシバ  
+#>  6 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       ホソバトウ~ 
+#>  7 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       ヒロハトウ~ 
+#>  8 GL_00003 1         Lycopodiaceae ヒカゲノカズラ トウゲシバ       オニトウゲ~ 
+#>  9 GL_00004 1         Lycopodiaceae ヒカゲノカズラ コスギトウゲシバ コスギトウ~ 
+#> 10 GL_00005 1         Lycopodiaceae ヒカゲノカズラ イヌヤチスギラン イヌヤチス~ 
 #> # ... with 53,212 more rows, and 5 more variables: another_name_ID <dbl>,
 #> #   note_1 <chr>, note_2 <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
@@ -101,13 +101,13 @@ path <- "wamei_checklist_ver.1.10.xlsx"
 
 hub_master <-
   readxl::read_xlsx(path, sheet="Hub_data",   col_types="text") %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", ""))
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
 
 jn_master <- 
   readxl::read_xlsx(path, sheet="JN_dataset", col_types="text") %>% 
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   fill_another_name_id()  # another_name_id の空欄を埋める
 ```
 
@@ -159,44 +159,40 @@ x2 <- c("だみー", "ススキ", "ハリガネワラビ", "オミナエシ", "�
 
 ```r
 wamei_check(x1[1:50], hub_master, jn_master)
-#> # A tibble: 50 x 28
-#>    input    n_match hub_plus         status  source ID    Family_ID Family_name 
-#>    <chr>    <chr>   <chr>            <chr>   <chr>  <chr> <chr>     <chr>       
-#>  1 だみー~  0       該当なし         該当な~ -      -     -         -           
-#>  2 mulberry 1       マグワ           確定    -      -     213       Moraceae    
-#>  3 no named 0       該当なし         該当な~ -      -     -         -           
-#>  4 no_name~ 1       no_named_GL01    確定    -      -     101       Potamogeton~
-#>  5 no_name~ 1       ムカゴサイシン~  確定    -      -     124       Orchidaceae 
-#>  6 no_name~ 1       ミチノクサナギ~  確定    -      -     206       Rosaceae    
-#>  7 no_name~ 1       ヤエガワカンバ~  確定    -      -     221       Betulaceae  
-#>  8 no_name~ 1       no_named_GL05    確定    -      -     221       Betulaceae  
-#>  9 no_name~ 1       no_named_GL06    確定    -      -     416       Gentianaceae
-#> 10 no_name~ 1       no_named_GL07    確定    -      -     466       Asteraceae  
-#> # ... with 40 more rows, and 20 more variables: Family_name_JP <chr>,
-#> #   common_name <chr>, scientific_name_with_author <chr>,
-#> #   scientific_name_without_author <chr>, WF_ID <chr>, YL_ID <chr>,
-#> #   GL_ID <chr>, SF_ID <chr>, WF_common_name <chr>, YL_common_name <chr>,
+#> # A tibble: 50 x 23
+#>    input  n_match hub_plus    status  Family_ID Family_name Family_name_JP WF_ID
+#>    <chr>  <chr>   <chr>       <chr>   <chr>     <chr>       <chr>          <chr>
+#>  1 だみ~  0       該当なし    該当な~ -         -           -              -    
+#>  2 mulbe~ 1       マグワ      確定    213       Moraceae    クワ           WF_0~
+#>  3 no na~ 0       該当なし    該当な~ -         -           -              -    
+#>  4 no_na~ 1       no_named_G~ 確定    101       Potamogeto~ ヒルムシロ     -    
+#>  5 no_na~ 1       ムカゴサイ~ 確定    124       Orchidaceae ラン           WF_0~
+#>  6 no_na~ 1       ミチノクサ~ 確定    206       Rosaceae    バラ           WF_0~
+#>  7 no_na~ 1       ヤエガワカ~ 確定    221       Betulaceae  カバノキ       -    
+#>  8 no_na~ 1       no_named_G~ 確定    221       Betulaceae  カバノキ       -    
+#>  9 no_na~ 1       no_named_G~ 確定    416       Gentianace~ リンドウ       -    
+#> 10 no_na~ 1       no_named_G~ 確定    466       Asteraceae  キク           -    
+#> # ... with 40 more rows, and 15 more variables: YL_ID <chr>, GL_ID <chr>,
+#> #   SF_ID <chr>, WF_common_name <chr>, YL_common_name <chr>,
 #> #   GL_common_name <chr>, SF_common_name <chr>,
 #> #   WF_scientific_name_with_author <chr>, YL_scientific_name_with_author <chr>,
 #> #   GL_scientific_name_with_author <chr>, SF_scientific_name_with_author <chr>,
 #> #   WF_scientific_name_without_author <chr>,
-#> #   YL_scientific_name_without_author <chr>,
-#> #   GL_scientific_name_without_author <chr>,
-#> #   SF_scientific_name_without_author <chr>
+#> #   YL_scientific_name_without_author <chr>, ...
 wamei_check(x1[1:50], hub_master, jn_master, wide=FALSE)
 #> # A tibble: 109 x 12
-#>    input    n_match hub_plus        status  source ID     Family_ID Family_name 
-#>    <chr>    <chr>   <chr>           <chr>   <chr>  <chr>  <chr>     <chr>       
-#>  1 だみー~  0       該当なし        該当な~ -      -      -         -           
-#>  2 mulberry 1       マグワ          確定    WF     WF_03~ 213       Moraceae    
-#>  3 mulberry 1       マグワ          確定    YL     YL_09~ 213       Moraceae    
-#>  4 no named 0       該当なし        該当な~ -      -      -         -           
-#>  5 no_name~ 1       no_named_GL01   確定    GL     GL_01~ 101       Potamogeton~
-#>  6 no_name~ 1       ムカゴサイシン~ 確定    GL     GL_02~ 124       Orchidaceae 
-#>  7 no_name~ 1       ムカゴサイシン~ 確定    WF     WF_00~ 124       Orchidaceae 
-#>  8 no_name~ 1       ムカゴサイシン~ 確定    YL     YL_03~ 124       Orchidaceae 
-#>  9 no_name~ 1       ミチノクサナギ~ 確定    GL     GL_04~ 206       Rosaceae    
-#> 10 no_name~ 1       ミチノクサナギ~ 確定    WF     WF_03~ 206       Rosaceae    
+#>    input         n_match hub_plus     status  source ID    Family_ID Family_name
+#>    <chr>         <chr>   <chr>        <chr>   <chr>  <chr> <chr>     <chr>      
+#>  1 だみーの和名  0       該当なし     該当な~ -      -     -         -          
+#>  2 mulberry      1       マグワ       確定    WF     WF_0~ 213       Moraceae   
+#>  3 mulberry      1       マグワ       確定    YL     YL_0~ 213       Moraceae   
+#>  4 no named      0       該当なし     該当な~ -      -     -         -          
+#>  5 no_named_GL01 1       no_named_GL~ 確定    GL     GL_0~ 101       Potamogeto~
+#>  6 no_named_GL02 1       ムカゴサイ~  確定    GL     GL_0~ 124       Orchidaceae
+#>  7 no_named_GL02 1       ムカゴサイ~  確定    WF     WF_0~ 124       Orchidaceae
+#>  8 no_named_GL02 1       ムカゴサイ~  確定    YL     YL_0~ 124       Orchidaceae
+#>  9 no_named_GL03 1       ミチノクサ~  確定    GL     GL_0~ 206       Rosaceae   
+#> 10 no_named_GL03 1       ミチノクサ~  確定    WF     WF_0~ 206       Rosaceae   
 #> # ... with 99 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
@@ -230,18 +226,18 @@ wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
 #> #   SF_scientific_name_without_author <chr>
 wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 #> # A tibble: 32 x 12
-#>    input      n_match hub_plus     status  source ID     Family_ID Family_name  
-#>    <chr>      <chr>   <chr>        <chr>   <chr>  <chr>  <chr>     <chr>        
-#>  1 だみー     0       該当なし     該当な~ -      -      -         -            
-#>  2 ススキ     1       ススキ       確定    GL     GL_03~ 166       Poaceae      
-#>  3 ススキ     1       ススキ       確定    WF     WF_02~ 166       Poaceae      
-#>  4 ハリガネ~  1       ハリガネワ~  確定    GL     GL_00~ 42        Thelypterida~
-#>  5 ハリガネ~  1       ハリガネワ~  確定    SF     SF_00~ 42        Thelypterida~
-#>  6 オミナエシ 1       オミナエシ   確定    GL     GL_09~ 472       Caprifoliace~
-#>  7 オミナエシ 1       オミナエシ   確定    WF     WF_08~ 472       Caprifoliace~
-#>  8 コナスビ   1       コナスビ狭義 確定    GL     GL_06~ 398       Primulaceae  
-#>  9 コナスビ   1       コナスビ狭義 確定    WF     WF_05~ 398       Primulaceae  
-#> 10 カナビキ~  1       カナビキソウ 確定    GL     GL_06~ 339       Santalaceae  
+#>    input          n_match hub_plus       status   source ID    Family_ID Family_name
+#>    <chr>          <chr>   <chr>          <chr>    <chr>  <chr> <chr>     <chr>      
+#>  1 だみー         0       該当なし       該当なし -      -     -         -          
+#>  2 ススキ         1       ススキ         確定     GL     GL_0~ 166       Poaceae    
+#>  3 ススキ         1       ススキ         確定     WF     WF_0~ 166       Poaceae    
+#>  4 ハリガネワラビ 1       ハリガネワラビ 確定     GL     GL_0~ 42        Thelypteri~
+#>  5 ハリガネワラビ 1       ハリガネワラビ 確定     SF     SF_0~ 42        Thelypteri~
+#>  6 オミナエシ     1       オミナエシ     確定     GL     GL_0~ 472       Caprifolia~
+#>  7 オミナエシ     1       オミナエシ     確定     WF     WF_0~ 472       Caprifolia~
+#>  8 コナスビ       1       コナスビ狭義   確定     GL     GL_0~ 398       Primulaceae
+#>  9 コナスビ       1       コナスビ狭義   確定     WF     WF_0~ 398       Primulaceae
+#> 10 カナビキソウ   1       カナビキソウ   確定     GL     GL_0~ 339       Santalaceae
 #> # ... with 22 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
@@ -252,18 +248,18 @@ wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 ```r
 wamei_check_ex(x1[1:50], hub_master, jn_master, wide=FALSE)
 #> # A tibble: 109 x 12
-#>    input    n_match Hub_name        status   source ID    Family_ID Family_name 
-#>    <chr>      <dbl> <chr>           <chr>    <chr>  <chr> <chr>     <chr>       
-#>  1 だみー~        0 ！候補なし      ！個別~  <NA>   <NA>  <NA>      <NA>        
-#>  2 mulberry       1 マグワ          確定     WF     WF_0~ 213       Moraceae    
-#>  3 mulberry       1 マグワ          確定     YL     YL_0~ 213       Moraceae    
-#>  4 no named       0 ！候補なし      ！個別~  <NA>   <NA>  <NA>      <NA>        
-#>  5 no_name~       1 no_named_GL01   確定     GL     GL_0~ 101       Potamogeton~
-#>  6 no_name~       1 ムカゴサイシン~ 確定     GL     GL_0~ 124       Orchidaceae 
-#>  7 no_name~       1 ムカゴサイシン~ 確定     WF     WF_0~ 124       Orchidaceae 
-#>  8 no_name~       1 ムカゴサイシン~ 確定     YL     YL_0~ 124       Orchidaceae 
-#>  9 no_name~       1 ミチノクサナギ~ 確定     GL     GL_0~ 206       Rosaceae    
-#> 10 no_name~       1 ミチノクサナギ~ 確定     WF     WF_0~ 206       Rosaceae    
+#>    input         n_match Hub_name    status  source ID     Family_ID Family_name
+#>    <chr>           <dbl> <chr>       <chr>   <chr>  <chr>  <chr>     <chr>      
+#>  1 だみーの和名        0 ！候補なし  ！個別~ <NA>   <NA>   <NA>      <NA>       
+#>  2 mulberry            1 マグワ      確定    WF     WF_03~ 213       Moraceae   
+#>  3 mulberry            1 マグワ      確定    YL     YL_09~ 213       Moraceae   
+#>  4 no named            0 ！候補なし  ！個別~ <NA>   <NA>   <NA>      <NA>       
+#>  5 no_named_GL01       1 no_named_G~ 確定    GL     GL_01~ 101       Potamogeto~
+#>  6 no_named_GL02       1 ムカゴサイ~ 確定    GL     GL_02~ 124       Orchidaceae
+#>  7 no_named_GL02       1 ムカゴサイ~ 確定    WF     WF_00~ 124       Orchidaceae
+#>  8 no_named_GL02       1 ムカゴサイ~ 確定    YL     YL_03~ 124       Orchidaceae
+#>  9 no_named_GL03       1 ミチノクサ~ 確定    GL     GL_04~ 206       Rosaceae   
+#> 10 no_named_GL03       1 ミチノクサ~ 確定    WF     WF_03~ 206       Rosaceae   
 #> # ... with 99 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
@@ -294,9 +290,7 @@ wamei_check_ex(x2,       hub_master, jn_master)
 #> #   WF_scientific_name_with_author <chr>, YL_scientific_name_with_author <chr>,
 #> #   SF_scientific_name_with_author <chr>,
 #> #   GL_scientific_name_without_author <chr>,
-#> #   WF_scientific_name_without_author <chr>,
-#> #   YL_scientific_name_without_author <chr>,
-#> #   SF_scientific_name_without_author <chr>
+#> #   WF_scientific_name_without_author <chr>, ...
 ```
 
 合致する全ての和名・学名等を出力する場合は，wameicheckrの関数を使わなくても可能．
@@ -310,18 +304,18 @@ tibble::tibble(input = x2) %>%
   left_join(jn_master)
 #> Joining, by = c("Family_ID", "Family_name", "Family_name_JP", "ID")
 #> # A tibble: 98 x 17
-#>    input    Hub_name   lato_stricto Family_ID Family_name  Family_name_JP status
-#>    <chr>    <chr>      <chr>        <chr>     <chr>        <chr>          <chr> 
-#>  1 だみー   <NA>       <NA>         <NA>      <NA>         <NA>           <NA>  
-#>  2 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
-#>  3 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
-#>  4 ススキ   ススキ     <NA>         166       Poaceae      イネ           確定  
-#>  5 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
-#>  6 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
-#>  7 ハリガ~  ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
-#>  8 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
-#>  9 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
-#> 10 オミナ~  オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#>    input     Hub_name   lato_stricto Family_ID Family_name  Family_name_JP status
+#>    <chr>     <chr>      <chr>        <chr>     <chr>        <chr>          <chr> 
+#>  1 だみー    <NA>       <NA>         <NA>      <NA>         <NA>           <NA>  
+#>  2 ススキ    ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  3 ススキ    ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  4 ススキ    ススキ     <NA>         166       Poaceae      イネ           確定  
+#>  5 ハリガネ~ ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  6 ハリガネ~ ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  7 ハリガネ~ ハリガネ~  <NA>         42        Thelypterid~ ヒメシダ       確定  
+#>  8 オミナエ~ オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#>  9 オミナエ~ オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
+#> 10 オミナエ~ オミナエシ <NA>         472       Caprifoliac~ スイカズラ     確定  
 #> # ... with 88 more rows, and 10 more variables: message <chr>, source <chr>,
 #> #   ID <chr>, common_name <chr>, another_name <chr>, another_name_ID <dbl>,
 #> #   note_1 <chr>, note_2 <chr>, scientific_name_with_author <chr>,

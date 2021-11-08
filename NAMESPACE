@@ -2,8 +2,12 @@
 
 export("%>%")
 export(arrange_hub_name)
+export(editdist)
 export(fill_another_name_id)
 export(hub2plus)
+export(str2strvec)
 export(wamei_check)
 export(wamei_check_ex)
+importFrom(Rcpp,sourceCpp)
 importFrom(magrittr,"%>%")
+useDynLib(wameicheckr, .registration = TRUE)
