@@ -19,9 +19,12 @@ Imports:
     stringr,
     tibble,
     tidyr,
-    magrittr
+    magrittr,
+    Rcpp
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Depends: 
     R (>= 3.5.0)
+LinkingTo: 
+    Rcpp

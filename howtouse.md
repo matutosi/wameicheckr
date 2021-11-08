@@ -30,8 +30,8 @@ data(jn_master)
 hub_master <- 
   hub_master %>%
   tibble::as_tibble() %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   print()
 #> # A tibble: 30,430 x 12
 #>    all_name   Hub_name   lato_stricto Family_ID Family_name Family_name_JP GL   
@@ -52,8 +52,8 @@ hub_master <-
 jn_master <- 
   jn_master %>%
   tibble::as_tibble() %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   fill_another_name_id() %>% # another_name_id の空欄を埋める
   print()
 #> # A tibble: 53,222 x 11
@@ -86,13 +86,13 @@ path <- "wamei_checklist_ver.1.10.xlsx"
 
 hub_master <-
   readxl::read_xlsx(path, sheet="Hub_data",   col_types="text") %>%
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", ""))
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
 
 jn_master <- 
   readxl::read_xlsx(path, sheet="JN_dataset", col_types="text") %>% 
-  dplyr::rename_with(~str_replace_all(., "[ /]", "_")) %>%
-  dplyr::rename_with(~str_replace_all(., "[()]", "")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
+  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
   fill_another_name_id()  # another_name_id の空欄を埋める
 ```
 
