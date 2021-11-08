@@ -25,6 +25,7 @@ mosiya() for multiple wamei (Japanese names).
 }
 \examples{
 library(stringi)
+library(tidyverse)
 x <- "Viola madahuricaa"
 search_similar_name(x, len=1)
 

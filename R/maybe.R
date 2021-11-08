@@ -15,6 +15,7 @@
   #' 
   #' @examples
   #' library(stringi)
+  #' library(tidyverse)
   #' x <- "Viola madahuricaa"
   #' search_similar_name(x, len=1)
   #' 
@@ -71,7 +72,7 @@ search_similar_name <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   if(nrow(res) > 0) dplyr::rename(res, source=tmp) else res
 }
 
-  #' @rdname serch_similar_name
+  #' @rdname search_similar_name
   #' @export
 maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   x %>%
@@ -79,7 +80,7 @@ maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
     dplyr::bind_rows()
 }
 
-  #' @rdname serch_similar_name
+  #' @rdname search_similar_name
   #' @export
 mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
   x <- 

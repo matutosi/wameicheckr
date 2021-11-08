@@ -10,6 +10,9 @@ web page below.
 
 <https://www.gbif.jp/v2/activities/wamei_checklist.html>
 
+Using reference data, We can find similar scientific names that does not
+match exactly to existing names.
+
 Yamanouchi, T., Shutoh, K., Osawa, T., Yonekura, K., Kato, S., Shiga, T.
 2019. A checklist of Japanese plant names
 (<https://www.gbif.jp/v2/activities/wamei_checklist.html>)
