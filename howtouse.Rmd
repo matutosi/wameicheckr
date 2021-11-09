@@ -9,6 +9,18 @@ knitr::opts_chunk$set(
 )
 ```
 
+# 文字コードについての注意
+
+wameicheckrでは，基本的に文字コードとしてUTF-8を使用しています．
+WidowsでShift-JIS(CP932)を使用している場合は，文字化けが起こる可能性があります．
+その場合は，文字コードの変換をしてください．
+
+```{r text code}
+  # x <- "Shift-JISの文字列"
+  # iconv(x, from="CP932", to="UTF-8")  # Shift-JISからUTF-8への変換
+```
+
+
 # 維管束植物和名チェックリストの利用
 
 ## 準備
