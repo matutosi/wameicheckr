@@ -1,15 +1,17 @@
-  #' Search similar names from existing data
+  #' Search similar name(s) from existing data
   #' 
   #' search_similar_name() for one string. 
   #' maybe() for multiple scientific names.
   #' mosiya() for multiple wamei (Japanese names).
   #' 
-  #' @param x A String to be checked. 
+  # '@name search_similar_name
+  #' 
+  #' @param x A String or a vector of strings to be checked. 
   #' @param len integer 1: when checking scientific name, 6: when checking wamei (Japanese name).
   #' @param min_dist Minimum editing distance. Less than min_dist will be output.
   #' @param min_dist_norm Minimum normalised editing distance.
   #' 
-  #' @return tibble. 
+  #' @return Tibble. 
   #' 
   #' @seealso maybe(), mosiya()
   #' 
@@ -27,9 +29,8 @@
   #' maybe(x)
   #' 
   #' x <- 
-  #'   c("\\u30cf\\u30c3\\u30ab\\u30b0\\u30b5", 
-  #'     "\\u30b9\\u30ba\\u30ce\\u30a8\\u30f3\\u30c9\\u30a6") %>%
-  #'   stringi::stri_unescape_unicode()
+  #'   c("\\u30cf\\u30c3\\u30ab\\u30b0\\u30b5", "\u30b9\\u30ba\\u30ce\\u30a8\\u30f3\\u30c9\\u30a6")
+  #' x <- stringi::stri_unescape_unicode(x)
   #' x
   #' mosiya(x)
   #' 
@@ -72,7 +73,7 @@ search_similar_name <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   if(nrow(res) > 0) dplyr::rename(res, source=tmp) else res
 }
 
-  #' @rdname search_similar_name
+  #' @describeIn search_similar_name Search similar scientific names from existing data
   #' @export
 maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   x %>%
@@ -80,7 +81,7 @@ maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
     dplyr::bind_rows()
 }
 
-  #' @rdname search_similar_name
+  #' @describeIn search_similar_name Search similar wamei (Japanese names) from existing data
   #' @export
 mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
   x <- 

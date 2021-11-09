@@ -12,8 +12,8 @@ str2strvec <- function(str, len = 1L) {
 
 #' Editing distance (Levenshtein distance) of two string vectors
 #' 
-#' @param str1 A string to be compared. 
-#' @param str2 A string to be compared. 
+#' @param s1 A string to be compared. 
+#' @param s2 A string to be compared. 
 #' @param len Dividing length of string. 
 #' @export
 editdist <- function(s1, s2, len = 1L) {

@@ -20,7 +20,8 @@ wamei_check.R ではmessageだが，実質は和名の一覧．
 }
 \examples{
 library(stringi)
-x <- stringi::stri_unescape_unicode("\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u5e83\\\\u7fa9\\\\uff0c\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u72ed\\\\u7fa9")
+x <- "\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u5e83\\\\u7fa9\\\\uff0c\\\\u30ef\\\\u30e1\\\\u30a4/\\\\u72ed\\\\u7fa9"
+x <- stringi::stri_unescape_unicode(x)
 arrange_hub_name(x)
 
 }

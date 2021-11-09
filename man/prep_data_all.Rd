@@ -2,13 +2,39 @@
 % Please edit documentation in R/prep_data.R
 \name{prep_data_all}
 \alias{prep_data_all}
-\title{Prepare data}
+\alias{prep_hub_data}
+\alias{prep_jn_data}
+\alias{read_hub_jn}
+\alias{prep_ref_data}
+\title{Prepare data in wameicheckr package}
 \usage{
 prep_data_all(path)
+
+prep_hub_data(path)
+
+prep_jn_data(path)
+
+read_hub_jn()
+
+prep_ref_data()
+}
+\arguments{
+\item{path}{Character vector of a file name of wamei_checklist.}
 }
 \description{
 dowonload excel sheet from https://www.gbif.jp/v2/activities/wamei_checklist.html
 }
+\section{Functions}{
+\itemize{
+\item \code{prep_hub_data}: Prepare hub data
+
+\item \code{prep_jn_data}: Prepare jn data
+
+\item \code{read_hub_jn}: Read hub and jn data
+
+\item \code{prep_ref_data}: Prepare reference data
+}}
+
 \examples{
 # path <- "d:/wamei_checklist_ver.1.10.xlsx"
 # prep_data_all(path)

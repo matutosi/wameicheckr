@@ -1,29 +1,33 @@
-  #' Prepare data    
+  #' Prepare data in wameicheckr package
   #' 
   #' dowonload excel sheet from https://www.gbif.jp/v2/activities/wamei_checklist.html
+  #' @param path Character vector of a file name of wamei_checklist.
+  #' 
   #' @examples
   #' # path <- "d:/wamei_checklist_ver.1.10.xlsx"
   #' # prep_data_all(path)
   #' # prep_hub_data(path)
   #' # prep_jn_data(path)
   #' # prep_ref_data()
-
 prep_data_all <- function(path){
   prep_hub_data(path)
   prep_jn_data(path)
   prep_ref_data()
 }
 
+  #' @describeIn prep_data_all Prepare hub data
 prep_hub_data <- function(path){
   hub_master <- readxl::read_xlsx(path, sheet="Hub_data",   col_types="text")
   usethis::use_data(hub_master, overwrite=TRUE)
 }
 
+  #' @describeIn prep_data_all Prepare jn data
 prep_jn_data <- function(path){
   jn_master  <- readxl::read_xlsx(path, sheet="JN_dataset", col_types="text")
   usethis::use_data(jn_master, overwrite=TRUE)
 }
 
+  #' @describeIn prep_data_all Read hub and jn data
 read_hub_jn <- function(){
   data(hub_master)
   data(jn_master)
@@ -58,6 +62,7 @@ read_hub_jn <- function(){
   list(hub_master=hub_master, jn_master=jn_master)
 }
 
+  #' @describeIn prep_data_all Prepare reference data
 prep_ref_data <- function(){
   # save ref_jp and ref_sc
 

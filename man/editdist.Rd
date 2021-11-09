@@ -7,11 +7,11 @@
 editdist(s1, s2, len = 1L)
 }
 \arguments{
+\item{s1}{A string to be compared.}
+
+\item{s2}{A string to be compared.}
+
 \item{len}{Dividing length of string.}
-
-\item{str1}{A string to be compared.}
-
-\item{str2}{A string to be compared.}
 }
 \description{
 Editing distance (Levenshtein distance) of two string vectors
