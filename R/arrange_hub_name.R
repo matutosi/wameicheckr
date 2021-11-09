@@ -11,7 +11,8 @@
   #' 
   #' @examples
   #' library(stringi)
-  #' x <- stringi::stri_unescape_unicode("\\u30ef\\u30e1\\u30a4/\\u5e83\\u7fa9\\uff0c\\u30ef\\u30e1\\u30a4/\\u72ed\\u7fa9")
+  #' x <- "\\u30ef\\u30e1\\u30a4/\\u5e83\\u7fa9\\uff0c\\u30ef\\u30e1\\u30a4/\\u72ed\\u7fa9"
+  #' x <- stringi::stri_unescape_unicode(x)
   #' arrange_hub_name(x)
   #' 
   #' @export
@@ -30,7 +31,7 @@ arrange_hub_name <- function(x){
     purrr::map(~tibble::tibble(hub_plus=.)) %>%
     purrr::map(~tidyr::separate( ., hub_plus, into=c("hub", "plus"), sep="-", fill="right")) %>%
     purrr::map(~dplyr::transmute(., 
-      hub_plus = dplyr::case_when( hub == dplyr::lag(hub) ~ plus, TRUE ~ paste(hub, plus, sep="")), 
+      hub_plus = dplyr::case_when( hub == dplyr::lag(hub) ~ plus, TRUE ~ paste(hub, plus, sep="")),
       hub_plus = purrr::reduce(hub_plus, ~stringr::str_c(.x, "/", .y))    )) %>%
     purrr::map(dplyr::distinct) %>%
     unlist()

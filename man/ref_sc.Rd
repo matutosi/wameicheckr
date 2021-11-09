@@ -8,7 +8,7 @@
 A data frame with 76,739 rows and 2 variables:
 \describe{
 \item{source}{data souce}
-\item{name_jp}{scientific name}
+\item{name_sc}{scientific name}
 }
 }
 \usage{

@@ -20,8 +20,8 @@ std::vector<std::string> str2strvec(std::string str, int len=1){
 
 //' Editing distance (Levenshtein distance) of two string vectors
 //' 
-//' @param str1 A string to be compared. 
-//' @param str2 A string to be compared. 
+//' @param s1 A string to be compared. 
+//' @param s2 A string to be compared. 
 //' @param len Dividing length of string. 
 //' @export
 // [[Rcpp::export]]

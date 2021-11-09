@@ -17,9 +17,9 @@ vignette: >
 library(tidyverse)
 #> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
 #> v ggplot2 3.3.5     v purrr   0.3.4
-#> v tibble  3.1.2     v dplyr   1.0.7
-#> v tidyr   1.1.3     v stringr 1.4.0
-#> v readr   1.4.0     v forcats 0.5.1
+#> v tibble  3.1.6     v dplyr   1.0.7
+#> v tidyr   1.1.4     v stringr 1.4.0
+#> v readr   2.0.2     v forcats 0.5.1
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
@@ -226,18 +226,18 @@ wamei_check(x2,       hub_master, jn_master,             ds=c(GL, SF, WF))
 #> #   SF_scientific_name_without_author <chr>
 wamei_check(x2,       hub_master, jn_master, wide=FALSE, ds=c(GL, SF, WF))
 #> # A tibble: 32 x 12
-#>    input          n_match hub_plus       status   source ID    Family_ID Family_name
-#>    <chr>          <chr>   <chr>          <chr>    <chr>  <chr> <chr>     <chr>      
-#>  1 だみー         0       該当なし       該当なし -      -     -         -          
-#>  2 ススキ         1       ススキ         確定     GL     GL_0~ 166       Poaceae    
-#>  3 ススキ         1       ススキ         確定     WF     WF_0~ 166       Poaceae    
-#>  4 ハリガネワラビ 1       ハリガネワラビ 確定     GL     GL_0~ 42        Thelypteri~
-#>  5 ハリガネワラビ 1       ハリガネワラビ 確定     SF     SF_0~ 42        Thelypteri~
-#>  6 オミナエシ     1       オミナエシ     確定     GL     GL_0~ 472       Caprifolia~
-#>  7 オミナエシ     1       オミナエシ     確定     WF     WF_0~ 472       Caprifolia~
-#>  8 コナスビ       1       コナスビ狭義   確定     GL     GL_0~ 398       Primulaceae
-#>  9 コナスビ       1       コナスビ狭義   確定     WF     WF_0~ 398       Primulaceae
-#> 10 カナビキソウ   1       カナビキソウ   確定     GL     GL_0~ 339       Santalaceae
+#>    input          n_match hub_plus   status  source ID    Family_ID Family_name 
+#>    <chr>          <chr>   <chr>      <chr>   <chr>  <chr> <chr>     <chr>       
+#>  1 だみー         0       該当なし   該当な~ -      -     -         -           
+#>  2 ススキ         1       ススキ     確定    GL     GL_0~ 166       Poaceae     
+#>  3 ススキ         1       ススキ     確定    WF     WF_0~ 166       Poaceae     
+#>  4 ハリガネワラビ 1       ハリガネ~  確定    GL     GL_0~ 42        Thelypterid~
+#>  5 ハリガネワラビ 1       ハリガネ~  確定    SF     SF_0~ 42        Thelypterid~
+#>  6 オミナエシ     1       オミナエシ 確定    GL     GL_0~ 472       Caprifoliac~
+#>  7 オミナエシ     1       オミナエシ 確定    WF     WF_0~ 472       Caprifoliac~
+#>  8 コナスビ       1       コナスビ~  確定    GL     GL_0~ 398       Primulaceae 
+#>  9 コナスビ       1       コナスビ~  確定    WF     WF_0~ 398       Primulaceae 
+#> 10 カナビキソウ   1       カナビキ~  確定    GL     GL_0~ 339       Santalaceae 
 #> # ... with 22 more rows, and 4 more variables: Family_name_JP <chr>,
 #> #   common_name <chr>, scientific_name_with_author <chr>,
 #> #   scientific_name_without_author <chr>
