@@ -78,10 +78,23 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     hub_master %>%
     dplyr::select(all_name, dplyr::starts_with("Family")) %>%
     dplyr::distinct() %>%
+    dplyr::mutate(tmp="") %>%
     tidyr::pivot_wider(
-      id_cols = all_name, values_from = dplyr::starts_with("Family"), 
-       values_fn = function(x) {paste(x, collapse = "；")},  names_glue = "{.value}" 
-     )
+      id_cols = all_name, 
+      names_from = tmp,  
+      values_from = dplyr::starts_with("Family"), 
+      values_fn = function(x) {paste(x, collapse = "；")}, 
+      names_glue = "{.value}" 
+    )
+  #   fml <-     # familyを分離
+  #     hub_master %>%
+  #     dplyr::select(all_name, dplyr::starts_with("Family")) %>%
+  #     dplyr::distinct() %>%
+  #     tidyr::pivot_wider(
+  #       id_cols = all_name, values_from = dplyr::starts_with("Family"), 
+  #       values_fn = function(x) {paste(x, collapse = "；")}, names_glue = "{.value}" 
+  #      )
+  #
   # # # # # # # # # # # メイン # # # # # # # # # # # 
   len <-            # 合致した数
     x %>%

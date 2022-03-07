@@ -22,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE)
 setwd("D:/Dropbox/ToDo/wameicheckr/2203ESJ")
 library(tidyverse)
 library(wameicheckr)
-library(magrittr)
 ```
 
 \center
@@ -242,7 +241,7 @@ wameicheckrの使用方法
 ```{r eval=FALSE}
 library(tidyverse)
 library(wameicheckr)
-library(magrittr)
+```
 
 ```{r}
 data(hub_master)
@@ -401,7 +400,6 @@ wamei_check_ex(x2, hub_master, jn_master, wide=FALSE) %>%
 - 標準化した編集距離   
   -- 編集距離 / 長い方の文字列の文字数
 - 検索用の関数   
-  -- 一般：search_similar_name()   
   -- 和名：mosiya()   
   -- 学名：maybe()   
 
@@ -431,53 +429,6 @@ ref_jp        # 和名は文字コードの関係でエスケープ文字を使�
 ```{r}
 data(ref_sc)  # 学名の参照用データ
 ref_sc
-```
-
-\newpage
-
-\fontsize{32pt}{32pt}\selectfont
-
-\begin{center}
-類似和名の検索(1つだけ入力)
-\end{center}
-
-\fontsize{14pt}{14pt}\selectfont
-```{r}
-  # 和名: search_similar_name() では len=6 が必須(文字コードの関係)
-  # dist, dist_normの小さい順で出力
-  # 既定値：min_dist=4未満 or min_dist_norm=0.2未満を出力
-  # 対象文字列が短いと，編集距離4ではほとんど意味がない
-search_similar_name("ハッカグサ", len=6)
-```
-
-\newpage
-
-\fontsize{32pt}{32pt}\selectfont
-
-\begin{center}
-類似和名の検索(1つだけ入力)
-\end{center}
-
-\fontsize{14pt}{14pt}\selectfont
-```{r}
-  # 検索後にふるい分け
-search_similar_name("ハッカグサ", len=6) %>%
-  dplyr::filter(dist < 3 & dist_norm < 0.5)
-```
-
-\newpage
-
-\fontsize{32pt}{32pt}\selectfont
-
-\begin{center}
-類似学名の検索(1つだけ入力)
-\end{center}
-
-\fontsize{14pt}{14pt}\selectfont
-```{r}
-  # dist, dist_normの小さい順で出力
-search_similar_name("Viola madahuricaa", len=1) %>%
-  dplyr::filter(dist < 4 & dist_norm < 0.2)
 ```
 
 \newpage
@@ -545,14 +496,14 @@ maybe(c("Viola madahuricaa", "Carex nevarta"))
 \end{center}
 
 \fontsize{22pt}{22pt}\selectfont
-- search_similar_name()は汎用関数   
- -- maybe(), mosiya()はsearch_similar_name()を使用   
- -- 関数を改変すれば，他の分類群でも使用可能   
+- editdist_multi()は汎用関数   
+ -- maybe(), mosiya()はeditdist_multi()を使用   
+ -- 少し改変すれば，他の分類群でも使用可能   
  -- 自由に改変してください   
  -- 方法不明の場合は連絡ください   
 - 維管束植物以外の日本産生物の種名の一覧   
   -- http://www.ujssb.org/checklist/index.html   
-  --- wamei_check() のような関数は要望があれば検討可能   
+  --- 類似パッケージの要望があれば連絡ください   
 
 \newpage
 
@@ -583,3 +534,56 @@ devtools::install_github("matutosi/wameicheckr",
 - Hadley Wickham (2016) Rパッケージ開発入門   
   -- https://r-pkgs.org/   
 ![](image/r_packages_web.jpg)
+
+
+
+
+<!--
+\newpage
+
+\fontsize{32pt}{32pt}\selectfont
+
+\begin{center}
+類似和名の検索(1つだけ入力)
+\end{center}
+
+\fontsize{14pt}{14pt}\selectfont
+```{r}
+  # 和名: search_similar_name() では len=6 が必須(文字コードの関係)
+  # dist, dist_normの小さい順で出力
+  # 既定値：min_dist=4未満 or min_dist_norm=0.2未満を出力
+  # 対象文字列が短いと，編集距離4ではほとんど意味がない
+search_similar_name("ハッカグサ", len=6)
+```
+
+\newpage
+
+\fontsize{32pt}{32pt}\selectfont
+
+\begin{center}
+類似和名の検索(1つだけ入力)
+\end{center}
+
+\fontsize{14pt}{14pt}\selectfont
+```{r}
+  # 検索後にふるい分け
+search_similar_name("ハッカグサ", len=6) %>%
+  dplyr::filter(dist < 3 & dist_norm < 0.5)
+```
+
+\newpage
+
+\fontsize{32pt}{32pt}\selectfont
+
+\begin{center}
+類似学名の検索(1つだけ入力)
+\end{center}
+
+\fontsize{14pt}{14pt}\selectfont
+```{r}
+  # dist, dist_normの小さい順で出力
+search_similar_name("Viola madahuricaa", len=1) %>%
+  dplyr::filter(dist < 4 & dist_norm < 0.2)
+```
+
+-->
