@@ -386,7 +386,7 @@ wamei_check_ex(x2, hub_master, jn_master, wide=FALSE) %>%
 
 \newpage
 
-\fontsize{32pt}{32pt}\selectfont
+\fontsize{32pt}{32pt}\selectfontx
 
 \begin{center}
 類似和名・学名検索(新機能)

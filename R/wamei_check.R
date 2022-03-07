@@ -121,7 +121,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     dplyr::left_join(jn,   by = "ID")
   multi_match <-     # 2つ以上が合致
     len %>%
-    dplyr::filter(n_match>1)  %>%
+    dplyr::filter(n_match > 1)  %>%
     dplyr::left_join(msg,  by = c("input" = "all_name")) %>%  # msg 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
     dplyr::left_join(id,   by = c("input" = "all_name")) %>%
@@ -168,8 +168,8 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     x %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input") %>%
     dplyr::mutate(hub_plus = stringr::str_replace_all(hub_plus, "-", "")) %>%
-    dplyr::mutate_all(tidyr::replace_na, "") %>%
-    dplyr::mutate_all(stringr::str_replace_all, "^$", "-")
+    dplyr::mutate_if(is.character, tidyr::replace_na, "") %>%
+    dplyr::mutate_if(is.character, stringr::str_replace_all, "^$", "-")
   if(wide){
     res <- dplyr::select(res, !any_of(c("source", "ID", "common_name", "scientific_name_with_author", "scientific_name_without_author")))
   }
