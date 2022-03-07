@@ -3,6 +3,8 @@
 export("%>%")
 export(arrange_hub_name)
 export(editdist)
+export(editdist_multi)
+export(editdist_norm)
 export(fill_another_name_id)
 export(hub2plus)
 export(maybe)

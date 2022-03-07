@@ -25,19 +25,21 @@
   #' editdist_multi(input=input, reference=reference, len = 6)
   #' 
   #' @export
-editdist_multi <- function(input, reference, len = 1L){
+editdist_multi <- function(input, reference, inp_esc = FALSE, ref_esc = FALSE, len = 1L){
   if(len == 6){
-    input     <- stringi::stri_escape_unicode(input)
-    reference <- stringi::stri_escape_unicode(reference)
+    if( ! inp_esc ) input     <- stringi::stri_escape_unicode(input)
+    if( ! ref_esc ) reference <- stringi::stri_escape_unicode(reference)
   }
   tidyr::expand_grid(s1=input, s2=reference) %>%
-    dplyr::mutate(editdist      = purrr::pmap_int(., editdist, len=len)) %>%
-    dplyr::mutate(editdist_norm = purrr::pmap_dbl(., editdist_norm, len=len)) %>%
+    dplyr::mutate(len = len) %>%
+    dplyr::mutate(editdist      = purrr::pmap_int(., editdist)) %>%
+    dplyr::mutate(editdist_norm = purrr::pmap_dbl(., editdist_norm)) %>%
     dplyr::mutate_at(c("s1", "s2"), stringi::stri_unescape_unicode)
 }
 
+
   #' @describeIn editdist_multi Compute normalised edit distance
   #' @export
-editdist_norm <- function(s1, s2, editdist, len){
+editdist_norm <- function(s1, s2, editdist, len = 1L){
   editdist / max(stringr::str_length(s1), stringr::str_length(s2)) * len
 }

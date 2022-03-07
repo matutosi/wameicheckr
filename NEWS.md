@@ -3,6 +3,15 @@
 ## wameicheckr (development version)
 
 
+## wameicheckr 0.9.2
+
+* updated at 20220307
+
+* `editdist_multi()`：複数対応の編集距離の計算．
+
+* `editdist_norm()`：標準化した編集距離の計算(個別)．editdist_multi()で使用．
+
+* `mosiya()`, `maybe()`：`editdist_multi()`を使用するように変更．`search_similar_name()`は不要になった(はず)．
 
 ## wameicheckr 0.9.1
 

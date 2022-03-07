@@ -76,17 +76,38 @@ search_similar_name <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   #' @describeIn search_similar_name Search similar scientific names from existing data
   #' @export
 maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
-  x %>%
-    purrr::map(search_similar_name, len, min_dist, min_dist_norm) %>%
-    dplyr::bind_rows()
+  reference <- ref_sc$name_sc
+  res <- 
+    editdist_multi(x, reference, inp_esc = TRUE, ref_esc = TRUE, len = len) %>%
+    dplyr::filter(editdist < min_dist | editdist_norm < min_dist_norm) %>%
+    dplyr::select(-all_of("len")) %>%
+    magrittr::set_colnames(c("input", "reference", "editdist", "editdist_norm"))
+  dplyr::left_join(res, ref_sc, by=c("reference" = "name_sc")) %>%
+    dplyr::distinct()
 }
+  # maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
+  #   x %>%
+  #     purrr::map(search_similar_name, len, min_dist, min_dist_norm) %>%
+  #     dplyr::bind_rows()
+  # }
 
   #' @describeIn search_similar_name Search similar wamei (Japanese names) from existing data
   #' @export
 mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
-  x <-
-    x %>%
-    stringi::stri_trans_general("halfwidth-fullwidth") %>%
-    stringi::stri_escape_unicode()
-  maybe(x, len, min_dist, min_dist_norm)
+  reference <- ref_jp$name_jp
+  res <- 
+    editdist_multi(x, reference, inp_esc = FALSE, ref_esc = TRUE, len = len) %>%
+    dplyr::filter(editdist < min_dist | editdist_norm < min_dist_norm) %>%
+    dplyr::select(-all_of("len")) %>%
+    magrittr::set_colnames(c("input", "reference", "editdist", "editdist_norm"))
+  ref_jp <- dplyr::mutate(ref_jp, name_jp = stringi::stri_unescape_unicode(name_jp))
+  dplyr::left_join(res, ref_jp, by=c("reference" = "name_jp")) %>%
+    dplyr::distinct()
 }
+  # mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
+  #   x <-
+  #     x %>%
+  #     stringi::stri_trans_general("halfwidth-fullwidth") %>%
+  #     stringi::stri_escape_unicode()
+  #   maybe(x, len, min_dist, min_dist_norm)
+  # }

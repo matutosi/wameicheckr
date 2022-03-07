@@ -1,7 +1,7 @@
 Package: wameicheckr
 Type: Package
 Title: Check Japanese name (wamei) of vascular plant species with R
-Version: 0.9.1
+Version: 0.9.2
 Authors@R: person("Toshikazu", "Matsumura", role = c("aut", "cre"), email = "matutosi@gmail.com")
 Description: Check wamei of vascular plant species by wamei checklist. 
     You can dowonload lwamei checklist from https://www.gbif.jp/v2/activities/wamei_checklist.html

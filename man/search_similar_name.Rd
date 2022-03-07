@@ -42,14 +42,14 @@ library(tidyverse)
 x <- "Viola madahuricaa"
 search_similar_name(x, len=1)
 
-x <- c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5") \%>\% 
+x <- c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5") \%>\%
   stringi::stri_unescape_unicode()
 search_similar_name(x, len=6)
 
 x <- c("Viola madahuricaa", "Carex nevarta")
 maybe(x)
 
-x <- 
+x <-
   c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5", "\u30b9\\\\u30ba\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6")
 x <- stringi::stri_unescape_unicode(x)
 x
