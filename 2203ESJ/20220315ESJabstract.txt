@@ -1,0 +1,26 @@
+維管束植物和名チェックリストをRで利用するパッケージwameicheckr(改訂版)
+
+[作成の目的]
+維管束植物和名チェックリスト(https://www.gbif.jp/v2/activities/wamei_checklist.html)は，「和名に基づく維管束植物のリストやデータベースの利用に際し、異名を含む和名全般から標準的な和名を検討するための」チェックリストである．学名と比較して和名は比較的安定しているとの利点がある．とはいえ，異名や表記上のゆらぎなどから，単純な和名の統合や比較は困難であり，チェックリストの利用には慣れと多少の技術が必要である．運用補助用の維管束植物和名変換シート(https://wetlands.info/tools/plantsdb/nameconv/)が提供されているが，これらのデータはエクセル形式で提供されており，Rで解析する際には，エクセルでの手作業が必要である．そこで，Rで利用するためのパッケージwameicheckrを作成した．
+[特徴]
+・和名チェックリストの主要データを保持
+・簡単な操作で和名の確認が可能
+・和名チェックリストに追随して，データを更新(予定)
+・GitHubで公開
+・類似和名の検索が可能(version 0.9.1 新機能)
+[インストール]
+  # install.packages("devtools") # 未インストールのとき
+  devtools::install_github("matutosi/wameicheckr", build_vignettes = TRUE)
+[使い方]
+  library(wameicheckr)
+  # いろいろ省略
+  x <- c("スズノエンドウ", "ヤイトバナ", "チガヤ", "ハエドクソウ", "カンラン")
+  # チェックリストで検索
+  wamei_check(x, hub_master, jn_master, ds=c(GL, SF, WF, YL))
+  # 類似和名を検索
+  mosiya(x[1])
+  # 詳細な使用方法：https://github.com/matutosi/wameicheckr/blob/main/howtouse.md
+[注意点]
+・和名チェックリスト自体がバージョンアップ作業中(2021年11月11日現在)
+・分類的に和名の指す範囲が異なるなど，分類学的な検討を要する
+・バグがあるかも知れない(連絡先：matutosi@gmail.com)
