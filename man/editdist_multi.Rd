@@ -28,20 +28,22 @@ Compute edit distance
 }
 \section{Functions}{
 \itemize{
-\item \code{editdist_norm}: Compute normalised edit distance
-}}
+\item \code{editdist_norm()}: Compute normalised edit distance
 
+}}
 \examples{
 library(wameicheckr)
 library(tidyverse)
 library(stringi)
 input <- 
-   c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5", "\\\\u30b9\\\\u30ba\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6") \%>\%
+   c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5", 
+     "\\\\u30b9\\\\u30ba\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6") \%>\%
    stringi::stri_unescape_unicode()
 reference <- 
-   c("\\\\u30cf\\\\u30b7\\\\u30ab\\\\u30b0\\\\u30b5", "\\\\u30b9\\\\u30ba\\\\u30e1\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6") \%>\%
+   c("\\\\u30cf\\\\u30b7\\\\u30ab\\\\u30b0\\\\u30b5", 
+     "\\\\u30b9\\\\u30ba\\\\u30e1\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6") \%>\%
    stringi::stri_unescape_unicode()
-editdist_multi(input=input, reference=reference, len = 6)
+editdist_multi(input = input, reference = reference, len = 6)
 
 }
 \seealso{

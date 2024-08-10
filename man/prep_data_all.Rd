@@ -26,15 +26,15 @@ dowonload excel sheet from https://www.gbif.jp/v2/activities/wamei_checklist.htm
 }
 \section{Functions}{
 \itemize{
-\item \code{prep_hub_data}: Prepare hub data
+\item \code{prep_hub_data()}: Prepare hub data
 
-\item \code{prep_jn_data}: Prepare jn data
+\item \code{prep_jn_data()}: Prepare jn data
 
-\item \code{read_hub_jn}: Read hub and jn data
+\item \code{read_hub_jn()}: Read hub and jn data
 
-\item \code{prep_ref_data}: Prepare reference data
+\item \code{prep_ref_data()}: Prepare reference data
+
 }}
-
 \examples{
 # path <- "d:/wamei_checklist_ver.1.10.xlsx"
 # prep_data_all(path)

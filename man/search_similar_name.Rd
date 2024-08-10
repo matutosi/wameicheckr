@@ -31,11 +31,11 @@ mosiya() for multiple wamei (Japanese names).
 }
 \section{Functions}{
 \itemize{
-\item \code{maybe}: Search similar scientific names from existing data
+\item \code{maybe()}: Search similar scientific names from existing data
 
-\item \code{mosiya}: Search similar wamei (Japanese names) from existing data
+\item \code{mosiya()}: Search similar wamei (Japanese names) from existing data
+
 }}
-
 \examples{
 library(stringi)
 library(tidyverse)
