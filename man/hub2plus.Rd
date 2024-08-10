@@ -22,7 +22,7 @@ hub_masterのhub_nameとlato_strictoから，hub_plusを生成．
 hub_master \%>\%
   tibble::as_tibble() \%>\%
   dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) \%>\%
-  dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) \%>\%
+  dplyr::rename_with(~stringr::str_remove_all(., "[()]")) \%>\%
   dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
 
 }

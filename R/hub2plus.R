@@ -12,7 +12,7 @@
   #' hub_master %>%
   #'   tibble::as_tibble() %>%
   #'   dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-  #'   dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+  #'   dplyr::rename_with(~stringr::str_remove_all(., "[()]")) %>%
   #'   dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto))
   #' 
   #' @export
@@ -21,5 +21,5 @@ hub2plus <- function(Hub_name, lato_stricto){
     Hub_name %>% 
     stringr::str_split("/")
   purrr::map2(hub_name, lato_stricto, paste, sep="-", collapse="/") %>%
-    stringr::str_replace_all("-NA", "")
+    stringr::str_remove_all("-NA")
 }

@@ -38,5 +38,5 @@ arrange_hub_name <- function(x){
   # 細かな修正
   x %>%
     `names<-`(NULL) %>%
-    stringr::str_replace_all("NA", "")
+    stringr::str_remove_all("NA")
 }

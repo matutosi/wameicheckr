@@ -11,7 +11,7 @@
   #' jn_master %>%
   #'   tibble::as_tibble() %>%
   #'   dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-  #'   dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+  #'   dplyr::rename_with(~stringr::str_remove_all(., "[()]")) %>%
   #'   fill_another_name_id()
   #' 
   #' @export

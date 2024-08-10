@@ -34,7 +34,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   jn_master <-      # 列名の修正
     jn_master %>% 
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
+    dplyr::rename_with(~stringr::str_remove_all(., "[()]"))
   jn <-             # another_name_ID == 0
     jn_master %>%
     dplyr::filter(another_name_ID == 0) %>%
@@ -44,7 +44,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     hub_master %>% 
     dplyr::filter(all_name %in% x$input) %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+    dplyr::rename_with(~stringr::str_remove_all(., "[()]")) %>%
     dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
   #     select_ds(hub_master = ., ds = {{ds}}) %>%
     dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
@@ -60,7 +60,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
       values_fn = list(hub_plus = ~paste(., collapse = "；"))
     ) %>%
     dplyr::mutate(message = arrange_hub_name(message)) %>%
-    dplyr::mutate(message = stringr::str_replace(message, "^/", "")) %>%
+    dplyr::mutate(message = stringr::str_remove(message, "^/")) %>%
     dplyr::mutate(message = stringr::str_replace_all(message, "/+", "/"))
   id <-            # idの分離・縦長に
     hub_master %>%
@@ -167,7 +167,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   res <- 
     x %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input") %>%
-    dplyr::mutate(hub_plus = stringr::str_replace_all(hub_plus, "-", "")) %>%
+    dplyr::mutate(hub_plus = stringr::str_remove_all(hub_plus, "-")) %>%
     dplyr::mutate_if(is.character, tidyr::replace_na, "") %>%
     dplyr::mutate_if(is.character, stringr::str_replace_all, "^$", "-")
   if(wide){

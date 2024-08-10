@@ -36,12 +36,12 @@ read_hub_jn <- function(){
     hub_master %>%
     tibble::as_tibble() %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_replace_all(., "[()]", ""))
+    dplyr::rename_with(~stringr::str_remove_all(., "[()]"))
   jn_master <- 
     jn_master %>%
     tibble::as_tibble() %>%
     dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_replace_all(., "[()]", "")) %>%
+    dplyr::rename_with(~stringr::str_remove_all(., "[()]")) %>%
     fill_another_name_id()
 
   no_id_0 <- 
