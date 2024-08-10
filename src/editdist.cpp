@@ -28,6 +28,9 @@ std::vector<std::string> str2strvec(std::string str, int len=1){
 int editdist(std::string s1, std::string s2, int len=1){
   std::vector<std::string> str1 = str2strvec(s1, len);
   std::vector<std::string> str2 = str2strvec(s2, len);
+  if(str1 == str2){
+    return 0;
+  }
   int m = str1.size();
   int n = str2.size();
 // // for debug
