@@ -2,15 +2,9 @@
 % Please edit documentation in R/search_similar_name.R
 \name{search_similar_name}
 \alias{search_similar_name}
-\alias{maybe}
-\alias{mosiya}
-\title{Search similar name(s) from existing data}
+\title{Search similar name(s) from existing data (deprecated)}
 \usage{
 search_similar_name(x, len = 1, min_dist = 4, min_dist_norm = 0.2)
-
-maybe(x, len = 1, min_dist = 4, min_dist_norm = 0.2)
-
-mosiya(x, len = 6, min_dist = 3, min_dist_norm = 0.2)
 }
 \arguments{
 \item{x}{A String or a vector of strings to be checked.}
@@ -25,36 +19,12 @@ mosiya(x, len = 6, min_dist = 3, min_dist_norm = 0.2)
 Tibble.
 }
 \description{
-search_similar_name() for one string.
-maybe() for multiple scientific names.
-mosiya() for multiple wamei (Japanese names).
-}
-\section{Functions}{
-\itemize{
-\item \code{maybe()}: Search similar scientific names from existing data
-
-\item \code{mosiya()}: Search similar wamei (Japanese names) from existing data
-
-}}
-\examples{
-library(stringi)
-library(tidyverse)
-x <- "Viola madahuricaa"
-search_similar_name(x, len=1)
-
-x <- c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5") \%>\%
-  stringi::stri_unescape_unicode()
-search_similar_name(x, len=6)
-
-x <- c("Viola madahuricaa", "Carex nevarta")
-maybe(x)
-
-x <-
-  c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5", "\u30b9\\\\u30ba\\\\u30ce\\\\u30a8\\\\u30f3\\\\u30c9\\\\u30a6")
-x <- stringi::stri_unescape_unicode(x)
-x
-mosiya(x)
-
+Deprecated in 0.9.3, to be removed in 0.10.0.
+Use \code{\link[=maybe]{maybe()}} for scientific names and \code{\link[=mosiya]{mosiya()}} for wamei
+(Japanese names).  Both take a vector, compute the edit distances in
+C++ instead of looping in R, and return the same information under
+clearer column names (\code{reference} \code{editdist} \code{editdist_norm}
+instead of \code{maybe} \code{dist} \code{dist_norm}).
 }
 \seealso{
 maybe(), mosiya()

@@ -48,3 +48,9 @@ test_that("wamei_check() は該当なしだけでも動く", {
   expect_equal(nrow(res), 1L)
   expect_equal(res$n_match, 0)
 })
+
+test_that("search_similar_name() は非推奨の警告を出す", {
+  x <- "Viola madahuricaa"
+  expect_warning(search_similar_name(x, len = 1), "deprecated")
+  expect_warning(search_similar_name(x, len = 1), "maybe")
+})
