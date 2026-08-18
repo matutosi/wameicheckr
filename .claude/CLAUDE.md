@@ -35,16 +35,29 @@
 
 ### 現在の状態
 
-2026-08-18 10:15 更新．
+2026-08-18 10:28 更新．
 
-- `editdist_multi()` の高速化を実施．
-  - `src/editdist_bp.cpp` を追加．`editdist_pairs()` が全組み合わせを C++ 内で
-    一括計算し，`editdist_bp()` が Myers の bit-parallel 法を提供する．
-    どちらも非 export の内部関数(`//' @noRd`)．
-  - `R/editdist_multi.R` が `purrr::pmap_int()` をやめて `editdist_pairs()` を呼ぶ．
-    `editdist_norm()` は `max()` → `pmax()` でベクトル対応．
-  - `tests/testthat/` を新設．高速版が `editdist()` と一致することを乱数で確認．
-    1,117 件すべて通過．
+- `editdist_multi()` の高速化(済)．`src/editdist_bp.cpp` の `editdist_pairs()` が
+  全組み合わせを C++ 内で一括計算する．`editdist_bp()` は Myers の bit-parallel 法．
+  どちらも非 export の内部関数(`//' @noRd`)．
+- 積み残しだった 3 件を実施(済)．
+  - `bp_min` の既定値を実データで測り直し，16 → **18**．
+  - `editdist()` の可変長配列を，表を 2 行だけ持つ実装に差し替え．
+    共通部分は `src/editdist.h` 経由で `editdist_bp.cpp` と共有．
+  - `roxygen2` 8.1.0 で `roxygenise()` を実行．差分は 3 ファイル 7 行だけだった．
+    `RoxygenNote` は `Config/roxygen2/version` に置き換わる．
+- `R CMD check`(tar ball)で出た指摘のうち，次を直した．
+  - `.claude` が tar ball に入る → `.Rbuildignore` に `^\.claude$` を追加．
+  - `editdist_multi()` の `s1` `s2` が no visible binding → `mutate()` をやめて
+    列を直接作る形に変更．
+  - `editdist_multi.Rd` の未記載引数(`inp_esc` `ref_esc` `editdist`)→ `@param` を追加．
+  - `Depends: R (>= 3.5.0)` だが `R/editdist_multi.R` がネイティブパイプ `|>` を
+    使っている(コミット `3276159` から) → `R (>= 4.1.0)` に変更．
+- テストは 1,517 件すべて通過．`editdist()` 自体は `utils::adist()` を正解として
+  独立に検証している(高速版のテストは `editdist()` を正解とするため)．
+- `R CMD check`(tar ball, `--no-manual --no-vignettes`)は
+  **3 WARNINGs, 2 NOTEs**．いずれも今回の変更以前からのもの(下記)．
+  着手前は 4 WARNINGs, 3 NOTEs だった．
 - 未着手の課題は `TODO.txt` にある
   (`wamei_check()` `wamei_check_ex()` の分割・NSE 修正，`search_similar_name()` の廃止)．
 
@@ -66,31 +79,46 @@
 
   短い文字列で遅いのは，ペアごとに `unordered_map<string, uint64_t>` を作る
   コストが DP 本体より重いため．和名は 3-13 文字なので DP のままが速い．
-- **`bp_min` の掃引**(100 x 5,000)．和名(len=6)は差が出ない．学名(len=1, 15-45 文字)のみ:
+- **`bp_min` の掃引**．まず乱数文字列(100 x 5,000)で 12-24 が横ばいと分かり，
+  次に実データで測り直した．入力 30 件 x 参照全件:
 
-  | `bp_min` | 0(常に DP) | 8 | 12 | 16 | 20 | 24 | 32 | 64 |
-  |---|---|---|---|---|---|---|---|---|
-  | 時間 | 1.05s | 0.86 | 0.83 | 0.87 | 0.81 | 0.83 | 0.88 | 1.00 |
+  | `bp_min` | 0(常に DP) | 8 | 10 | 12 | 14 | 16 | **18** | 20 | 24 | 32 |
+  |---|---|---|---|---|---|---|---|---|---|---|
+  | 学名 `ref_sc` 76,379 件 | 6.71s | 4.65 | 4.64 | 4.62 | 4.57 | 4.58 | **4.52** | 4.52 | 4.79 | 5.45 |
+  | 和名 `ref_jp` 51,809 件 | 0.59s | 0.61 | 0.59 | 0.59 | 0.59 | 0.59 | **0.59** | 0.59 | 0.59 | 0.59 |
 
-  12-24 の範囲はほぼ横ばい．既定は 16(`src/editdist_bp.cpp` の 2 つの
-  `bp_min = 16`)．**要再検討**．
+  学名は 8-20 がほぼ横ばいで 18-20 が最速(常に DP の 0.67 倍)．24 以上は
+  DP に落ちる分だけ遅くなる．和名は 99.9 % が 16 文字未満なので，どの値でも変わらない
+  (中央値 7 文字，最長 25 文字．学名は中央値 28 文字で 94.5 % が 16 文字以上)．
+  **既定値は 18**(`src/editdist_bp.cpp` の 2 つの `bp_min = 18`)．
+
 - bit-parallel の元コード(`tools/editdist2.cpp`)の `1L << 63` は Windows では
   `long` が 32 bit のため壊れる．`uint64_t(1) << 63` にすること．
   多ブロック版は使わず，64 トークンを超えたら DP に落としている．
 
 ### 積み残し
 
-- `bp_min` の既定値 16 の再検討(上の掃引は乱数文字列．実データで測り直す)．
-- `src/editdist.cpp` の `editdist()` は可変長配列 `int d[m+1][n+1]` を使っており，
-  GCC 拡張かつ長い文字列でスタックを壊す恐れがある．
-  `src/editdist_bp.cpp` の `editdist_dp()` は 2 行だけ持つ実装なので，
-  `editdist()` の中身も差し替えられる．
-- roxygen2 が 8.1.0，`RoxygenNote` は 7.3.2．`roxygenise()` を走らせると
-  man 以下が全面的に書き換わるので，必要になるまで走らせていない．
+- `TODO.txt` の課題(`wamei_check()` `wamei_check_ex()` の分割・NSE 修正，
+  `search_similar_name()` の廃止)．
+- `R CMD check` の残りの指摘(いずれも今回の変更以前からのもの)．
+  - WARNING: `R/arrange_hub_name.R` `R/prep_data.R` `R/wamei_check.R`
+    `R/wamei_check_ex.R` に非 ASCII 文字．`\uxxxx` へ直す必要がある．
+  - WARNING: `vignettes/` はあるが `inst/doc/` が無い．
+  - NOTE: `Imports` の `knitr` `rmarkdown` `tidyverse` が使われていない．
+  - NOTE: NSE による no visible binding が多数(`TODO.txt` の課題そのもの)．
+- `R CMD check` はソースディレクトリを直接指定すると
+  `Required fields missing or empty: 'Author' 'Maintainer'` で落ちる．
+  `Authors@R` から展開されるのは `R CMD build` のときなので，
+  **tar ball を作ってから check する**こと(元からの挙動で，今回の変更とは無関係)．
 
 ### コミット履歴
 
+- `38575d6` regenerate documentation with roxygen2 8.1.0 (2026-08-18)
+- `35e72d6` fix what R CMD check reported (2026-08-18)
+- `cb34da2` drop the variable length array in editdist() (2026-08-18)
+- `2ef42e5` record the speed-up in NEWS.md and .claude/CLAUDE.md (2026-08-18)
+- `23b0313` add tests for edit distance (2026-08-18)
+- `e95d91a` compute edit distance of all pairs in C++ (2026-08-18)
 - `8b4ec47` add .claude/CLAUDE.md (2026-08-18)
 - `99a140d` move editdist2.cpp from src/ to tools/ (2026-08-18)
 - `3276159` update documents (2024-08-10)
-- `66bcf24` replace() -> remove()

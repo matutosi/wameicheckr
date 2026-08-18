@@ -7,9 +7,28 @@ rand_str <- function(n, alphabet) {
 
 kana <- strsplit("\u30a2\u30a4\u30a6\u30a8\u30aa\u30ab\u30ad\u30af\u30b1\u30b3\u30b5\u30b7\u30b9\u30bb\u30bd\u30cf\u30b0\u30b6\u30c5\u30f3\u30fc", "")[[1]]
 
+test_that("editdist() は utils::adist() と一致する", {
+  # editdist() 自身を独立に検証する．高速版のテストは editdist() を正解と
+  # みなすので，editdist() の側が壊れると全部そろって間違える．
+  set.seed(10)
+  for (i in 1:200) {
+    s1 <- rand_str(sample(0:60, 1), letters[1:5])
+    s2 <- rand_str(sample(0:60, 1), letters[1:5])
+    expect_equal(editdist(s1, s2, 1L), as.integer(utils::adist(s1, s2)))
+  }
+  # len = 6 (エスケープした和名) は，エスケープ前の文字列の距離と一致する
+  for (i in 1:200) {
+    w1 <- paste0(sample(kana, sample(1:14, 1), replace = TRUE), collapse = "")
+    w2 <- paste0(sample(kana, sample(1:14, 1), replace = TRUE), collapse = "")
+    expect_equal(editdist(stringi::stri_escape_unicode(w1),
+                          stringi::stri_escape_unicode(w2), 6L),
+                 as.integer(utils::adist(w1, w2)))
+  }
+})
+
 test_that("editdist_bp() は editdist() と一致する (len = 1)", {
   set.seed(1)
-  for (bp_min in c(0L, 1L, 16L, 64L)) {
+  for (bp_min in c(0L, 1L, 18L, 64L)) {
     for (i in 1:200) {
       s1 <- rand_str(sample(0:40, 1), letters[1:5])
       s2 <- rand_str(sample(0:40, 1), letters[1:5])
@@ -52,7 +71,7 @@ test_that("editdist_pairs() は expand_grid の順で editdist() と一致する
   expected <- as.integer(unlist(lapply(input, function(s1) {
     vapply(reference, function(s2) editdist(s1, s2, 1L), integer(1))
   })))
-  for (bp_min in c(0L, 8L, 16L, 64L)) {
+  for (bp_min in c(0L, 8L, 18L, 64L)) {
     expect_equal(editdist_pairs(input, reference, 1L, bp_min), expected)
   }
 })
