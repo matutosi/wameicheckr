@@ -51,7 +51,7 @@ mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
     dplyr::filter(editdist < min_dist | editdist_norm < min_dist_norm) %>%
     dplyr::select(-tidyselect::all_of("len")) %>%
     magrittr::set_colnames(c("input", "reference", "editdist", "editdist_norm"))
-  ref_jp <- dplyr::mutate(ref_jp, name_jp = stringi::stri_unescape_unicode(name_jp))
+  ref_jp <- dplyr::mutate(ref_jp, name_jp = stringi::stri_unescape_unicode(.data[["name_jp"]]))
   dplyr::left_join(res, ref_jp, by=c("reference" = "name_jp")) %>%
     dplyr::distinct()
 }

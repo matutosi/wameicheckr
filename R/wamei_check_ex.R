@@ -32,19 +32,19 @@ wamei_check_ex <- function(
   hub_master <- clean_colnames(hub_master)
   jn         <- wcex_jn_table(jn_master)
   # hub_master を用途ごとに分ける
-  msg      <- wcex_first_row_table(hub_master, message)
-  hub_name <- wcex_first_row_table(hub_master, Hub_name)
+  msg      <- wcex_first_row_table(hub_master, "message")
+  hub_name <- wcex_first_row_table(hub_master, "Hub_name")
   id       <- wcex_id_table(hub_master)
-  stts     <- wcex_first_row_table(hub_master, status)
+  stts     <- wcex_first_row_table(hub_master, "status")
   # 該当件数で 0 件・1 件・2 件以上に振り分ける
-  len          <- wc_count_match(x, hub_master, Hub_name)
-  no_match     <- wc_no_match(len, Hub_name,
+  len          <- wc_count_match(x, hub_master, "Hub_name")
+  no_match     <- wc_no_match(len, "Hub_name",
                               "\uff01\u5019\u88dc\u306a\u3057",     # ！候補なし
                               "\uff01\u500b\u5225\u306b\u691c\u8a0e")   # ！個別に検討
-  len          <- wc_drop_no_match(len, Hub_name)
+  len          <- wc_drop_no_match(len, "Hub_name")
   multi_match  <- wcex_multi_match(len, msg)
   single_match <- wcex_single_match(len, hub_name, stts, id, jn)
-  if(wide & nrow(single_match) > 0) single_match <- wc_widen_single(single_match, Hub_name)
+  if(wide & nrow(single_match) > 0) single_match <- wc_widen_single(single_match, "Hub_name")
   wc_bind_results(x, no_match, multi_match, single_match)
 }
 
@@ -52,8 +52,8 @@ wamei_check_ex <- function(
   #' @noRd
 wcex_first_row_table <- function(hub_master, col){
   hub_master %>%
-    dplyr::select(all_name, {{col}}) %>%
-    dplyr::distinct(all_name, .keep_all = TRUE)
+    dplyr::select("all_name", tidyselect::all_of(col)) %>%
+    dplyr::distinct(.data[["all_name"]], .keep_all = TRUE)
 }
 
   #' jn シートから 1 つの ID につき先頭の行だけを取り出す
@@ -61,7 +61,7 @@ wcex_first_row_table <- function(hub_master, col){
 wcex_jn_table <- function(jn_master){
   jn_master %>%
     clean_colnames() %>%
-    dplyr::distinct(ID, .keep_all = TRUE) %>%
+    dplyr::distinct(.data[["ID"]], .keep_all = TRUE) %>%
     dplyr::select(! dplyr::starts_with(c("another", "note")))
 }
 
@@ -69,8 +69,8 @@ wcex_jn_table <- function(jn_master){
   #' @noRd
 wcex_id_table <- function(hub_master){
   hub_master %>%
-    dplyr::select(all_name, GL:YL) %>%
-    dplyr::distinct(all_name, .keep_all = TRUE) %>%
+    dplyr::select("all_name", GL:YL) %>%
+    dplyr::distinct(.data[["all_name"]], .keep_all = TRUE) %>%
     tidyr::pivot_longer(cols = GL:YL, names_to = "source", values_to = "ID", values_drop_na = TRUE)
 }
 
@@ -78,19 +78,20 @@ wcex_id_table <- function(hub_master){
   #' @noRd
 wcex_multi_match <- function(len, msg){
   len %>%
-    dplyr::filter(n_match>1)  %>%
-    dplyr::transmute(input, n_match, status = "\uff01\u500b\u5225\u306b\u691c\u8a0e") %>%
+    dplyr::filter(.data[["n_match"]] > 1)  %>%
+    dplyr::transmute(input = .data[["input"]], n_match = .data[["n_match"]],
+                     status = "\uff01\u500b\u5225\u306b\u691c\u8a0e") %>%
     dplyr::distinct() %>%
     dplyr::left_join(msg, by = c("input" = "all_name")) %>%
-    dplyr::rename(Hub_name = message)
+    dplyr::rename(Hub_name = "message")
 }
 
   #' 1 つだけ合致した和名に情報を付ける
   #' @noRd
 wcex_single_match <- function(len, hub_name, stts, id, jn){
   len %>%
-    dplyr::filter(n_match == 1) %>%
-    dplyr::transmute(input, n_match) %>%
+    dplyr::filter(.data[["n_match"]] == 1) %>%
+    dplyr::transmute(input = .data[["input"]], n_match = .data[["n_match"]]) %>%
     dplyr::left_join(hub_name, by = c("input" = "all_name")) %>%
     dplyr::left_join(stts,     by = c("input" = "all_name")) %>%
     dplyr::left_join(id,       by = c("input" = "all_name")) %>%

@@ -2,7 +2,7 @@
   #'
   #' 2 つの関数は同じ流れをたどる．違うのは hub の列名(hub_plus と
   #' Hub_name)と，該当なしのときに入れる文字列だけなので，そこを引数にして
-  #' 1 つにまとめてある．
+  #' 1 つにまとめてある．列名は文字列で渡す．
   #'
   #' @name wamei_check_parts
   #' @noRd
@@ -13,29 +13,33 @@ NULL
 wc_count_match <- function(x, hub_master, hub_col){
   x %>%
     dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
-    dplyr::group_by(input) %>%
+    dplyr::group_by(.data[["input"]]) %>%
     dplyr::mutate(n_match = dplyr::n()) %>%
-    dplyr::select(input, n_match, {{hub_col}}) %>%
+    dplyr::select("input", "n_match", tidyselect::all_of(hub_col)) %>%
     dplyr::distinct()
 }
 
   #' 該当なし：決まった文字列を入れる
   #' @noRd
 wc_no_match <- function(len, hub_col, hub_label, status_label){
-  len %>%
-    dplyr::filter(is.na({{hub_col}})) %>%
-    dplyr::transmute(input,
+  res <-
+    len %>%
+    dplyr::filter(is.na(.data[[hub_col]])) %>%
+    dplyr::transmute(input   = .data[["input"]],
                      n_match = 0,
-                     "{{hub_col}}" := hub_label,
-                     status = status_label)
+                     hub     = hub_label,
+                     status  = status_label)
+  # 列の並びは変えずに名前だけ差し替える(bind_rows() の列順が変わるため)
+  names(res)[names(res) == "hub"] <- hub_col
+  res
 }
 
   #' 該当なしを除く
   #' @noRd
 wc_drop_no_match <- function(len, hub_col){
   len %>%
-    dplyr::filter(!is.na({{hub_col}})) %>%
-    dplyr::distinct(input, n_match)
+    dplyr::filter(!is.na(.data[[hub_col]])) %>%
+    dplyr::distinct(.data[["input"]], .data[["n_match"]])
 }
 
   #' 1 件合致の結果を横長にする
@@ -43,9 +47,10 @@ wc_drop_no_match <- function(len, hub_col){
 wc_widen_single <- function(single_match, hub_col){
   single_match %>%
     tidyr::pivot_wider(
-      id_cols = c(input, n_match, {{hub_col}}, status, dplyr::starts_with("Family")),
-      names_from = source,
-      values_from = c(ID, common_name, dplyr::starts_with("scientific")),
+      id_cols = c("input", "n_match", tidyselect::all_of(hub_col), "status",
+                  dplyr::starts_with("Family")),
+      names_from = "source",
+      values_from = c("ID", "common_name", dplyr::starts_with("scientific")),
       names_glue = "{source}_{.value}"
     )
 }

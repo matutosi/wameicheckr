@@ -70,16 +70,16 @@ prep_ref_data <- function(){
   # # # # # ref_jp # # # # # 
   ref_jp <- 
     jn_master %>%
-    dplyr::select(ID, common_name, another_name) %>%
-    tidyr::separate(ID, c("source", NA), "_") %>%
-    tidyr::pivot_longer(c(common_name, another_name), names_to="div", values_to="name_jp") %>%
-    dplyr::select(source, name_jp) %>%
+    dplyr::select("ID", "common_name", "another_name") %>%
+    tidyr::separate("ID", c("source", NA), "_") %>%
+    tidyr::pivot_longer(c("common_name", "another_name"), names_to="div", values_to="name_jp") %>%
+    dplyr::select("source", "name_jp") %>%
     dplyr::distinct()
 
   ref_jp <- 
     ref_jp %>%
-    dplyr::mutate(name_jp = stringi::stri_trans_general(name_jp, "halfwidth-fullwidth")) %>%
-    dplyr::mutate(name_jp = stringi::stri_escape_unicode(name_jp))
+    dplyr::mutate(name_jp = stringi::stri_trans_general(.data[["name_jp"]], "halfwidth-fullwidth")) %>%
+    dplyr::mutate(name_jp = stringi::stri_escape_unicode(.data[["name_jp"]]))
 
   usethis::use_data(ref_jp, overwrite=TRUE)
   # tibble::tibble(ref_jp)
@@ -90,10 +90,10 @@ prep_ref_data <- function(){
   # # # # # ref_sc # # # # # 
   ref_sc <- 
     jn_master %>%
-    dplyr::select(ID, scientific_name_with_author, scientific_name_without_author) %>%
-    tidyr::separate(ID, c("source", NA), "_") %>%
-    tidyr::pivot_longer(c(scientific_name_with_author, scientific_name_without_author), names_to="div", values_to="name_sc") %>%
-    dplyr::select(source, name_sc) %>%
+    dplyr::select("ID", "scientific_name_with_author", "scientific_name_without_author") %>%
+    tidyr::separate("ID", c("source", NA), "_") %>%
+    tidyr::pivot_longer(c("scientific_name_with_author", "scientific_name_without_author"), names_to="div", values_to="name_sc") %>%
+    dplyr::select("source", "name_sc") %>%
     dplyr::distinct()
 
   usethis::use_data(ref_sc, overwrite=TRUE)

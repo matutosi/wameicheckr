@@ -1,22 +1,15 @@
 # R CMD check の "no visible binding for global variable" を止めるための宣言．
 #
-# 中身はすべて dplyr などに渡している「列名」と，遅延読み込みのデータセット
-# (`ref_jp` `ref_sc`)．関数でも変数でもないので，実行時に問題は起きない．
-#
-# これは暫定対応．TODO.txt の「wamei_check(), wamei_check_ex() の
-# 非標準評価(NSE)のコードを修正」を済ませれば，列名の分は不要になる．
-# 新しいコードでは列名を裸で書かず，`.data[["col"]]` や文字列で渡すこと．
+# 列名は .data[["col"]] や文字列で渡すように直したので，ここに残るのは
+# 列名ではないものだけ．
 utils::globalVariables(c(
-  # 遅延読み込みのデータセット
+  # 遅延読み込みのデータセット．LazyData: true で名前空間から見えるが，
+  # コード検査は関数の外にある変数として扱う．
   "ref_jp", "ref_sc",
-  # magrittr のプレースホルダ
-  ".",
-  # 和名チェックリストの列名
-  "GL", "Hub_name", "ID", "ID2", "SF", "WF", "YL",
-  "all_name", "another_name", "another_name_ID", "common_name",
-  "hub_plus", "lato_stricto", "name_jp", "name_sc", "row_num",
-  "scientific_name_with_author", "scientific_name_without_author",
-  "st", "status",
-  # 処理の途中で作る列名
-  "dist", "dist_norm", "input", "n_match", "tmp"
+  # ds のデータソース名．ds = c(GL, SF, WF, YL) は意図した tidy-eval で，
+  # 利用者も vignette のように ds = c(GL, SF, WF) と書ける(0.9.3 で維持を決定)．
+  "GL", "SF", "WF", "YL",
+  # 廃止予定の search_similar_name() だけで使っている．
+  # 0.10.0 で同関数を削除するときに，ここも消す．
+  ".", "dist", "dist_norm", "input", "maybe", "tmp"
 ))

@@ -20,23 +20,23 @@ fill_another_name_id <- function(jn_master){
   an_id_ok <- 
     jn_master %>%
     tibble::rownames_to_column("row_num") %>%
-    dplyr::mutate(another_name_ID=as.numeric(another_name_ID)) %>%
-    dplyr::filter(! is.na(another_name_ID))
+    dplyr::mutate(another_name_ID = as.numeric(.data[["another_name_ID"]])) %>%
+    dplyr::filter(! is.na(.data[["another_name_ID"]]))
   # fill_another_name_id がNGのもの
   an_id_ng <- 
     jn_master %>%
     tibble::rownames_to_column("row_num") %>%
-    dplyr::filter(is.na(another_name_ID)) %>%
-    dplyr::mutate(ID2=dplyr::lag(ID, default="")) %>%
+    dplyr::filter(is.na(.data[["another_name_ID"]])) %>%
+    dplyr::mutate(ID2 = dplyr::lag(.data[["ID"]], default="")) %>%
     dplyr::mutate(another_name_ID = dplyr::case_when(
-      ID!=ID2 ~ 0,
+      .data[["ID"]] != .data[["ID2"]] ~ 0,
       TRUE    ~ 1
     )) %>%
-    dplyr::mutate(another_name_ID=purrr::accumulate(another_name_ID, function(x,y){ (x+1)* y} )) %>%
-    dplyr::select(-ID2)
+    dplyr::mutate(another_name_ID = purrr::accumulate(.data[["another_name_ID"]], function(x,y){ (x+1)* y} )) %>%
+    dplyr::select(-tidyselect::all_of("ID2"))
   # 統合して出力
   dplyr::bind_rows(an_id_ok, an_id_ng) %>%
-    dplyr::mutate(row_num=as.numeric(row_num)) %>%
-    dplyr::arrange(row_num) %>%
-    dplyr::select(-row_num)
+    dplyr::mutate(row_num = as.numeric(.data[["row_num"]])) %>%
+    dplyr::arrange(.data[["row_num"]]) %>%
+    dplyr::select(-tidyselect::all_of("row_num"))
 }

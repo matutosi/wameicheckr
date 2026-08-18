@@ -39,14 +39,14 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   hub  <- wc_hub_plus_table(hub_master)
   fml  <- wc_family_table(hub_master)
   # 該当件数で 0 件・1 件・2 件以上に振り分ける
-  len          <- wc_count_match(x, hub_master, hub_plus)
-  no_match     <- wc_no_match(len, hub_plus,
+  len          <- wc_count_match(x, hub_master, "hub_plus")
+  no_match     <- wc_no_match(len, "hub_plus",
                               "\u8a72\u5f53\u306a\u3057",   # 該当なし
                               "\u8a72\u5f53\u306a\u3057")   # 該当なし
-  len          <- wc_drop_no_match(len, hub_plus)
+  len          <- wc_drop_no_match(len, "hub_plus")
   single_match <- wc_single_match(len, hub, stts, id, fml, jn)
   multi_match  <- wc_multi_match(len, msg, stts, id, fml, jn)
-  if(wide & nrow(single_match) > 0) single_match <- wc_widen_single(single_match, hub_plus)
+  if(wide & nrow(single_match) > 0) single_match <- wc_widen_single(single_match, "hub_plus")
   if(wide & nrow(multi_match)  > 0) multi_match  <- wc_widen_multi(multi_match)
   wc_finish(x, no_match, multi_match, single_match, wide)
 }
@@ -56,7 +56,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
 wc_jn_table <- function(jn_master){
   jn_master %>%
     clean_colnames() %>%
-    dplyr::filter(another_name_ID == 0) %>%
+    dplyr::filter(.data[["another_name_ID"]] == 0) %>%
     dplyr::select(! dplyr::starts_with(c("another", "note", "Family"))) %>%
     dplyr::distinct() # 本来は不要?
 }
@@ -65,35 +65,39 @@ wc_jn_table <- function(jn_master){
   #' @noRd
 wc_hub_table <- function(hub_master, x, ds){
   hub_master %>%
-    dplyr::filter(all_name %in% x$input) %>%
+    dplyr::filter(.data[["all_name"]] %in% x$input) %>%
     clean_colnames() %>%
     dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
-    dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
+    dplyr::mutate(hub_plus = hub2plus(.data[["Hub_name"]], .data[["lato_stricto"]])) %>%
     dplyr::distinct() # 本来は不要?
 }
 
   #' 2 件以上該当する和名について message を自動生成する
   #' @noRd
 wc_message_table <- function(hub_master){
-  hub_master %>%
-    dplyr::select(all_name, hub_plus) %>%
-    dplyr::group_by(all_name) %>%
+  msg <-
+    hub_master %>%
+    dplyr::select("all_name", "hub_plus") %>%
+    dplyr::group_by(.data[["all_name"]]) %>%
     dplyr::filter(dplyr::n() > 1) %>%
     dplyr::mutate(msg = "message") %>%
     tidyr::pivot_wider(
-      id_cols = all_name, names_from = msg, values_from = hub_plus,
+      id_cols = "all_name", names_from = "msg", values_from = "hub_plus",
       values_fn = list(hub_plus = ~paste(., collapse = "\uff1b"))
-    ) %>%
-    dplyr::mutate(message = arrange_hub_name(message)) %>%
-    dplyr::mutate(message = stringr::str_remove(message, "^/")) %>%
-    dplyr::mutate(message = stringr::str_replace_all(message, "/+", "/"))
+    )
+  # 2 件以上該当する和名が 1 つも無いと，pivot_wider() は message 列を作らない
+  if(! "message" %in% names(msg)) msg[["message"]] <- character(nrow(msg))
+  msg %>%
+    dplyr::mutate(message = arrange_hub_name(.data[["message"]])) %>%
+    dplyr::mutate(message = stringr::str_remove(.data[["message"]], "^/")) %>%
+    dplyr::mutate(message = stringr::str_replace_all(.data[["message"]], "/+", "/"))
 }
 
   #' データソースごとの ID を縦長にする
   #' @noRd
 wc_id_table <- function(hub_master, ds){
   hub_master %>%
-    dplyr::select(all_name, {{ds}}) %>%
+    dplyr::select("all_name", {{ds}}) %>%
     tidyr::pivot_longer(cols = {{ds}}, names_to = "source", values_to = "ID", values_drop_na = TRUE) %>%
     dplyr::distinct() # 本来は不要のはず
 }
@@ -102,14 +106,14 @@ wc_id_table <- function(hub_master, ds){
   #' @noRd
 wc_status_table <- function(hub_master){
   hub_master %>%
-    dplyr::select(all_name, status)
+    dplyr::select("all_name", "status")
 }
 
   #' hub_plus を分離する
   #' @noRd
 wc_hub_plus_table <- function(hub_master){
   hub_master %>%
-    dplyr::select(all_name, hub_plus) %>%
+    dplyr::select("all_name", "hub_plus") %>%
     dplyr::distinct()
 }
 
@@ -117,12 +121,12 @@ wc_hub_plus_table <- function(hub_master){
   #' @noRd
 wc_family_table <- function(hub_master){
   hub_master %>%
-    dplyr::select(all_name, dplyr::starts_with("Family")) %>%
+    dplyr::select("all_name", dplyr::starts_with("Family")) %>%
     dplyr::distinct() %>%
     dplyr::mutate(tmp="") %>%
     tidyr::pivot_wider(
-      id_cols = all_name,
-      names_from = tmp,
+      id_cols = "all_name",
+      names_from = "tmp",
       values_from = dplyr::starts_with("Family"),
       values_fn = function(x) {paste(x, collapse = "\uff1b")},
       names_glue = "{.value}"
@@ -133,7 +137,7 @@ wc_family_table <- function(hub_master){
   #' @noRd
 wc_single_match <- function(len, hub, stts, id, fml, jn){
   len %>%
-    dplyr::filter(n_match == 1) %>%
+    dplyr::filter(.data[["n_match"]] == 1) %>%
     dplyr::left_join(hub,  by = c("input" = "all_name")) %>%  # hub 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
     dplyr::left_join(id,   by = c("input" = "all_name")) %>%
@@ -145,13 +149,13 @@ wc_single_match <- function(len, hub, stts, id, fml, jn){
   #' @noRd
 wc_multi_match <- function(len, msg, stts, id, fml, jn){
   len %>%
-    dplyr::filter(n_match > 1)  %>%
+    dplyr::filter(.data[["n_match"]] > 1)  %>%
     dplyr::left_join(msg,  by = c("input" = "all_name")) %>%  # msg 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
     dplyr::left_join(id,   by = c("input" = "all_name")) %>%
     dplyr::left_join(fml,  by = c("input" = "all_name")) %>%
     dplyr::left_join(jn,   by = "ID") %>%
-    dplyr::rename(hub_plus = message) %>%  # 他と合わせる
+    dplyr::rename(hub_plus = "message") %>%  # 他と合わせる
     dplyr::distinct()
 }
 
@@ -160,9 +164,9 @@ wc_multi_match <- function(len, msg, stts, id, fml, jn){
 wc_widen_multi <- function(multi_match){
   multi_match %>%
     tidyr::pivot_wider(
-      id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")),
-      names_from = source,
-      values_from = c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
+      id_cols = c("input", "n_match", "hub_plus", "status", dplyr::starts_with("Family")),
+      names_from = "source",
+      values_from = c("ID", "common_name", "scientific_name_with_author", "scientific_name_without_author"),
       names_glue = "{source}_{.value}",
       values_fn = list(
         ID                             = ~paste(., collapse = "\uff1b"),
@@ -174,8 +178,8 @@ wc_widen_multi <- function(multi_match){
     dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
     dplyr::mutate(st = "status") %>%
     tidyr::pivot_wider(
-      names_from = st,
-      values_from = status,
+      names_from = "st",
+      values_from = "status",
       values_fn = list(status = ~paste(., collapse = "\uff1b"))
     )
 }
@@ -185,7 +189,7 @@ wc_widen_multi <- function(multi_match){
 wc_finish <- function(x, no_match, multi_match, single_match, wide){
   res <-
     wc_bind_results(x, no_match, multi_match, single_match) %>%
-    dplyr::mutate(hub_plus = stringr::str_remove_all(hub_plus, "-")) %>%
+    dplyr::mutate(hub_plus = stringr::str_remove_all(.data[["hub_plus"]], "-")) %>%
     dplyr::mutate_if(is.character, tidyr::replace_na, "") %>%
     dplyr::mutate_if(is.character, stringr::str_replace_all, "^$", "-")
   if(wide){

@@ -6,5 +6,6 @@
 ## usethis namespace: start
 #' @useDynLib wameicheckr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
+#' @importFrom dplyr .data
 ## usethis namespace: end
 NULL
