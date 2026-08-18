@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <numeric>
+#include "editdist.h"
 using namespace Rcpp;
 
 //' Convert string into string vector
@@ -18,6 +19,23 @@ std::vector<std::string> str2strvec(std::string str, int len=1){
   return s;
 }
 
+// 動的計画法．表を 2 行だけ持ち回るので，メモリは O(n)．
+// 可変長配列だと GCC 拡張になり，長い文字列でスタックを壊す恐れがあるため．
+int editdist_dp(const std::vector<std::string> &a, const std::vector<std::string> &b){
+  const std::size_t m = a.size(), n = b.size();
+  std::vector<int> prev(n + 1), cur(n + 1);
+  for(std::size_t j = 0; j <= n; j++) prev[j] = j;
+  for(std::size_t i = 1; i <= m; i++){
+    cur[0] = i;
+    for(std::size_t j = 1; j <= n; j++){
+      const int cost = (a[i - 1] == b[j - 1]) ? 0 : 1;
+      cur[j] = std::min(std::min(prev[j] + 1, cur[j - 1] + 1), prev[j - 1] + cost);
+    }
+    prev.swap(cur);
+  }
+  return prev[n];
+}
+
 //' Editing distance (Levenshtein distance) of two string vectors
 //' 
 //' @param s1 A string to be compared. 
@@ -31,28 +49,5 @@ int editdist(std::string s1, std::string s2, int len=1){
   if(str1 == str2){
     return 0;
   }
-  int m = str1.size();
-  int n = str2.size();
-// // for debug
-// Rcout << "m, n: " << m << ", " << n << "\n";
-  int d[m+1][n+1];
-  d[0][0] = 0;
-  for(int i=0; i < m+1; i++) d[i][0] = i;
-  for(int j=0; j < n+1; j++) d[0][j] = j;
-  int cost;
-  for(int i=1; i<m+1; i++){
-    for(int j=1; j<n+1; j++){
-      if(str1[i-1] == str2[j-1]){ cost = 0; } else {cost = 1;}
-      d[i][j] = std::min({d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1] + cost});
-    }
-  }
-//  // for debug
-// Rcout << "d\n";
-// for(int i=0; i<m+1; i++){
-//   for(int j=0; j<n+1; j++){
-//     Rcout << d[i][j] << " ";
-//   }
-//   Rcout << "\n";
-// }
-  return d[m][n];
+  return editdist_dp(str1, str2);
 }

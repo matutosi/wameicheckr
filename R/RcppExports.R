@@ -34,7 +34,7 @@ editdist <- function(s1, s2, len = 1L) {
 #' @return Integer vector of `length(input) * length(reference)`. 
 #' 
 #' @noRd
-editdist_pairs <- function(input, reference, len = 1L, bp_min = 16L) {
+editdist_pairs <- function(input, reference, len = 1L, bp_min = 18L) {
     .Call(`_wameicheckr_editdist_pairs`, input, reference, len, bp_min)
 }
 
@@ -52,7 +52,7 @@ editdist_pairs <- function(input, reference, len = 1L, bp_min = 16L) {
 #' @return Integer. 
 #' 
 #' @noRd
-editdist_bp <- function(s1, s2, len = 1L, bp_min = 16L) {
+editdist_bp <- function(s1, s2, len = 1L, bp_min = 18L) {
     .Call(`_wameicheckr_editdist_bp`, s1, s2, len, bp_min)
 }
 

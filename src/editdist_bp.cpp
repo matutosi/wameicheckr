@@ -20,39 +20,19 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include "editdist.h"
 using namespace Rcpp;
 
-// 切り替えの閾値(トークン数)は，下の 2 つの関数の bp_min の既定値 16．
+// 切り替えの閾値(トークン数)は，下の 2 つの関数の bp_min の既定値 18．
 // これ以上の長さなら bit-parallel を使う．短い文字列では，ビットマスクを
-// 作る手間の方が DP 全体より重いため．暫定値なので要再検討．
-// Rcpp の属性は定数を既定値に書けないので，直接 16 と書いている．
+// 作る手間の方が DP 全体より重いため．
+// ref_sc(学名 76,379 件)に対する実測では 8 から 20 がほぼ横ばいで，
+// 18 から 20 が最速(常に DP の 0.67 倍)．24 以上は DP に落ちる分だけ遅くなる．
+// ref_jp(和名 51,809 件)は 99.9 % が 16 文字未満なので，どの値でも変わらない．
+// Rcpp の属性は定数を既定値に書けないので，直接 18 と書いている．
 
 // bit-parallel が扱えるトークン数の上限(1 ブロック分)．
 static const std::size_t BP_MAX = 64;
-
-static std::vector<std::string> tokenize(const std::string &str, int len){
-  std::vector<std::string> tokens;
-  tokens.reserve(str.size() / len + 1);
-  for(std::size_t i = 0; i < str.size(); i += len) tokens.push_back(str.substr(i, len));
-  return tokens;
-}
-
-// 動的計画法．2 行だけ持ち回るので，メモリは O(n)．
-static int editdist_dp(const std::vector<std::string> &a,
-                       const std::vector<std::string> &b){
-  const std::size_t m = a.size(), n = b.size();
-  std::vector<int> prev(n + 1), cur(n + 1);
-  for(std::size_t j = 0; j <= n; j++) prev[j] = j;
-  for(std::size_t i = 1; i <= m; i++){
-    cur[0] = i;
-    for(std::size_t j = 1; j <= n; j++){
-      const int cost = (a[i - 1] == b[j - 1]) ? 0 : 1;
-      cur[j] = std::min(std::min(prev[j] + 1, cur[j - 1] + 1), prev[j - 1] + cost);
-    }
-    prev.swap(cur);
-  }
-  return prev[n];
-}
 
 // Myers の bit-parallel 法(1 ブロック)．pat は 1 から BP_MAX トークン．
 static int editdist_bp64(const std::vector<std::string> &pat,
@@ -115,10 +95,10 @@ static int editdist_tokens(const std::vector<std::string> &t1,
 IntegerVector editdist_pairs(std::vector<std::string> input,
                              std::vector<std::string> reference,
                              int len = 1,
-                             int bp_min = 16){
+                             int bp_min = 18){
   std::vector< std::vector<std::string> > ti(input.size()), tr(reference.size());
-  for(std::size_t i = 0; i < input.size(); i++)     ti[i] = tokenize(input[i], len);
-  for(std::size_t j = 0; j < reference.size(); j++) tr[j] = tokenize(reference[j], len);
+  for(std::size_t i = 0; i < input.size(); i++)     ti[i] = str2strvec(input[i], len);
+  for(std::size_t j = 0; j < reference.size(); j++) tr[j] = str2strvec(reference[j], len);
 
   IntegerVector out(input.size() * reference.size());
   std::size_t k = 0;
@@ -146,6 +126,6 @@ IntegerVector editdist_pairs(std::vector<std::string> input,
 //' @noRd
 // [[Rcpp::export]]
 int editdist_bp(std::string s1, std::string s2, int len = 1,
-                int bp_min = 16){
-  return editdist_tokens(tokenize(s1, len), tokenize(s2, len), bp_min);
+                int bp_min = 18){
+  return editdist_tokens(str2strvec(s1, len), str2strvec(s2, len), bp_min);
 }
