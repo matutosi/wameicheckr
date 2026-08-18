@@ -2,6 +2,23 @@
 
 ## wameicheckr (development version)
 
+* `editdist_multi()`：ペアごとの計算を C++ 側へ移して高速化．
+  和名 100 x 参照 2,000 で約 6 倍，50 x 500 で約 18 倍．
+  返す内容は従来と同じ．
+
+* `editdist_pairs()` (C++, 内部)：2 つの文字列ベクトルの全組み合わせの
+  編集距離を C++ 内で一括計算．
+
+* `editdist_bp()` (C++, 内部)：Myers の bit-parallel 法による編集距離．
+  16 文字(`bp_min`)以上のときに使い，短いときは従来の動的計画法を使う．
+  学名の照合で約 2 割速い．和名は短いので動的計画法のまま．
+
+* `editdist_norm()`：`max()` を `pmax()` に変更してベクトルに対応．
+  1 組ずつ渡したときの結果は従来と同じ．
+
+* `tests/testthat/`：編集距離のテストを追加．
+  高速版が `editdist()` と一致することを乱数で確認する．
+
 
 ## wameicheckr 0.9.2
 
