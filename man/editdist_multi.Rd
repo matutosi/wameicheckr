@@ -40,7 +40,6 @@ Compute edit distance
 }}
 \examples{
 library(wameicheckr)
-library(tidyverse)
 library(stringi)
 input <- 
    c("\\\\u30cf\\\\u30c3\\\\u30ab\\\\u30b0\\\\u30b5", 

@@ -12,22 +12,22 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    knitr,
     dplyr,
     purrr,
     readxl,
-    rmarkdown,
     stringi, 
     stringr,
     tibble,
     tidyr,
-    tidyverse,
     usethis,
     tidyselect,
     magrittr,
     Rcpp
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    tidyverse
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
