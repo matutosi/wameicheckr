@@ -29,97 +29,148 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     wide = TRUE,               # 出力形式
     ds   = c(GL, SF, WF, YL)   # 使用するデータソース
   ){
-   # # # # # # # # # # # 準備 # # # # # # # # # # # 
-  x <- tibble::tibble(input = x)
-  jn_master <-      # 列名の修正
-    jn_master %>% 
-    clean_colnames()
-  jn <-             # another_name_ID == 0
-    jn_master %>%
+  x          <- tibble::tibble(input = x)
+  jn         <- wc_jn_table(jn_master)
+  hub_master <- wc_hub_table(hub_master, x, {{ds}})
+  # hub_master を用途ごとに分ける
+  msg  <- wc_message_table(hub_master)
+  id   <- wc_id_table(hub_master, {{ds}})
+  stts <- wc_status_table(hub_master)
+  hub  <- wc_hub_plus_table(hub_master)
+  fml  <- wc_family_table(hub_master)
+  # 該当件数で 0 件・1 件・2 件以上に振り分ける
+  len          <- wc_count_match(x, hub_master, hub_plus)
+  no_match     <- wc_no_match(len)
+  len          <- wc_drop_no_match(len, hub_plus)
+  single_match <- wc_single_match(len, hub, stts, id, fml, jn)
+  multi_match  <- wc_multi_match(len, msg, stts, id, fml, jn)
+  if(wide & nrow(single_match) > 0) single_match <- wc_widen_single(single_match, hub_plus)
+  if(wide & nrow(multi_match)  > 0) multi_match  <- wc_widen_multi(multi_match)
+  wc_finish(x, no_match, multi_match, single_match, wide)
+}
+
+  #' jn シートから another_name_ID == 0 の行だけを取り出す
+  #' @noRd
+wc_jn_table <- function(jn_master){
+  jn_master %>%
+    clean_colnames() %>%
     dplyr::filter(another_name_ID == 0) %>%
     dplyr::select(! dplyr::starts_with(c("another", "note", "Family"))) %>%
     dplyr::distinct() # 本来は不要?
-  hub_master <-      # 列名の修正
-    hub_master %>% 
+}
+
+  #' hub シートを入力の和名で絞り，hub_plus を付ける
+  #' @noRd
+wc_hub_table <- function(hub_master, x, ds){
+  hub_master %>%
     dplyr::filter(all_name %in% x$input) %>%
     clean_colnames() %>%
     dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
-  #     select_ds(hub_master = ., ds = {{ds}}) %>%
     dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
     dplyr::distinct() # 本来は不要?
-  msg <-          # messageを自動生成
-    hub_master %>%
+}
+
+  #' 2 件以上該当する和名について message を自動生成する
+  #' @noRd
+wc_message_table <- function(hub_master){
+  hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
     dplyr::group_by(all_name) %>%
     dplyr::filter(dplyr::n() > 1) %>%
     dplyr::mutate(msg = "message") %>%
     tidyr::pivot_wider(
-      id_cols = all_name, names_from = msg, values_from = hub_plus, 
+      id_cols = all_name, names_from = msg, values_from = hub_plus,
       values_fn = list(hub_plus = ~paste(., collapse = "\uff1b"))
     ) %>%
     dplyr::mutate(message = arrange_hub_name(message)) %>%
     dplyr::mutate(message = stringr::str_remove(message, "^/")) %>%
     dplyr::mutate(message = stringr::str_replace_all(message, "/+", "/"))
-  id <-            # idの分離・縦長に
-    hub_master %>%
-    dplyr::select(all_name,    {{ds}}) %>%
+}
+
+  #' データソースごとの ID を縦長にする
+  #' @noRd
+wc_id_table <- function(hub_master, ds){
+  hub_master %>%
+    dplyr::select(all_name, {{ds}}) %>%
     tidyr::pivot_longer(cols = {{ds}}, names_to = "source", values_to = "ID", values_drop_na = TRUE) %>%
     dplyr::distinct() # 本来は不要のはず
-  stts <-           # statusを分離・縦長に
-    hub_master %>%
+}
+
+  #' status を分離する
+  #' @noRd
+wc_status_table <- function(hub_master){
+  hub_master %>%
     dplyr::select(all_name, status)
-  hub <-     # hubを分離
-    hub_master %>%
+}
+
+  #' hub_plus を分離する
+  #' @noRd
+wc_hub_plus_table <- function(hub_master){
+  hub_master %>%
     dplyr::select(all_name, hub_plus) %>%
     dplyr::distinct()
-  fml <-     # familyを分離
-    hub_master %>%
+}
+
+  #' Family 系の列を 1 行にまとめる
+  #' @noRd
+wc_family_table <- function(hub_master){
+  hub_master %>%
     dplyr::select(all_name, dplyr::starts_with("Family")) %>%
     dplyr::distinct() %>%
     dplyr::mutate(tmp="") %>%
     tidyr::pivot_wider(
-      id_cols = all_name, 
-      names_from = tmp,  
-      values_from = dplyr::starts_with("Family"), 
-      values_fn = function(x) {paste(x, collapse = "\uff1b")}, 
-      names_glue = "{.value}" 
+      id_cols = all_name,
+      names_from = tmp,
+      values_from = dplyr::starts_with("Family"),
+      values_fn = function(x) {paste(x, collapse = "\uff1b")},
+      names_glue = "{.value}"
     )
-  #   fml <-     # familyを分離
-  #     hub_master %>%
-  #     dplyr::select(all_name, dplyr::starts_with("Family")) %>%
-  #     dplyr::distinct() %>%
-  #     tidyr::pivot_wider(
-  #       id_cols = all_name, values_from = dplyr::starts_with("Family"), 
-  #       values_fn = function(x) {paste(x, collapse = "\uff1b")}, names_glue = "{.value}" 
-  #      )
-  #
-  # # # # # # # # # # # メイン # # # # # # # # # # # 
-  len <-            # 合致した数
-    x %>%
+}
+
+  #' 入力ごとに該当件数 n_match を数える
+  #' @noRd
+wc_count_match <- function(x, hub_master, hub_col){
+  x %>%
     dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
     dplyr::group_by(input) %>%
     dplyr::mutate(n_match = dplyr::n()) %>%
-    dplyr::select(input, n_match, hub_plus) %>%
+    dplyr::select(input, n_match, {{hub_col}}) %>%
     dplyr::distinct()
-  no_match <-        # 該当なし：messageを表示
-    len %>%
+}
+
+  #' 該当なし：message を表示する
+  #' @noRd
+wc_no_match <- function(len){
+  len %>%
     dplyr::filter(is.na(hub_plus)) %>%
     # "\u8a72\u5f53\u306a\u3057" は「該当なし」
     dplyr::transmute(input, n_match = 0, hub_plus = "\u8a72\u5f53\u306a\u3057", status = "\u8a72\u5f53\u306a\u3057")
-  len <-             # 該当なしを除去
-    len %>%
-    dplyr::filter(!is.na(hub_plus) ) %>%
+}
+
+  #' 該当なしを除く
+  #' @noRd
+wc_drop_no_match <- function(len, hub_col){
+  len %>%
+    dplyr::filter(!is.na({{hub_col}})) %>%
     dplyr::distinct(input, n_match)
-  single_match <-    # 1つだけ合致
-    len %>%
+}
+
+  #' 1 つだけ合致した和名に情報を付ける
+  #' @noRd
+wc_single_match <- function(len, hub, stts, id, fml, jn){
+  len %>%
     dplyr::filter(n_match == 1) %>%
     dplyr::left_join(hub,  by = c("input" = "all_name")) %>%  # hub 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
     dplyr::left_join(id,   by = c("input" = "all_name")) %>%
     dplyr::left_join(fml,  by = c("input" = "all_name")) %>%
     dplyr::left_join(jn,   by = "ID")
-  multi_match <-     # 2つ以上が合致
-    len %>%
+}
+
+  #' 2 つ以上が合致した和名に情報を付ける
+  #' @noRd
+wc_multi_match <- function(len, msg, stts, id, fml, jn){
+  len %>%
     dplyr::filter(n_match > 1)  %>%
     dplyr::left_join(msg,  by = c("input" = "all_name")) %>%  # msg 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
@@ -128,42 +179,49 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     dplyr::left_join(jn,   by = "ID") %>%
     dplyr::rename(hub_plus = message) %>%  # 他と合わせる
     dplyr::distinct()
-  # # # # # # # # # # # 横長変換(オプション) # # # # # # # # # # # 
-  if(wide & nrow(single_match)>0){
-    single_match <-   
-      single_match %>%
-      tidyr::pivot_wider(
-        id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
-        names_from = source, 
-        values_from = c(ID, common_name, dplyr::starts_with("scientific")),
-        names_glue = "{source}_{.value}"
+}
+
+  #' 1 件合致の結果を横長にする
+  #' @noRd
+wc_widen_single <- function(single_match, hub_col){
+  single_match %>%
+    tidyr::pivot_wider(
+      id_cols = c(input, n_match, {{hub_col}}, status, dplyr::starts_with("Family")),
+      names_from = source,
+      values_from = c(ID, common_name, dplyr::starts_with("scientific")),
+      names_glue = "{source}_{.value}"
+    )
+}
+
+  #' 2 件以上合致の結果を横長にする
+  #' @noRd
+wc_widen_multi <- function(multi_match){
+  multi_match %>%
+    tidyr::pivot_wider(
+      id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")),
+      names_from = source,
+      values_from = c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
+      names_glue = "{source}_{.value}",
+      values_fn = list(
+        ID                             = ~paste(., collapse = "\uff1b"),
+        common_name                    = ~paste(., collapse = "\uff1b"),
+        scientific_name_with_author    = ~paste(., collapse = "\uff1b"),
+        scientific_name_without_author = ~paste(., collapse = "\uff1b")
       )
-  }
-  if(wide & nrow(multi_match)>0){
-    multi_match <-   
-      multi_match %>%
-      tidyr::pivot_wider(
-        id_cols = c(input, n_match, hub_plus, status, dplyr::starts_with("Family")), 
-        names_from = source, 
-        values_from = c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
-        names_glue = "{source}_{.value}", 
-        values_fn = list(
-          ID                             = ~paste(., collapse = "\uff1b"),
-          common_name                    = ~paste(., collapse = "\uff1b"),
-          scientific_name_with_author    = ~paste(., collapse = "\uff1b"),
-          scientific_name_without_author = ~paste(., collapse = "\uff1b")
-        )
-      )  %>%
-      dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
-      dplyr::mutate(st = "status") %>%
-      tidyr::pivot_wider(
-        names_from = st, 
-        values_from = status,
-        values_fn = list(status = ~paste(., collapse = "\uff1b"))
-      )
-  }
-  # # # # # # # # # # # 結果の統合・並べ替え・出力 # # # # # # # # # # # 
-  res <- 
+    )  %>%
+    dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
+    dplyr::mutate(st = "status") %>%
+    tidyr::pivot_wider(
+      names_from = st,
+      values_from = status,
+      values_fn = list(status = ~paste(., collapse = "\uff1b"))
+    )
+}
+
+  #' 3 つの結果を統合し，空欄を整えて返す
+  #' @noRd
+wc_finish <- function(x, no_match, multi_match, single_match, wide){
+  res <-
     x %>%
     dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input") %>%
     dplyr::mutate(hub_plus = stringr::str_remove_all(hub_plus, "-")) %>%
