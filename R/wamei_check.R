@@ -152,7 +152,10 @@ wc_multi_match <- function(len, msg, stts, id, fml, jn){
     dplyr::filter(.data[["n_match"]] > 1)  %>%
     dplyr::left_join(msg,  by = c("input" = "all_name")) %>%  # msg 以外は single/multi共通
     dplyr::left_join(stts, by = c("input" = "all_name")) %>%
-    dplyr::left_join(id,   by = c("input" = "all_name")) %>%
+    # 2 件以上該当する和名は status もデータソースも複数あるので，
+    # ここは意図した many-to-many．横長にするときに「；」でつなぐ．
+    dplyr::left_join(id,   by = c("input" = "all_name"),
+                     relationship = "many-to-many") %>%
     dplyr::left_join(fml,  by = c("input" = "all_name")) %>%
     dplyr::left_join(jn,   by = "ID") %>%
     dplyr::rename(hub_plus = "message") %>%  # 他と合わせる
