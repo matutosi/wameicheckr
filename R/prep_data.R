@@ -50,13 +50,14 @@ read_hub_jn <- function(){
     hub_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30de\\u30c4")] <- 
     stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4(\\u30de\\u30c4\\u79d1)")
   hub_master$Hub_name[
-    hub_master$Hub_name=="\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4" &
+    hub_master$Hub_name==stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4") &
     hub_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30ad\\u30f3\\u30dd\\u30a6\\u30b2")] <- 
     stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4(\\u30ad\\u30f3\\u30dd\\u30a6\\u30b2\\u79d1)")
   jn_master$Family_name_JP[
     jn_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30c4\\u30eb\\u30dc\\u30e9\\u30f3")] <- 
-    stringi::stri_unescape_unicode("\u30ef\u30b9\u30ec\u30b0\u30b5") %>%   # ワスレグサ
-  list(hub_master=hub_master, jn_master=jn_master)
+    stringi::stri_unescape_unicode("\u30ef\u30b9\u30ec\u30b0\u30b5")   # ワスレグサ
+
+  list(hub_master = hub_master, jn_master = jn_master)
 }
 
   #' @describeIn prep_data_all Prepare reference data
