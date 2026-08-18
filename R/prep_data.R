@@ -29,9 +29,8 @@ prep_jn_data <- function(path){
 
   #' @describeIn prep_data_all Read hub and jn data
 read_hub_jn <- function(){
-  data(hub_master)
-  data(jn_master)
-
+  # LazyData: true なので data() は不要．
+  # data() は既定で .GlobalEnv へ読み込むため，呼ぶと利用者の環境を汚す．
   hub_master <- 
     hub_master %>%
     tibble::as_tibble() %>%

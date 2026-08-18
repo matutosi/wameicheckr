@@ -36,11 +36,10 @@
   #'
   #' @export
 search_similar_name <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
+  # LazyData: true なので data() は不要
   ref <- if(len==6){
-    data(ref_jp)
     ref_jp   # when wamei (Japanese name)
   } else {
-    data(ref_sc)
     ref_sc   # when scientific name
   }
   res <-
@@ -80,7 +79,7 @@ maybe <- function(x, len=1, min_dist=4, min_dist_norm=0.2){
   res <- 
     editdist_multi(x, reference, inp_esc = TRUE, ref_esc = TRUE, len = len) %>%
     dplyr::filter(editdist < min_dist | editdist_norm < min_dist_norm) %>%
-    dplyr::select(-all_of("len")) %>%
+    dplyr::select(-tidyselect::all_of("len")) %>%
     magrittr::set_colnames(c("input", "reference", "editdist", "editdist_norm"))
   dplyr::left_join(res, ref_sc, by=c("reference" = "name_sc")) %>%
     dplyr::distinct()
@@ -98,7 +97,7 @@ mosiya <- function(x, len=6, min_dist=3, min_dist_norm=0.2){
   res <- 
     editdist_multi(x, reference, inp_esc = FALSE, ref_esc = TRUE, len = len) %>%
     dplyr::filter(editdist < min_dist | editdist_norm < min_dist_norm) %>%
-    dplyr::select(-all_of("len")) %>%
+    dplyr::select(-tidyselect::all_of("len")) %>%
     magrittr::set_colnames(c("input", "reference", "editdist", "editdist_norm"))
   ref_jp <- dplyr::mutate(ref_jp, name_jp = stringi::stri_unescape_unicode(name_jp))
   dplyr::left_join(res, ref_jp, by=c("reference" = "name_jp")) %>%

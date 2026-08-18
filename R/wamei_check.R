@@ -172,7 +172,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     dplyr::mutate_if(is.character, tidyr::replace_na, "") %>%
     dplyr::mutate_if(is.character, stringr::str_replace_all, "^$", "-")
   if(wide){
-    res <- dplyr::select(res, !any_of(c("source", "ID", "common_name", "scientific_name_with_author", "scientific_name_without_author")))
+    res <- dplyr::select(res, !tidyselect::any_of(c("source", "ID", "common_name", "scientific_name_with_author", "scientific_name_without_author")))
   }
   res
 }
