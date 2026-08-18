@@ -41,7 +41,7 @@
 
 ### 現在の状態
 
-2026-08-18 11:35 更新．
+2026-08-18 11:39 更新．
 
 - `TODO.txt` の課題を順に実施し，**すべて完了**(バージョン 0.9.3)．
   0. 特性テストを先に用意．`wamei_check()` `wamei_check_ex()` にはテストが
@@ -147,6 +147,9 @@
 
 ### コミット履歴
 
+- `6c60c28` state that the id join is many-to-many (2026-08-18)
+- `15ff346` fix the stray pipe in read_hub_jn() (2026-08-18)
+- `7e80f30` record finishing the TODO list (2026-08-18)
 - `ef8e8ad` say which names are columns (2026-08-18)
 - `34c399c` merge the steps the two functions share (2026-08-18)
 - `4a08ae0` split wamei_check() and wamei_check_ex() into named steps (2026-08-18)
