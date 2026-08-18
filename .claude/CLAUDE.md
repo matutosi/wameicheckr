@@ -41,7 +41,7 @@
 
 ### 現在の状態
 
-2026-08-18 11:21 更新．
+2026-08-18 11:35 更新．
 
 - `TODO.txt` の課題を順に実施し，**すべて完了**(バージョン 0.9.3)．
   0. 特性テストを先に用意．`wamei_check()` `wamei_check_ex()` にはテストが
@@ -55,6 +55,16 @@
 - テストは 1,534 件すべて通過．`R CMD check`(tar ball)は **Status: OK**．
 - `ds = c(GL, SF, WF, YL)` は意図した tidy-eval なので**維持**(利用者の判断)．
   そのため `GL` `SF` `WF` `YL` は `R/globals.R` に残る．
+- 分割の途中で見つかった既存バグも修正(利用者の判断)．
+  - `read_hub_jn()` の余分な `%>%`．最後の代入が `list()` へパイプされていた．
+    ツルボラン → ワスレグサ の置換が効かず，戻り値も 3 要素の list だった．
+  - 同じブロックで `stri_unescape_unicode()` が 1 箇所抜けており，
+    シベリアカラマツ(キンポウゲ科)の判定が絶対に成立しなかった．
+  - `data/ref_jp.rda` `data/ref_sc.rda` を作り直した．**中身は同一**．
+    この 2 つは ID・和名・学名から作り，科名を使わないため．
+  - `wc_multi_match()` の `id` との join に `relationship = "many-to-many"`
+    を明示．2 件以上該当する和名は status もデータソースも複数あるので，
+    多対多が正しい．
 
 ### 測定結果(2026-08-18)
 
@@ -93,8 +103,7 @@
 
 ### 積み残し
 
-- `TODO.txt` を参照．0.10.0 での `search_similar_name()` 削除と，
-  下記の既存バグ 2 件．
+- `TODO.txt` を参照．残るのは 0.10.0 での `search_similar_name()` 削除のみ．
 - `R CMD check` はソースディレクトリを直接指定すると
   `Required fields missing or empty: 'Author' 'Maintainer'` で落ちる．
   `Authors@R` から展開されるのは `R CMD build` のときなので，
@@ -128,8 +137,13 @@
 - **`:=` は dplyr から export されていない**(rlang のもの)．列名を動的に
   付けるためだけに rlang を Imports へ足すのは避け，`transmute()` で仮の
   名前を付けてから `names()` で差し替えた(列順を変えないため)．
-- `wamei_check()` は 2 件以上該当する和名があると dplyr の
-  many-to-many join 警告を出す．元からの挙動で，`TODO.txt` に回した．
+- **many-to-many の警告が出る join を特定するには，段階の関数を順に呼ぶ**．
+  `wamei_check()` をそのまま呼んでも警告が表に出ないことがあり，
+  `wc_multi_match()` の中の `id` との join だと分かるまで手間取った．
+  `relationship` は本当に多対多の join だけに書く(全部に書くと検査が無効になる)．
+- **`read_hub_jn()` に行末の余分な `%>%` があった**．代入文の右辺が
+  `list()` へパイプされ，`x[i] <- value` の値がそのまま戻り値になるため，
+  呼び出し側からは正常に見えていた．行末のパイプは目視で見つけにくい．
 
 ### コミット履歴
 
