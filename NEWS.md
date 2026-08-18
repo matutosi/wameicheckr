@@ -64,8 +64,8 @@
   * `knitr` `rmarkdown` `tidyverse` を `Imports` から `Suggests` へ移動．
     いずれもパッケージ本体では使っていない．
 
-  * `R/globals.R`：列名による no visible binding を
-    `utils::globalVariables()` で宣言．TODO.txt の NSE 修正までの暫定対応．
+  * `R/globals.R`：no visible binding を `utils::globalVariables()` で宣言．
+    列名の分は，同じ 0.9.3 の NSE 修正で不要になった(下記)．
 
 * `DESCRIPTION`：`Depends` を `R (>= 4.1.0)` に変更．
   `R/editdist_multi.R` がネイティブパイプ `|>` を使っているため．
