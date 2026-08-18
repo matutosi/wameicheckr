@@ -11,5 +11,10 @@ Check wamei of vascular plant species by wamei checklist. You can dowonload lwam
 \author{
 \strong{Maintainer}: Toshikazu Matsumura \email{matutosi@gmail.com}
 
+Authors:
+\itemize{
+  \item Toshikazu Matsumura \email{matutosi@gmail.com}
+}
+
 }
 \keyword{internal}
