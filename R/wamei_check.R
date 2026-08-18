@@ -40,7 +40,9 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   fml  <- wc_family_table(hub_master)
   # 該当件数で 0 件・1 件・2 件以上に振り分ける
   len          <- wc_count_match(x, hub_master, hub_plus)
-  no_match     <- wc_no_match(len)
+  no_match     <- wc_no_match(len, hub_plus,
+                              "\u8a72\u5f53\u306a\u3057",   # 該当なし
+                              "\u8a72\u5f53\u306a\u3057")   # 該当なし
   len          <- wc_drop_no_match(len, hub_plus)
   single_match <- wc_single_match(len, hub, stts, id, fml, jn)
   multi_match  <- wc_multi_match(len, msg, stts, id, fml, jn)
@@ -127,34 +129,6 @@ wc_family_table <- function(hub_master){
     )
 }
 
-  #' 入力ごとに該当件数 n_match を数える
-  #' @noRd
-wc_count_match <- function(x, hub_master, hub_col){
-  x %>%
-    dplyr::left_join(hub_master, by = c("input" = "all_name")) %>%
-    dplyr::group_by(input) %>%
-    dplyr::mutate(n_match = dplyr::n()) %>%
-    dplyr::select(input, n_match, {{hub_col}}) %>%
-    dplyr::distinct()
-}
-
-  #' 該当なし：message を表示する
-  #' @noRd
-wc_no_match <- function(len){
-  len %>%
-    dplyr::filter(is.na(hub_plus)) %>%
-    # "\u8a72\u5f53\u306a\u3057" は「該当なし」
-    dplyr::transmute(input, n_match = 0, hub_plus = "\u8a72\u5f53\u306a\u3057", status = "\u8a72\u5f53\u306a\u3057")
-}
-
-  #' 該当なしを除く
-  #' @noRd
-wc_drop_no_match <- function(len, hub_col){
-  len %>%
-    dplyr::filter(!is.na({{hub_col}})) %>%
-    dplyr::distinct(input, n_match)
-}
-
   #' 1 つだけ合致した和名に情報を付ける
   #' @noRd
 wc_single_match <- function(len, hub, stts, id, fml, jn){
@@ -179,18 +153,6 @@ wc_multi_match <- function(len, msg, stts, id, fml, jn){
     dplyr::left_join(jn,   by = "ID") %>%
     dplyr::rename(hub_plus = message) %>%  # 他と合わせる
     dplyr::distinct()
-}
-
-  #' 1 件合致の結果を横長にする
-  #' @noRd
-wc_widen_single <- function(single_match, hub_col){
-  single_match %>%
-    tidyr::pivot_wider(
-      id_cols = c(input, n_match, {{hub_col}}, status, dplyr::starts_with("Family")),
-      names_from = source,
-      values_from = c(ID, common_name, dplyr::starts_with("scientific")),
-      names_glue = "{source}_{.value}"
-    )
 }
 
   #' 2 件以上合致の結果を横長にする
@@ -222,8 +184,7 @@ wc_widen_multi <- function(multi_match){
   #' @noRd
 wc_finish <- function(x, no_match, multi_match, single_match, wide){
   res <-
-    x %>%
-    dplyr::left_join(dplyr::bind_rows(no_match, multi_match, single_match), by = "input") %>%
+    wc_bind_results(x, no_match, multi_match, single_match) %>%
     dplyr::mutate(hub_plus = stringr::str_remove_all(hub_plus, "-")) %>%
     dplyr::mutate_if(is.character, tidyr::replace_na, "") %>%
     dplyr::mutate_if(is.character, stringr::str_replace_all, "^$", "-")
