@@ -14,11 +14,18 @@ editdist_norm(s1, s2, editdist, len = 1L)
 
 \item{reference}{Vector of string to be compared.}
 
+\item{inp_esc}{Logical. TRUE when \code{input} is already escaped by
+\code{stringi::stri_escape_unicode()}. Used only when \code{len} is 6.}
+
+\item{ref_esc}{Logical. TRUE when \code{reference} is already escaped.}
+
 \item{len}{integer 1: when checking scientific name, 6: when checking wamei (Japanese name).}
 
 \item{s1}{A string to be compared.}
 
 \item{s2}{A string to be compared.}
+
+\item{editdist}{Integer. Edit distance of \code{s1} and \code{s2}.}
 }
 \value{
 Tibble.

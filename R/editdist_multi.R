@@ -4,9 +4,13 @@
 #' 
 #' @param input Vector of string to be compared. 
 #' @param reference Vector of string to be compared. 
+#' @param inp_esc Logical. TRUE when `input` is already escaped by 
+#'   `stringi::stri_escape_unicode()`. Used only when `len` is 6. 
+#' @param ref_esc Logical. TRUE when `reference` is already escaped. 
 #' @param len integer 1: when checking scientific name, 6: when checking wamei (Japanese name).
 #' @param s1 A string to be compared. 
 #' @param s2 A string to be compared. 
+#' @param editdist Integer. Edit distance of `s1` and `s2`. 
 #' 
 #' @return Tibble. 
 #' 
@@ -35,12 +39,14 @@ editdist_multi <- function(input, reference,
     if( ! inp_esc ) input     <- stringi::stri_escape_unicode(input)
     if( ! ref_esc ) reference <- stringi::stri_escape_unicode(reference)
   }
-  # editdist_pairs() は mutate() の外で呼ぶ．中では len が列名として解決されるため
-  ed <- editdist_pairs(input, reference, len)
-  tidyr::expand_grid(s1 = input, s2 = reference) |>
-    dplyr::mutate(len = len) |>
-    dplyr::mutate(editdist      = ed) |>
-    dplyr::mutate(editdist_norm = editdist_norm(s1, s2, editdist, len)) |>
+  # 列は mutate() を使わずに直接作る．mutate() の中では len が列名として
+  # 解決されてしまい，s1 s2 は R CMD check の no visible binding になるため．
+  res <- tidyr::expand_grid(s1 = input, s2 = reference)
+  res[["len"]]           <- len
+  res[["editdist"]]      <- editdist_pairs(input, reference, len)
+  res[["editdist_norm"]] <- editdist_norm(res[["s1"]], res[["s2"]],
+                                          res[["editdist"]], len)
+  res |>
     dplyr::mutate_at(c("s1", "s2"), stringi::stri_unescape_unicode)
 }
 
