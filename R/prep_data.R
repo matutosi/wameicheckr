@@ -58,7 +58,7 @@ read_hub_jn <- function(){
     stringi::stri_unescape_unicode("\\u30b7\\u30d9\\u30ea\\u30a2\\u30ab\\u30e9\\u30de\\u30c4(\\u30ad\\u30f3\\u30dd\\u30a6\\u30b2\\u79d1)")
   jn_master$Family_name_JP[
     jn_master$Family_name_JP==stringi::stri_unescape_unicode("\\u30c4\\u30eb\\u30dc\\u30e9\\u30f3")] <- 
-    stringi::stri_unescape_unicode("ワスレグサ") %>%
+    stringi::stri_unescape_unicode("\u30ef\u30b9\u30ec\u30b0\u30b5") %>%   # ワスレグサ
   list(hub_master=hub_master, jn_master=jn_master)
 }
 

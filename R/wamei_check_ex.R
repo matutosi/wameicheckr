@@ -69,7 +69,8 @@ wamei_check_ex <- function(
   no_match <-        # show message
     len %>%
     dplyr::filter(is.na(Hub_name)) %>%
-    dplyr::transmute(input, n_match = 0, Hub_name = "！候補なし", status = "！個別に検討")
+    # "\uff01\u5019\u88dc\u306a\u3057" は「！候補なし」，"\uff01\u500b\u5225\u306b\u691c\u8a0e" は「！個別に検討」
+    dplyr::transmute(input, n_match = 0, Hub_name = "\uff01\u5019\u88dc\u306a\u3057", status = "\uff01\u500b\u5225\u306b\u691c\u8a0e")
   len <-             # remove no match
     len %>%
     dplyr::filter(!is.na(Hub_name) ) %>%
@@ -77,7 +78,7 @@ wamei_check_ex <- function(
   multi_match <-     # match > 1
     len %>%
     dplyr::filter(n_match>1)  %>%
-    dplyr::transmute(input, n_match, status = "！個別に検討") %>%
+    dplyr::transmute(input, n_match, status = "\uff01\u500b\u5225\u306b\u691c\u8a0e") %>%
     dplyr::distinct() %>%
     dplyr::left_join(msg, by = c("input" = "all_name")) %>%
     dplyr::rename(Hub_name = message)

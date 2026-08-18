@@ -21,7 +21,7 @@ arrange_hub_name <- function(x){
   if(! is.character(x)) return("")
   x <-
     x %>%
-    stringr::str_split("，|；|/") %>%
+    stringr::str_split("\uff0c|\uff1b|/") %>%   # 全角カンマ・全角セミコロン・スラッシュ
     purrr::map(sort) %>%
     purrr::map(unique) %>%
     purrr::map(function(x) if(length(x)==0) "" else x)

@@ -57,7 +57,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
     dplyr::mutate(msg = "message") %>%
     tidyr::pivot_wider(
       id_cols = all_name, names_from = msg, values_from = hub_plus, 
-      values_fn = list(hub_plus = ~paste(., collapse = "；"))
+      values_fn = list(hub_plus = ~paste(., collapse = "\uff1b"))
     ) %>%
     dplyr::mutate(message = arrange_hub_name(message)) %>%
     dplyr::mutate(message = stringr::str_remove(message, "^/")) %>%
@@ -83,7 +83,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
       id_cols = all_name, 
       names_from = tmp,  
       values_from = dplyr::starts_with("Family"), 
-      values_fn = function(x) {paste(x, collapse = "；")}, 
+      values_fn = function(x) {paste(x, collapse = "\uff1b")}, 
       names_glue = "{.value}" 
     )
   #   fml <-     # familyを分離
@@ -92,7 +92,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   #     dplyr::distinct() %>%
   #     tidyr::pivot_wider(
   #       id_cols = all_name, values_from = dplyr::starts_with("Family"), 
-  #       values_fn = function(x) {paste(x, collapse = "；")}, names_glue = "{.value}" 
+  #       values_fn = function(x) {paste(x, collapse = "\uff1b")}, names_glue = "{.value}" 
   #      )
   #
   # # # # # # # # # # # メイン # # # # # # # # # # # 
@@ -106,7 +106,8 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   no_match <-        # 該当なし：messageを表示
     len %>%
     dplyr::filter(is.na(hub_plus)) %>%
-    dplyr::transmute(input, n_match = 0, hub_plus = "該当なし", status = "該当なし")
+    # "\u8a72\u5f53\u306a\u3057" は「該当なし」
+    dplyr::transmute(input, n_match = 0, hub_plus = "\u8a72\u5f53\u306a\u3057", status = "\u8a72\u5f53\u306a\u3057")
   len <-             # 該当なしを除去
     len %>%
     dplyr::filter(!is.na(hub_plus) ) %>%
@@ -149,10 +150,10 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
         values_from = c(ID, common_name, scientific_name_with_author, scientific_name_without_author),
         names_glue = "{source}_{.value}", 
         values_fn = list(
-          ID                             = ~paste(., collapse = "；"),
-          common_name                    = ~paste(., collapse = "；"),
-          scientific_name_with_author    = ~paste(., collapse = "；"),
-          scientific_name_without_author = ~paste(., collapse = "；")
+          ID                             = ~paste(., collapse = "\uff1b"),
+          common_name                    = ~paste(., collapse = "\uff1b"),
+          scientific_name_with_author    = ~paste(., collapse = "\uff1b"),
+          scientific_name_without_author = ~paste(., collapse = "\uff1b")
         )
       )  %>%
       dplyr::mutate_at(dplyr::vars(dplyr::contains("common_name")), arrange_hub_name) %>%  # vars() は必須
@@ -160,7 +161,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
       tidyr::pivot_wider(
         names_from = st, 
         values_from = status,
-        values_fn = list(status = ~paste(., collapse = "；"))
+        values_fn = list(status = ~paste(., collapse = "\uff1b"))
       )
   }
   # # # # # # # # # # # 結果の統合・並べ替え・出力 # # # # # # # # # # # 
