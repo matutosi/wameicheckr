@@ -31,12 +31,10 @@ wamei_check_ex <- function(
   # # # # # # # # # # # preparations # # # # # # # # # # # 
   hub_master <-          # modify column names
     hub_master %>% 
-    dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_remove_all(., "[()]"))
+    clean_colnames()
   jn_master <-           # modify column names
     jn_master %>% 
-    dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_remove_all(., "[()]"))
+    clean_colnames()
   msg <-          # divide message alone
     hub_master %>%
     dplyr::select(all_name, message) %>%

@@ -33,8 +33,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   x <- tibble::tibble(input = x)
   jn_master <-      # 列名の修正
     jn_master %>% 
-    dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_remove_all(., "[()]"))
+    clean_colnames()
   jn <-             # another_name_ID == 0
     jn_master %>%
     dplyr::filter(another_name_ID == 0) %>%
@@ -43,8 +42,7 @@ wamei_check <- function(  # 和名チェク(エクセルを改変)
   hub_master <-      # 列名の修正
     hub_master %>% 
     dplyr::filter(all_name %in% x$input) %>%
-    dplyr::rename_with(~stringr::str_replace_all(., "[ /]", "_")) %>%
-    dplyr::rename_with(~stringr::str_remove_all(., "[()]")) %>%
+    clean_colnames() %>%
     dplyr::filter(dplyr::if_any({{ds}}, ~!is.na(.x))) %>%
   #     select_ds(hub_master = ., ds = {{ds}}) %>%
     dplyr::mutate(hub_plus = hub2plus(Hub_name, lato_stricto)) %>%
