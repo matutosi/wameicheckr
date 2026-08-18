@@ -1,6 +1,21 @@
 # 更新履歴
 
-## wameicheckr (development version)
+## wameicheckr 0.9.3
+
+* `search_similar_name()`：**非推奨**．0.10.0 で削除する．
+  学名は `maybe()`，和名は `mosiya()` を使う．
+
+* `wamei_check()` `wamei_check_ex()`：段階ごとの内部関数に分割．
+  返す内容は従来と同じ(特性テストで確認)．
+  共通の 5 段階は `R/wamei_check_parts.R` にまとめた．
+  列名の正規化は `clean_colnames()` に切り出した．
+
+* 非標準評価(NSE)で裸に書いていた列名を `.data[["col"]]` と文字列に変更．
+  これにより，2 件以上該当する和名が 1 つも無いときに `message` 列ができず，
+  裸の `message` が `base::message` に解決されていたバグが見つかったので直した．
+
+* `tests/testthat/test-wamei-check.R`：`wamei_check()` `wamei_check_ex()` の
+  特性テストを追加．
 
 * `editdist_multi()`：ペアごとの計算を C++ 側へ移して高速化．
   和名 100 x 参照 2,000 で約 6 倍，50 x 500 で約 18 倍．

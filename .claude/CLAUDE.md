@@ -4,7 +4,7 @@
 
 - リポジトリ: https://github.com/matutosi/wameicheckr
 - ブランチ: `main` のみ(分岐せず main で作業する)
-- 現行バージョン: DESCRIPTION 0.9.2
+- 現行バージョン: DESCRIPTION 0.9.3
 
 ## 構成
 
@@ -12,12 +12,18 @@
   - `wamei_check.R` `wamei_check_ex.R`: 和名チェックの主関数
   - `editdist_multi.R`: 編集距離(複数対応)と標準化編集距離
   - `arrange_hub_name.R` `fill_another_name_id.R` `hub2plus.R` `prep_data.R`: 下請け
-  - `search_similar_name.R`: 廃止予定(TODO.txt 参照)
+  - `maybe.R`: `maybe()` `mosiya()`．類似した学名・和名の検索
+  - `search_similar_name.R`: 0.9.3 で非推奨．0.10.0 で削除(TODO.txt 参照)
+  - `wamei_check_parts.R`: `wamei_check()` と `wamei_check_ex()` の共通の段階
+  - `clean_colnames.R`: チェックリストの列名の正規化
+  - `globals.R`: `utils::globalVariables()`．列名以外だけが残っている
   - `RcppExports.R`: 自動生成．手で編集しない
 - `src/`: Rcpp の C++ コード
   - `editdist.cpp`: `str2strvec()` `editdist()` (DP 版)
   - `RcppExports.cpp`: 自動生成．手で編集しない
 - `tools/`: パッケージに含めない実験・下書き置き場(`.Rbuildignore` 対象外だが `R CMD build` には入らない配置)
+- `tests/testthat/`: テスト．`test-wamei-check.R` は特性テストで，
+  スナップショットは CRAN では skip される．`NOT_CRAN=true` で走らせる
 - `data/` `man/` `vignettes/` `inst/`: データ・ドキュメント
 - `archive/` `zip/`: 過去のビルド成果物
 - `TODO.txt`: 課題メモ(git 管理外)
@@ -35,30 +41,20 @@
 
 ### 現在の状態
 
-2026-08-18 10:43 更新．
+2026-08-18 11:21 更新．
 
-- `editdist_multi()` の高速化(済)．`src/editdist_bp.cpp` の `editdist_pairs()` が
-  全組み合わせを C++ 内で一括計算する．`editdist_bp()` は Myers の bit-parallel 法．
-  どちらも非 export の内部関数(`//' @noRd`)．
-- 積み残しだった 3 件を実施(済)．
-  - `bp_min` の既定値を実データで測り直し，16 → **18**．
-  - `editdist()` の可変長配列を，表を 2 行だけ持つ実装に差し替え．
-    共通部分は `src/editdist.h` 経由で `editdist_bp.cpp` と共有．
-  - `roxygen2` 8.1.0 で `roxygenise()` を実行．差分は 3 ファイル 7 行だけだった．
-    `RoxygenNote` は `Config/roxygen2/version` に置き換わる．
-- `R CMD check`(tar ball)で出た指摘のうち，次を直した．
-  - `.claude` が tar ball に入る → `.Rbuildignore` に `^\.claude$` を追加．
-  - `editdist_multi()` の `s1` `s2` が no visible binding → `mutate()` をやめて
-    列を直接作る形に変更．
-  - `editdist_multi.Rd` の未記載引数(`inp_esc` `ref_esc` `editdist`)→ `@param` を追加．
-  - `Depends: R (>= 3.5.0)` だが `R/editdist_multi.R` がネイティブパイプ `|>` を
-    使っている(コミット `3276159` から) → `R (>= 4.1.0)` に変更．
-- テストは 1,517 件すべて通過．`editdist()` 自体は `utils::adist()` を正解として
-  独立に検証している(高速版のテストは `editdist()` を正解とするため)．
-- `R CMD check`(tar ball, `--no-manual`)は **Status: OK**．
-  着手前は 4 WARNINGs, 3 NOTEs だった．解消の内訳は下記．
-- 未着手の課題は `TODO.txt` にある
-  (`wamei_check()` `wamei_check_ex()` の分割・NSE 修正，`search_similar_name()` の廃止)．
+- `TODO.txt` の課題を順に実施し，**すべて完了**(バージョン 0.9.3)．
+  0. 特性テストを先に用意．`wamei_check()` `wamei_check_ex()` にはテストが
+     無く，分割の前後で出力が変わらないことを確かめる手段が無かった．
+  1. `search_similar_name()` を非推奨に(`.Deprecated()`)．削除は 0.10.0．
+     `maybe()` `mosiya()` は `R/maybe.R` へ移した．
+  2. 列名の正規化を `clean_colnames()` に切り出し(6 箇所の重複)．
+  3. 2 つの関数を同じ段階名の内部関数に分割．
+  4. 本当に一致する 5 段階を `R/wamei_check_parts.R` にまとめた．
+  5. NSE を `.data[["col"]]` と文字列に修正．`R/globals.R` は 27 → 12 項目．
+- テストは 1,534 件すべて通過．`R CMD check`(tar ball)は **Status: OK**．
+- `ds = c(GL, SF, WF, YL)` は意図した tidy-eval なので**維持**(利用者の判断)．
+  そのため `GL` `SF` `WF` `YL` は `R/globals.R` に残る．
 
 ### 測定結果(2026-08-18)
 
@@ -97,10 +93,8 @@
 
 ### 積み残し
 
-- `TODO.txt` の課題(`wamei_check()` `wamei_check_ex()` の分割・NSE 修正，
-  `search_similar_name()` の廃止)．
-  NSE はいま `R/globals.R` の `utils::globalVariables()` で NOTE を
-  止めているだけの暫定対応．済ませれば列名の分は不要になる．
+- `TODO.txt` を参照．0.10.0 での `search_similar_name()` 削除と，
+  下記の既存バグ 2 件．
 - `R CMD check` はソースディレクトリを直接指定すると
   `Required fields missing or empty: 'Author' 'Maintainer'` で落ちる．
   `Authors@R` から展開されるのは `R CMD build` のときなので，
@@ -122,8 +116,30 @@
   (`Authors@R` の展開が `R CMD build` のときのため)．
   vignette も込みで測るので `--no-build-vignettes` は付けない．
 
+### 分割で分かったこと(2026-08-18)
+
+- **特性テストが先に要る**．`wamei_check()` は `data/` のデータだけで
+  no_match / single / multi・wide / long・`ds` の全分岐に到達できる．
+  `expect_snapshot_value(style = "serialize")` は CRAN では skip されるので，
+  手元では `NOT_CRAN=true` を付けて走らせる．
+- **NSE を明示にすると隠れたバグが出る**．2 件以上該当する和名が無いと
+  `pivot_wider()` が `message` 列を作らず，裸の `message` が `base::message`
+  に解決されていた．行数が 0 だったので誤りに気づけなかった．
+- **`:=` は dplyr から export されていない**(rlang のもの)．列名を動的に
+  付けるためだけに rlang を Imports へ足すのは避け，`transmute()` で仮の
+  名前を付けてから `names()` で差し替えた(列順を変えないため)．
+- `wamei_check()` は 2 件以上該当する和名があると dplyr の
+  many-to-many join 警告を出す．元からの挙動で，`TODO.txt` に回した．
+
 ### コミット履歴
 
+- `ef8e8ad` say which names are columns (2026-08-18)
+- `34c399c` merge the steps the two functions share (2026-08-18)
+- `4a08ae0` split wamei_check() and wamei_check_ex() into named steps (2026-08-18)
+- `02bbd92` extract clean_colnames() (2026-08-18)
+- `d8e0dcc` deprecate search_similar_name() (2026-08-18)
+- `aea160e` pin down what wamei_check() returns today (2026-08-18)
+- `5690c2d` record that R CMD check is now clean (2026-08-18)
 - `036a175` declare the column names used by NSE (2026-08-18)
 - `6052d2b` move knitr, rmarkdown and tidyverse to Suggests (2026-08-18)
 - `a591799` stop calling data() and qualify tidyselect (2026-08-18)
