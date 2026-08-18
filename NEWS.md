@@ -21,6 +21,23 @@
 * `editdist_norm()`：`max()` を `pmax()` に変更してベクトルに対応．
   1 組ずつ渡したときの結果は従来と同じ．
 
+* `R CMD check` の指摘をすべて解消(**Status: OK**)．
+
+  * 非 ASCII の文字列リテラル 15 か所を `\uxxxx` へ変更．
+    `R/arrange_hub_name.R` `R/prep_data.R` `R/wamei_check.R`
+    `R/wamei_check_ex.R`．コメントは日本語のまま．
+
+  * `data(hub_master)` などの呼び出しを削除．`LazyData: true` なので不要で，
+    `data()` は既定で `.GlobalEnv` へ読み込むため，利用者の環境を汚していた．
+
+  * `all_of()` `any_of()` に `tidyselect::` を付与．
+
+  * `knitr` `rmarkdown` `tidyverse` を `Imports` から `Suggests` へ移動．
+    いずれもパッケージ本体では使っていない．
+
+  * `R/globals.R`：列名による no visible binding を
+    `utils::globalVariables()` で宣言．TODO.txt の NSE 修正までの暫定対応．
+
 * `DESCRIPTION`：`Depends` を `R (>= 4.1.0)` に変更．
   `R/editdist_multi.R` がネイティブパイプ `|>` を使っているため．
 
