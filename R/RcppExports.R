@@ -20,3 +20,39 @@ editdist <- function(s1, s2, len = 1L) {
     .Call(`_wameicheckr_editdist`, s1, s2, len)
 }
 
+#' Editing distance of all combinations of two string vectors
+#' 
+#' Computes every pair in C++, so that R does not have to loop over pairs.
+#' The result is ordered as `tidyr::expand_grid(s1 = input, s2 = reference)`.
+#' 
+#' @param input Vector of string to be compared. 
+#' @param reference Vector of string to be compared. 
+#' @param len Dividing length of string. 
+#' @param bp_min Minimum length (in tokens) to use the bit-parallel
+#'   algorithm.  0 means never.
+#' 
+#' @return Integer vector of `length(input) * length(reference)`. 
+#' 
+#' @noRd
+editdist_pairs <- function(input, reference, len = 1L, bp_min = 16L) {
+    .Call(`_wameicheckr_editdist_pairs`, input, reference, len, bp_min)
+}
+
+#' Editing distance with bit-parallel algorithm
+#' 
+#' Returns the same value as `editdist()`.  Kept for testing and for
+#' tuning `bp_min`; `editdist_pairs()` is what the package uses.
+#' 
+#' @param s1 A string to be compared. 
+#' @param s2 A string to be compared. 
+#' @param len Dividing length of string. 
+#' @param bp_min Minimum length (in tokens) to use the bit-parallel
+#'   algorithm.  0 means never.
+#' 
+#' @return Integer. 
+#' 
+#' @noRd
+editdist_bp <- function(s1, s2, len = 1L, bp_min = 16L) {
+    .Call(`_wameicheckr_editdist_bp`, s1, s2, len, bp_min)
+}
+

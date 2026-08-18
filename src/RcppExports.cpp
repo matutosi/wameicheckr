@@ -35,10 +35,40 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// editdist_pairs
+IntegerVector editdist_pairs(std::vector<std::string> input, std::vector<std::string> reference, int len, int bp_min);
+RcppExport SEXP _wameicheckr_editdist_pairs(SEXP inputSEXP, SEXP referenceSEXP, SEXP lenSEXP, SEXP bp_minSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< int >::type len(lenSEXP);
+    Rcpp::traits::input_parameter< int >::type bp_min(bp_minSEXP);
+    rcpp_result_gen = Rcpp::wrap(editdist_pairs(input, reference, len, bp_min));
+    return rcpp_result_gen;
+END_RCPP
+}
+// editdist_bp
+int editdist_bp(std::string s1, std::string s2, int len, int bp_min);
+RcppExport SEXP _wameicheckr_editdist_bp(SEXP s1SEXP, SEXP s2SEXP, SEXP lenSEXP, SEXP bp_minSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s1(s1SEXP);
+    Rcpp::traits::input_parameter< std::string >::type s2(s2SEXP);
+    Rcpp::traits::input_parameter< int >::type len(lenSEXP);
+    Rcpp::traits::input_parameter< int >::type bp_min(bp_minSEXP);
+    rcpp_result_gen = Rcpp::wrap(editdist_bp(s1, s2, len, bp_min));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_wameicheckr_str2strvec", (DL_FUNC) &_wameicheckr_str2strvec, 2},
     {"_wameicheckr_editdist", (DL_FUNC) &_wameicheckr_editdist, 3},
+    {"_wameicheckr_editdist_pairs", (DL_FUNC) &_wameicheckr_editdist_pairs, 4},
+    {"_wameicheckr_editdist_bp", (DL_FUNC) &_wameicheckr_editdist_bp, 4},
     {NULL, NULL, 0}
 };
 

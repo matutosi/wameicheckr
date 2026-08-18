@@ -35,15 +35,17 @@ editdist_multi <- function(input, reference,
     if( ! inp_esc ) input     <- stringi::stri_escape_unicode(input)
     if( ! ref_esc ) reference <- stringi::stri_escape_unicode(reference)
   }
+  # editdist_pairs() は mutate() の外で呼ぶ．中では len が列名として解決されるため
+  ed <- editdist_pairs(input, reference, len)
   tidyr::expand_grid(s1 = input, s2 = reference) |>
-    dplyr::mutate(len = len) %>%
-    dplyr::mutate(editdist      = purrr::pmap_int(., editdist)) %>%
-    dplyr::mutate(editdist_norm = purrr::pmap_dbl(., editdist_norm)) %>%
+    dplyr::mutate(len = len) |>
+    dplyr::mutate(editdist      = ed) |>
+    dplyr::mutate(editdist_norm = editdist_norm(s1, s2, editdist, len)) |>
     dplyr::mutate_at(c("s1", "s2"), stringi::stri_unescape_unicode)
 }
 
 #' @describeIn editdist_multi Compute normalised edit distance
 #' @export
 editdist_norm <- function(s1, s2, editdist, len = 1L){
-  editdist / max(stringr::str_length(s1), stringr::str_length(s2)) * len
+  editdist / pmax(stringr::str_length(s1), stringr::str_length(s2)) * len
 }
