@@ -148,40 +148,9 @@
 
 ### 現在の状態
 
-2026-08-19 02:31 更新．
-
-- 旧 `TODO.txt` の課題を順に実施し，**すべて完了**(バージョン 0.9.3)．
-  0. 特性テストを先に用意．`wamei_check()` `wamei_check_ex()` にはテストが
-     無く，分割の前後で出力が変わらないことを確かめる手段が無かった．
-  1. `search_similar_name()` を非推奨に(`.Deprecated()`)．削除は 0.10.0．
-     `maybe()` `mosiya()` は `R/maybe.R` へ移した．
-  2. 列名の正規化を `clean_colnames()` に切り出し(6 箇所の重複)．
-  3. 2 つの関数を同じ段階名の内部関数に分割．
-  4. 本当に一致する 5 段階を `R/wamei_check_parts.R` にまとめた．
-  5. NSE を `.data[["col"]]` と文字列に修正．`R/globals.R` は 27 → 12 項目．
-- テストは 1,534 件すべて通過．`R CMD check`(tar ball)は **Status: OK**．
-- `ds = c(GL, SF, WF, YL)` は意図した tidy-eval なので**維持**(利用者の判断)．
-  そのため `GL` `SF` `WF` `YL` は `R/globals.R` に残る．
-- 分割の途中で見つかった既存バグも修正(利用者の判断)．
-  - `read_hub_jn()` の余分な `%>%`．最後の代入が `list()` へパイプされていた．
-    ツルボラン → ワスレグサ の置換が効かず，戻り値も 3 要素の list だった．
-  - 同じブロックで `stri_unescape_unicode()` が 1 箇所抜けており，
-    シベリアカラマツ(キンポウゲ科)の判定が絶対に成立しなかった．
-  - `data/ref_jp.rda` `data/ref_sc.rda` を作り直した．**中身は同一**．
-    この 2 つは ID・和名・学名から作り，科名を使わないため．
-  - `wc_multi_match()` の `id` との join に `relationship = "many-to-many"`
-    を明示．2 件以上該当する和名は status もデータソースも複数あるので，
-    多対多が正しい．
-- 旧 `TODO.txt`(git 管理外)を廃止し，内容をこのファイルの
-  「これからの作業」へ統合した．課題の置き場はここ 1 つにする．
-  `.gitignore` と `.Rbuildignore` の `TODO.txt` の行も消した．
-- `TODO.txt` 廃止に伴う設定(`.Rbuildignore` `.gitignore`)と，記録の更新
-  (`NEWS.md` `.claude/CLAUDE.md`)を別々のコミットに分けた．
-  R のコードは触っていないので，テスト 1,534 件通過・
-  `R CMD check` **Status: OK** は上のまま有効．
-- 次は「これからの作業」の **1. テストを足す**から始める(2 と 4 の前提)．
-
-### 詳しくはこちら
-
-高速化の実測値・R CMD check の手当て・分割で分かったこと・コミット履歴
-(2026-08-18 時点)は [.claude/notes/history.md](notes/history.md) にある．
+- 2026-08-19 02:31 更新
+  旧 `TODO.txt` の課題(0〜5)を順に実施し，**すべて完了**(バージョン 0.9.3)．
+  テストは 1,534 件すべて通過．`R CMD check`(tar ball)は **Status: OK**．
+  次は「これからの作業」の **1. テストを足す**から始める(2 と 4 の前提)．
+- それ以前は [notes/history.md](notes/history.md) を見る(高速化の実測値・
+  R CMD check の手当て・分割で分かったこと・コミット履歴も同じファイル)．
