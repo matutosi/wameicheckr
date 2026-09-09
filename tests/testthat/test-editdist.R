@@ -97,3 +97,30 @@ test_that("editdist_norm() はベクトルを受け取れる", {
   expect_equal(editdist_norm(c("abcde", "abc"), c("abcd", "xyz"), c(1L, 3L)),
                c(1 / 5, 3 / 3))
 })
+
+test_that("str2strvec() は len 文字ずつに切り分ける", {
+  expect_equal(str2strvec("abcdef"), c("a", "b", "c", "d", "e", "f"))
+  expect_equal(str2strvec("abcdef", 2), c("ab", "cd", "ef"))
+  # 割り切れない分は最後に短いまま残る
+  expect_equal(str2strvec("abcdef", 4), c("abcd", "ef"))
+  # len が長さを超えても 1 要素になるだけ
+  expect_equal(str2strvec("abc", 6), "abc")
+  expect_equal(str2strvec(""), character(0))
+})
+
+test_that("str2strvec() は len = 6 でエスケープした和名を 1 文字ずつに切る", {
+  w <- stringi::stri_unescape_unicode("\u30cf\u30c3\u30ab\u30b0\u30b5")
+  res <- str2strvec(stringi::stri_escape_unicode(w), 6L)
+  expect_length(res, 5L)
+  expect_equal(res[1], "\\u30cf")
+  expect_equal(stringi::stri_unescape_unicode(paste0(res, collapse = "")), w)
+})
+
+test_that("str2strvec() は editdist() の切り分けと一致する", {
+  # editdist() は str2strvec() の結果を単位に数えるので，
+  # 単位の数の差が編集距離の下限になる
+  s1 <- "abcdefgh"
+  s2 <- "abcd"
+  expect_equal(editdist(s1, s2, 2L),
+               length(str2strvec(s1, 2L)) - length(str2strvec(s2, 2L)))
+})

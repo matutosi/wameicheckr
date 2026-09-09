@@ -2,6 +2,10 @@
 
 ## wameicheckr 0.9.3
 
+* テストを追加．`arrange_hub_name()` `hub2plus()` `fill_another_name_id()`
+  `maybe()` `mosiya()` `str2strvec()` にテストが 1 件も無かったのを埋めた．
+  振る舞いを変える前に，変わっていないことを確かめられるようにするため．
+
 * `read_hub_jn()` (内部)：最後の代入の行末に余分な `%>%` があり，
   `list(hub_master=, jn_master=)` へパイプしていたのを修正．
   これにより次の 2 つが直った．
