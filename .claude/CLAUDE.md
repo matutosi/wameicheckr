@@ -35,6 +35,16 @@
   `main()` は不要で，`R CMD check` でも問題になる．ベンチマークや動作確認の
   `main()` を持つコードは `tools/` に置く．
 - `src/*.o` `*.dll` は `src/.gitignore` で除外済み．
+- **x280-home (`LAPTOP-ONKK9573`) では，そのままでは C++ がリンクできない**
+  (2026-09-10)．Rtools が入っておらず，`sh` と `g++` が w64devkit
+  (`D:/pf/w64devkit/bin`)のものになる．R の `SHLIB_CXXLD` は
+  `g++ -std=gnu++20` の 2 語で，リンクの段で
+  `sh: g++ -std=gnu++20  : not found` と落ちる(コンパイルは通る)．
+  **リポジトリは触らず，環境変数で回避する**．
+  `SHLIB_CXXLD = g++` の 1 行だけを書いた一時ファイルを作り，
+  `R_MAKEVARS_USER` にその絶対パスを入れてから `R CMD INSTALL` などを回す．
+  これが無いと `R CMD INSTALL`・`devtools`・`pkgload::load_all()` がすべて落ちる．
+  なお PowerShell では `R` が `Invoke-History` の別名なので，`R.exe` と書く．
 - **`R CMD check` は tar ball に対して行う**．ソースディレクトリを直接指定すると
   `Required fields missing or empty: 'Author' 'Maintainer'` で落ちる．
   `Authors@R` から展開されるのは `R CMD build` のときのため．
@@ -42,21 +52,28 @@
 
 ## これからの作業
 
-2026-08-18 に検討．実行は後日．**1 から 5 の順で進める**．
+2026-08-18 に検討．**1 から 5 の順で進める**(1 と 3 は 2026-09-10 に完了)．
 根拠の実測値は下の「進捗状況」の測定結果も見ること．
 
-### 1. テストを足す(2 と 4 の前提)
+### ~~1. テストを足す(2 と 4 の前提)~~ → **済んだ**(2026-09-10)
 
-テストが無い export 関数．
+`arrange_hub_name()` `hub2plus()` `fill_another_name_id()`
+`maybe()` `mosiya()` `str2strvec()` の 6 つに，テストが 1 件も無かったのを埋めた
+(新規 65 件．`test-arrange-hub-name.R` `test-fill-another-name-id.R`
+`test-maybe.R` と，`test-editdist.R` への追記)．
 
-- `arrange_hub_name()` `hub2plus()` `fill_another_name_id()`
-- `maybe()` `mosiya()` `str2strvec()`
+**分かったこと 2 つ**(どちらも直さず，現状をテストに固定した)．
 
-テストがあるのは `editdist()` `editdist_multi()` `editdist_norm()`
-`wamei_check()` `wamei_check_ex()` `search_similar_name()`．
+- **`fill_another_name_id()` は空欄が 1 つも無いと落ちる**．
+  `purrr::accumulate()` が空のベクトルを受け取るため．
+  `jn_master` 全体(53,222 行中 5,289 行が空欄)では起きないが，
+  **部分集合を渡すと出る**．
+- **`maybe()` `mosiya()` の `left_join` が many-to-many の警告を出す**．
+  `wamei_check()` は 0.9.3 で `relationship` を明示したが，この 2 つは未対応．
+  **2 で 2 つを 1 つにまとめるときに併せて直す**．
 
-`wamei_check()` のときと同じで，「振る舞いを変えない」変更をする前に，
-変わっていないことを確かめる手段を作っておく．
+書くときの注意．並べ替えに `sort()` を使う `arrange_hub_name()` は，
+日本語の順序がロケールに依るので，順序を確かめる例は ASCII だけにした．
 
 ### 2. maybe() / mosiya() の絞り込みを C++ へ移し，2 つを 1 つにまとめる
 
@@ -93,14 +110,12 @@
 ついでに直すもの．`maybe()` の `inp_esc = TRUE` は無意味．`editdist_multi()` は
 この引数を `len == 6` のときしか見ないので，`len = 1` の `maybe()` では無視される．
 
-### 3. usethis と readxl を Suggests へ
+### ~~3. usethis と readxl を Suggests へ~~ → **済んだ**(2026-09-10)
 
-どちらも `R/prep_data.R` でしか使っていない．`prep_data_all()` `prep_hub_data()`
-`prep_jn_data()` `prep_ref_data()` `read_hub_jn()` はすべて未 export で，
-維持者が `data/` を作り直すときにしか動かない．
-
-それなのに `Imports` にあるため，**全利用者が `usethis`(開発ツール)と `readxl` の
-導入を強制される**．`Suggests` に移し，`requireNamespace()` で案内を出す．
+`Imports` から `Suggests` へ移した．無い環境で `prep_*()` を呼んだときは，
+`R/prep_data.R` の末尾に足した `stop_if_not_installed()`(`@noRd`)が
+`install.packages()` を案内して止める．
+vignette の `readxl` を使う塊は `eval = FALSE` なので影響しない．
 
 ### 4. superseded になった呼び出しの置き換え
 
@@ -148,9 +163,13 @@
 
 ### 現在の状態
 
+- 2026-09-10 07:08 (このセッション，x280-home)
+  「これからの作業」の **1(テストを足す)と 3(usethis・readxl を Suggests へ)を実施**．
+  新規 65 件を含めテストは全通過，`R CMD check`(tar ball，vignette 込み)は **Status: OK**．
+  次は **2. `maybe()` / `mosiya()` の C++ 化と統合**(many-to-many の警告も併せて直す)．
+
 - 2026-08-19 02:31 更新
   旧 `TODO.txt` の課題(0〜5)を順に実施し，**すべて完了**(バージョン 0.9.3)．
   テストは 1,534 件すべて通過．`R CMD check`(tar ball)は **Status: OK**．
-  次は「これからの作業」の **1. テストを足す**から始める(2 と 4 の前提)．
 - それ以前は [notes/history.md](notes/history.md) を見る(高速化の実測値・
   R CMD check の手当て・分割で分かったこと・コミット履歴も同じファイル)．
