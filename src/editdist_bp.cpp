@@ -129,3 +129,85 @@ int editdist_bp(std::string s1, std::string s2, int len = 1,
                 int bp_min = 18){
   return editdist_tokens(str2strvec(s1, len), str2strvec(s2, len), bp_min);
 }
+
+// str_length() と同じ数え方(UTF-8 の文字数)．
+// editdist_norm() を R と同じ式で計算するために要る．
+static std::size_t utf8_len(const std::string &s){
+  std::size_t n = 0;
+  for(std::size_t i = 0; i < s.size(); i++){
+    if((static_cast<unsigned char>(s[i]) & 0xC0) != 0x80) n++;
+  }
+  return n;
+}
+
+//' Editing distance of close pairs only
+//'
+//' Returns only the pairs that satisfy
+//' `editdist < min_dist | editdist_norm < min_dist_norm`, so that R never
+//' builds the full `length(input) * length(reference)` table.
+//' `maybe()` and `mosiya()` use this; `editdist_multi()` keeps returning
+//' every combination, because that is its published behaviour.
+//'
+//' The normalised distance is the same as `editdist_norm()`:
+//' `editdist / max(nchar(s1), nchar(s2)) * len`.
+//'
+//' @param input Vector of string to be compared.
+//' @param reference Vector of string to be compared.
+//' @param len Dividing length of string.
+//' @param min_dist Minimum editing distance.
+//' @param min_dist_norm Minimum normalised editing distance.
+//' @param bp_min Minimum length (in tokens) to use the bit-parallel
+//'   algorithm.  0 means never.
+//'
+//' @return Data frame of 4 columns: `input_id` and `reference_id` are
+//'   1-based indices into `input` and `reference`.
+//'
+//' @noRd
+// [[Rcpp::export]]
+DataFrame editdist_close_pairs(std::vector<std::string> input,
+                               std::vector<std::string> reference,
+                               int len = 1,
+                               double min_dist = 4,
+                               double min_dist_norm = 0.2,
+                               int bp_min = 18){
+  const std::size_t ni = input.size(), nr = reference.size();
+  std::vector< std::vector<std::string> > ti(ni), tr(nr);
+  std::vector<std::size_t> li(ni), lr(nr);
+  for(std::size_t i = 0; i < ni; i++){
+    ti[i] = str2strvec(input[i], len);
+    li[i] = utf8_len(input[i]);
+  }
+  for(std::size_t j = 0; j < nr; j++){
+    tr[j] = str2strvec(reference[j], len);
+    lr[j] = utf8_len(reference[j]);
+  }
+
+  std::vector<int> out_i, out_j, out_d;
+  std::vector<double> out_n;
+  for(std::size_t i = 0; i < ni; i++){
+    for(std::size_t j = 0; j < nr; j++){
+      // 正規化した距離が min_dist_norm 未満になる編集距離の上限．
+      // これと min_dist の大きい方を超える距離は，どちらの条件も満たさない．
+      const double max_len = (double)(li[i] > lr[j] ? li[i] : lr[j]);
+      const double lim_norm = min_dist_norm * max_len / (double)len;
+      const double lim = (min_dist > lim_norm) ? min_dist : lim_norm;
+      // トークン数の差は編集距離の下限なので，これで足切りできる
+      const std::size_t a = ti[i].size(), b = tr[j].size();
+      const double lower = (double)(a > b ? a - b : b - a);
+      if(lower >= lim) continue;
+      const int d = editdist_tokens(ti[i], tr[j], bp_min);
+      const double norm = (max_len > 0) ? ((double)d / max_len * (double)len)
+                                        : R_NaN;
+      if(! ((double)d < min_dist || norm < min_dist_norm)) continue;
+      out_i.push_back((int)i + 1);
+      out_j.push_back((int)j + 1);
+      out_d.push_back(d);
+      out_n.push_back(norm);
+    }
+  }
+  return DataFrame::create(
+    _["input_id"]      = out_i,
+    _["reference_id"]  = out_j,
+    _["editdist"]      = out_d,
+    _["editdist_norm"] = out_n);
+}

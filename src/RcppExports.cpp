@@ -63,12 +63,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// editdist_close_pairs
+DataFrame editdist_close_pairs(std::vector<std::string> input, std::vector<std::string> reference, int len, double min_dist, double min_dist_norm, int bp_min);
+RcppExport SEXP _wameicheckr_editdist_close_pairs(SEXP inputSEXP, SEXP referenceSEXP, SEXP lenSEXP, SEXP min_distSEXP, SEXP min_dist_normSEXP, SEXP bp_minSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type reference(referenceSEXP);
+    Rcpp::traits::input_parameter< int >::type len(lenSEXP);
+    Rcpp::traits::input_parameter< double >::type min_dist(min_distSEXP);
+    Rcpp::traits::input_parameter< double >::type min_dist_norm(min_dist_normSEXP);
+    Rcpp::traits::input_parameter< int >::type bp_min(bp_minSEXP);
+    rcpp_result_gen = Rcpp::wrap(editdist_close_pairs(input, reference, len, min_dist, min_dist_norm, bp_min));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_wameicheckr_str2strvec", (DL_FUNC) &_wameicheckr_str2strvec, 2},
     {"_wameicheckr_editdist", (DL_FUNC) &_wameicheckr_editdist, 3},
     {"_wameicheckr_editdist_pairs", (DL_FUNC) &_wameicheckr_editdist_pairs, 4},
     {"_wameicheckr_editdist_bp", (DL_FUNC) &_wameicheckr_editdist_bp, 4},
+    {"_wameicheckr_editdist_close_pairs", (DL_FUNC) &_wameicheckr_editdist_close_pairs, 6},
     {NULL, NULL, 0}
 };
 

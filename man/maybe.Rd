@@ -23,8 +23,17 @@ Tibble.
 }
 \description{
 maybe() for scientific names, mosiya() for wamei (Japanese names).
-Both compare the input against the wamei checklist with
-editdist_multi(), and keep the candidates that are close enough.
+Both compare the input against the wamei checklist, and keep the
+candidates that are close enough.
+}
+\details{
+maybe() is the body and mosiya() is a thin wrapper of it.
+The two differ only in the defaults: \code{len} selects the reference
+(6 for wamei, otherwise scientific names) and \code{min_dist} is looser
+for scientific names, which are longer.
+
+The candidates are picked in C++ (\code{editdist_close_pairs()}), so the
+whole \code{length(x) * length(reference)} table is never built in R.
 }
 \section{Functions}{
 \itemize{

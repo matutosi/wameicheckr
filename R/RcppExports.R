@@ -56,3 +56,30 @@ editdist_bp <- function(s1, s2, len = 1L, bp_min = 18L) {
     .Call(`_wameicheckr_editdist_bp`, s1, s2, len, bp_min)
 }
 
+#' Editing distance of close pairs only
+#'
+#' Returns only the pairs that satisfy
+#' `editdist < min_dist | editdist_norm < min_dist_norm`, so that R never
+#' builds the full `length(input) * length(reference)` table.
+#' `maybe()` and `mosiya()` use this; `editdist_multi()` keeps returning
+#' every combination, because that is its published behaviour.
+#'
+#' The normalised distance is the same as `editdist_norm()`:
+#' `editdist / max(nchar(s1), nchar(s2)) * len`.
+#'
+#' @param input Vector of string to be compared.
+#' @param reference Vector of string to be compared.
+#' @param len Dividing length of string.
+#' @param min_dist Minimum editing distance.
+#' @param min_dist_norm Minimum normalised editing distance.
+#' @param bp_min Minimum length (in tokens) to use the bit-parallel
+#'   algorithm.  0 means never.
+#'
+#' @return Data frame of 4 columns: `input_id` and `reference_id` are
+#'   1-based indices into `input` and `reference`.
+#'
+#' @noRd
+editdist_close_pairs <- function(input, reference, len = 1L, min_dist = 4, min_dist_norm = 0.2, bp_min = 18L) {
+    .Call(`_wameicheckr_editdist_close_pairs`, input, reference, len, min_dist, min_dist_norm, bp_min)
+}
+

@@ -2,6 +2,24 @@
 
 ## wameicheckr 0.9.3
 
+* `maybe()` `mosiya()`：候補の絞り込みを C++ へ移した
+  (`editdist_close_pairs()`．未 export)．
+  `min_dist` 未満または `min_dist_norm` 未満のペアだけを返すので，
+  `length(x) * length(reference)` の表を R で作らなくなった．
+  出力は従来と同じ(7 通りで突き合わせて確認)．
+  **`maybe()` が 5.0 倍，`mosiya()` が 2.0 倍**速く，一時オブジェクトは
+  305,516 行 → 9 行(`maybe()`)，207,236 行 → 101 行(`mosiya()`)．
+  `editdist_multi()` は全組み合わせを返す公開仕様なので変えていない．
+
+* `mosiya()` を `maybe()` のラッパーにした．本体は `len` で参照を選ぶ
+  (`len == 6` なら和名の `ref_jp`，それ以外は学名の `ref_sc`)．
+  引数と既定値は変えていないので，呼び出し側の書き換えは要らない．
+  無意味だった `maybe()` の `inp_esc = TRUE` は無くなった．
+
+* `maybe()` `mosiya()`：データソースとの結合で
+  `relationship = "many-to-many"` を明示し，警告が出ないようにした．
+  1 つの名前が複数のデータソースに載るので，意図した多対多である．
+
 * `readxl` と `usethis` を `Imports` から `Suggests` へ移動．
   この 2 つは `prep_*()` (未 export．維持者が `data/` を作り直すときにだけ使う)
   でしか呼ばないのに，全利用者に導入を強いていた．
