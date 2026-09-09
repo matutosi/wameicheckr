@@ -52,7 +52,7 @@
 
 ## これからの作業
 
-2026-08-18 に検討．**1 から 5 の順で進める**(1 と 3 は 2026-09-10 に完了)．
+2026-08-18 に検討．**1 から 5 の順で進める**(1・2・3 は 2026-09-10 に完了．残るは 4 と 5)．
 根拠の実測値は下の「進捗状況」の測定結果も見ること．
 
 ### ~~1. テストを足す(2 と 4 の前提)~~ → **済んだ**(2026-09-10)
@@ -75,40 +75,34 @@
 書くときの注意．並べ替えに `sort()` を使う `arrange_hub_name()` は，
 日本語の順序がロケールに依るので，順序を確かめる例は ASCII だけにした．
 
-### 2. maybe() / mosiya() の絞り込みを C++ へ移し，2 つを 1 つにまとめる
+### ~~2. maybe() / mosiya() の絞り込みを C++ へ移し，2 つを 1 つにまとめる~~ → **済んだ**(2026-09-10)
 
-**速度とメモリ**．実測は下の「maybe() / mosiya() の測定」節．
-返す 395 行のために 155 万行の tibble を作っている(0.03 %)．
+`src/editdist_bp.cpp` に `editdist_close_pairs()`(未 export)を足した．
+`min_dist` 未満または `min_dist_norm` 未満のペアだけを
+(入力の添字, 参照の添字, `editdist`, `editdist_norm`)の 4 列で返す．
+`editdist_multi()` は「全組み合わせを返す」ことが公開仕様なので変えていない．
 
-`src/editdist_bp.cpp` の `editdist_pairs()` の隣に，**`min_dist` 未満または
-`min_dist_norm` 未満のペアだけを返す**内部関数を足す．返すのは
-(入力の添字, 参照の添字, `editdist`, `editdist_norm`) の 4 列でよい．
-`maybe()` `mosiya()` はそれを使う．約 3 倍速くなり，メモリはほぼ不要になる．
+**`maybe()` を本体，`mosiya()` をラッパー**にした(2026-09-10 ユーザ確定)．
+本体は `len` で参照を選ぶ(`len == 6` なら `ref_jp`，それ以外は `ref_sc`)．
+無意味だった `maybe()` の `inp_esc = TRUE` は無くなった．
+結合には `relationship = "many-to-many"` を明示し，警告を消した
+(1 つの名前が複数のデータソースに載るので，意図した多対多)．
 
-`editdist_multi()` は「全組み合わせを返す」ことが公開仕様なので変えない．
+**実測(x280-home，2026-09-10)**．旧実装と出力は 7 通りすべて一致．
 
-**2 つを 1 つにまとめる**．いまは実質 5 行しか違わない．
+| | 旧 | 新 | 速さ | 一時オブジェクト |
+|---|---:|---:|---:|---|
+| `maybe()` (学名 4 件) | 17.92 秒 | 3.61 秒 | **5.0 倍** | 305,516 行 → 9 行 |
+| `mosiya()` (和名 4 件) | 2.58 秒 | 1.27 秒 | **2.0 倍** | 207,236 行 → 101 行 |
 
-| | `maybe()` | `mosiya()` |
-|---|---|---|
-| `len` | 1 | 6 |
-| `min_dist` | 4 | 3 |
-| 参照 | `ref_sc$name_sc` | `ref_jp$name_jp` |
-| 結合キー | `name_sc` | `name_jp` |
-| 参照側の前処理 | 無し | `stri_unescape_unicode()` |
+見積り(約 3 倍)より速くなったのは，**トークン数の差が編集距離の下限**である
+ことを使って，距離を計算する前に足切りしているため(`lower >= lim` なら `continue`)．
+学名は長さの幅が広いので，ここでほとんどが落ちる．和名は長さがそろっているので
+効き目が小さく 2.0 倍にとどまる．
 
-方針(2026-08-18 に決定)．
-
-- `maybe()` は英語話者用，`mosiya()` は日本語話者用の名前とする．
-- **どちらかを本体にして，もう一方はラッパーにする**．
-- 本体は `len` で参照を選ぶ(`len == 6` なら `ref_jp`，それ以外は `ref_sc`)．
-  `search_similar_name()` が元々そうしていた．
-- `R/maybe.R` の末尾にコメントアウトで残る旧 `mosiya()` が，まさに `maybe()` の
-  ラッパーだった．この形に戻すことになる．ただし旧版は `inp_esc` を渡して
-  いないので，そのまま復活させない．
-
-ついでに直すもの．`maybe()` の `inp_esc = TRUE` は無意味．`editdist_multi()` は
-この引数を `len == 6` のときしか見ないので，`len = 1` の `maybe()` では無視される．
+正規化した距離は R の `editdist_norm()` と同じ式で計算する必要がある
+(`editdist / max(nchar(s1), nchar(s2)) * len`)．`nchar()` は文字数なので，
+C++ 側も**バイト数ではなく UTF-8 の文字数**を数える(`utf8_len()`)．
 
 ### ~~3. usethis と readxl を Suggests へ~~ → **済んだ**(2026-09-10)
 
@@ -125,10 +119,14 @@ vignette の `readxl` を使う塊は `eval = FALSE` なので影響しない．
 | `R/wamei_check.R:196-197` | `mutate_if(is.character, ...)` x2 | `across(where(is.character))` |
 | `R/editdist_multi.R:49` | `mutate_at(c("s1","s2"), ...)` | `across(all_of(...))` |
 | `R/arrange_hub_name.R:32` | `tidyr::separate()` | `separate_wider_delim()` |
-| `R/maybe.R` x2, `R/search_similar_name.R` x1 | `magrittr::set_colnames()` | `rlang::set_names()` か `names()<-` |
+| `R/search_similar_name.R:40` | `magrittr::set_colnames()` | `rlang::set_names()` か `names()<-` |
 
 いま壊れているわけではないが，`mutate_at()` `mutate_if()` `vars()` は superseded．
-1 を済ませてから着手する．2 で書き換わる行を二度触らないよう，順序は最後．
+1 と 2 は済んだので，次はここから着手する．
+**`R/maybe.R` の `set_colnames()` 2 か所は，2 の書き換えで無くなった**
+(残るは `search_similar_name.R` の 1 か所で，これは 0.10.0 で消すファイル)．
+`R/prep_data.R` の `tidyr::separate()` 2 か所も同じ型だが，
+維持者しか動かさない未 export の関数なので急がない．
 
 ### 5. 細かいもの
 
@@ -163,10 +161,14 @@ vignette の `readxl` を使う塊は `eval = FALSE` なので影響しない．
 
 ### 現在の状態
 
+- 2026-09-10 07:20 (このセッション，x280-home)
+  「これからの作業」の **2(`maybe()` / `mosiya()` の C++ 化と統合)を実施**．
+  `editdist_close_pairs()` を足し，`mosiya()` を `maybe()` のラッパーにした．
+  出力は旧実装と 7 通りすべて一致，**5.0 倍・2.0 倍**速い．次は **4**．
+
 - 2026-09-10 07:08 (このセッション，x280-home)
   「これからの作業」の **1(テストを足す)と 3(usethis・readxl を Suggests へ)を実施**．
   新規 65 件を含めテストは全通過，`R CMD check`(tar ball，vignette 込み)は **Status: OK**．
-  次は **2. `maybe()` / `mosiya()` の C++ 化と統合**(many-to-many の警告も併せて直す)．
 
 - 2026-08-19 02:31 更新
   旧 `TODO.txt` の課題(0〜5)を順に実施し，**すべて完了**(バージョン 0.9.3)．
