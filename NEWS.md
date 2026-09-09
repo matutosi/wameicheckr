@@ -2,6 +2,11 @@
 
 ## wameicheckr 0.9.3
 
+* `readxl` と `usethis` を `Imports` から `Suggests` へ移動．
+  この 2 つは `prep_*()` (未 export．維持者が `data/` を作り直すときにだけ使う)
+  でしか呼ばないのに，全利用者に導入を強いていた．
+  無い環境で `prep_*()` を呼ぶと，導入を促して止まる．
+
 * テストを追加．`arrange_hub_name()` `hub2plus()` `fill_another_name_id()`
   `maybe()` `mosiya()` `str2strvec()` にテストが 1 件も無かったのを埋めた．
   振る舞いを変える前に，変わっていないことを確かめられるようにするため．

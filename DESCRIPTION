@@ -14,17 +14,17 @@ LazyData: true
 Imports: 
     dplyr,
     purrr,
-    readxl,
     stringi, 
     stringr,
     tibble,
     tidyr,
-    usethis,
     tidyselect,
     magrittr,
     Rcpp
 Suggests: 
     testthat (>= 3.0.0),
+    readxl,
+    usethis,
     knitr,
     rmarkdown,
     tidyverse

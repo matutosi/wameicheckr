@@ -17,12 +17,16 @@ prep_data_all <- function(path){
 
   #' @describeIn prep_data_all Prepare hub data
 prep_hub_data <- function(path){
+  stop_if_not_installed("readxl")
+  stop_if_not_installed("usethis")
   hub_master <- readxl::read_xlsx(path, sheet="Hub_data",   col_types="text")
   usethis::use_data(hub_master, overwrite=TRUE)
 }
 
   #' @describeIn prep_data_all Prepare jn data
 prep_jn_data <- function(path){
+  stop_if_not_installed("readxl")
+  stop_if_not_installed("usethis")
   jn_master  <- readxl::read_xlsx(path, sheet="JN_dataset", col_types="text")
   usethis::use_data(jn_master, overwrite=TRUE)
 }
@@ -63,6 +67,7 @@ read_hub_jn <- function(){
   #' @describeIn prep_data_all Prepare reference data
 prep_ref_data <- function(){
   # save ref_jp and ref_sc
+  stop_if_not_installed("usethis")
 
   hub_jn <- read_hub_jn()
   hub_master <- hub_jn$hub_master
@@ -98,4 +103,21 @@ prep_ref_data <- function(){
     dplyr::distinct()
 
   usethis::use_data(ref_sc, overwrite=TRUE)
+}
+
+  #' 開発時にだけ要るパッケージがあるかを確かめる
+  #'
+  #' prep_*() は維持者が data/ を作り直すときにしか動かさないので，
+  #' readxl と usethis は Suggests に置いてある．
+  #' 利用者の環境に無くても他の関数は動く．
+  #'
+  #' @param pkg Character. Package name.
+  #' @noRd
+stop_if_not_installed <- function(pkg){
+  if(! requireNamespace(pkg, quietly = TRUE)){
+    stop("Package \"", pkg, "\" is needed to prepare the data. ",
+         "Install it with install.packages(\"", pkg, "\").",
+         call. = FALSE)
+  }
+  invisible(TRUE)
 }
